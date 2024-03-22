@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>  
+<head>
+    <title>ShopVista Login Page</title>
+    <link rel = "stylesheet"
+          href="index.css">
+</head>
+<body>
+    <div class = "main">
+        <h1>Sign in</h1>
+        <form action =" "> <!-- creates the form-->
+            <label for ="first"> <!-- Username input-->
+                Username:
+             </label>
+            <input type = "text"
+                    id = "first"
+                    name = "first"
+                    placeholder="Enter you username" required>
+            
+            <label for = "password"> <!-- Password input-->
+                Password:
+            </label>
+            <input type = "password"
+                    id = "password"
+                    name = "password"
+                    placeholder = "Enter your password" required>
+            <div class = "warp"> <!--Submit button-->
+                <button type = "submit"
+                        oneclick = "solve()">
+                Submit
+                </button>
+            </div>
+        </form>
+        <p>
+            Not registered?
+            <a href ="#"
+                style = "text-decoration: navy;">
+                Sign up here!
+            </a>
+        </p>
+    </div>
+</body>
+</html>
