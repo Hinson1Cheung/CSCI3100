@@ -3,9 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home | ShopVisa</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="StoreManagement.css">
 </head>
 <body>
-    
+    <div class="header bg-white p-3"> <!-- Header -->
+        <div class="header-container">
+            <a href="../">
+                <img src="../image/logo.png" alt="Logo" class="logo">
+            </a>
+            <div class="action-container"> <!-- Add a container for the search bar and the login button -->
+                <div class="search-container">
+                    <form class="input-group" id="search-form"> <!-- Add a search form --> <!-- ID is for JS-->
+                        <input type="text" class="form-control search-input" placeholder="Search">
+                    </form>
+                </div>
+                <a href="../Cart">
+                    <button class="btn btn-primary my-button">Cart</button>
+                </a>
+                <a href="../login">
+                    <button class="btn btn-primary my-button">Login</button>
+                </a>
+            </div>
+            <!-- Add a link to the cart page and other url -->
+        </div>
+    </div>
+    </div>
+    <div class="container mt-5">
+        <a href="../" style="color: rgb(0, 0, 0);">Homepage</a><a>/StoreManagement</a>
+        <h1 class="text-center">StoreManagement</h1>
+        <div class="row">
+            <!-- add form here -->
+
+             
+        </div>
+    </div>
+    <br>
+    <footer style="display: flex; justify-content: space-between; align-items: center; width: 100%; background-color: #333; color: white; padding: 10px;">
+        <p>Group G3</p>
+        <div>
+            <a href="../StoreManagement" style="color: white; margin-right: 10px;">Store Management</a>
+            <a href="../UserManagement" style="color: white; margin-right: 10px;">User Management</a>
+            <a href="../AdminLogin" style="color: white;">Admin Login</a>
+        </div>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="StoreManagement.js"></script>
 </body>
 </html>
