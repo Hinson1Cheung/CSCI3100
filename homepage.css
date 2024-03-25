@@ -64,9 +64,13 @@ h5.text-center {
 }
 .product-item .product-button {
     visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.25s linear;
 }
 .product-item:hover .product-button {
     visibility: visible;
+    opacity: 0;
+    transition: opacity 0.25s linear;
 }
 .product-image {
     width: 100%;
