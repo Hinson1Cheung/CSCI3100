@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | ShopVisa</title>
+    <title>Cart | ShopVista</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="StoreManagement.css">
 </head>
@@ -19,10 +19,10 @@
                         <input type="text" class="form-control search-input" placeholder="Search">
                     </form>
                 </div>
-                <a href="../Cart">
+                <a href="../Cart/index.html">
                     <button class="btn btn-primary my-button">Cart</button>
                 </a>
-                <a href="../login">
+                <a href="../login/index.html">
                     <button class="btn btn-primary my-button">Login</button>
                 </a>
             </div>
@@ -32,23 +32,177 @@
     </div>
     <div class="container mt-5">
         <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
-        <h1 class="text-center">StoreManagement</h1>
-        <div class="row">
+        <h1 class="text-center">Store Management</h1>
+        <div class="row" style="display: flex; justify-content: center;">
             <!-- add form here -->
-
-             
+            <!-- sample display -->
+            <div class="card">
+                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="quantity">Quantity: 10</p>
+                <p class="price" contenteditable="true" oninput="validateInput(this)">$19.99</p>
+            </div>
+            <div class="card">
+                <div class="checkbox-wrapper-18">
+                    <div class="round">
+                      <input type="checkbox" id="2" />
+                      <label for="2"></label>
+                    </div>
+                </div>
+                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="price">$9.99</p>
+                <div class="number-input">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                    <input type="number" id="1" value="1" min="0">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="checkbox-wrapper-18">
+                    <div class="round">
+                      <input type="checkbox" id="3" />
+                      <label for="3"></label>
+                    </div>
+                </div>
+                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="price">$9.99</p>
+                <div class="number-input">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                    <input type="number" id="3" value="1" min="0">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="checkbox-wrapper-18">
+                    <div class="round">
+                      <input type="checkbox" id="4" />
+                      <label for="4"></label>
+                    </div>
+                </div>
+                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="price">$9.99</p>
+                <div class="number-input">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                    <input type="number" id="4" value="1" min="0">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="checkbox-wrapper-18">
+                    <div class="round">
+                      <input type="checkbox" id="5" />
+                      <label for="5"></label>
+                    </div>
+                </div>
+                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="price">$9.99</p>
+                <div class="number-input">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                    <input type="number" id="5" value="1" min="0">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="checkbox-wrapper-18">
+                    <div class="round">
+                      <input type="checkbox" id="6" />
+                      <label for="6"></label>
+                    </div>
+                </div>
+                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="price">$9.99</p>
+                <div class="number-input">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                    <input type="number" id="6" value="1" min="0">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="checkbox-wrapper-18">
+                    <div class="round">
+                      <input type="checkbox" id="6" />
+                      <label for="6"></label>
+                    </div>
+                </div>
+                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="price">$9.99</p>
+                <div class="number-input">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                    <input type="number" id="6" value="1" min="0">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="checkbox-wrapper-18">
+                    <div class="round">
+                      <input type="checkbox" id="6" />
+                      <label for="6"></label>
+                    </div>
+                </div>
+                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="price">$9.99</p>
+                <div class="number-input">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                    <input type="number" id="6" value="1" min="0">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="checkbox-wrapper-18">
+                    <div class="round">
+                      <input type="checkbox" id="6" />
+                      <label for="6"></label>
+                    </div>
+                </div>
+                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="price">$9.99</p>
+                <div class="number-input">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                    <input type="number" id="6" value="1" min="0">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="checkbox-wrapper-18">
+                    <div class="round">
+                      <input type="checkbox" id="6" />
+                      <label for="6"></label>
+                    </div>
+                </div>
+                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="price">$9.99</p>
+                <div class="number-input">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                    <input type="number" id="6" value="1" min="0">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <button class="btn btn-primary my-button">Add new Product</button>
         </div>
     </div>
+    
     <br>
     <footer style="display: flex; justify-content: space-between; align-items: center; width: 100%; background-color: #333; color: white; padding: 10px;">
         <div><a href="#" class="scroll-to-top" title="Scroll to top" style="color: white;">Back to top</a></div>
         <div>
-            <a href="../StoreManagement" style="color: white; margin-right: 10px;">Store Management</a>
-            <a href="../UserManagement" style="color: white; margin-right: 10px;">User Management</a>
-            <a href="../AdminLogin" style="color: white;">Admin Login</a>
+            <a href="../StoreManagement/index.html" style="color: white; margin-right: 10px;">Store Management</a>
+            <a href="../UserManagement/index.html" style="color: white; margin-right: 10px;">User Management</a>
+            <a href="../AdminLogin/index.html" style="color: white;">Admin Login</a>
         </div>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="StoreManagement.js"></script>
 </body>
 </html>
+

@@ -23,3 +23,13 @@ window.onload = function() {
         return false;
     }
 }
+function validateInput(element) {
+    // Remove all characters that are not digits or a period
+    var value = element.textContent.replace(/[^0-9.]/g, '');
+    // Ensure the first character is a dollar sign
+    if (value.charAt(0) !== '$') {
+        value = '$' + value;
+    }
+    // Update the text content of the element
+    element.textContent = value;
+}
