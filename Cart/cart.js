@@ -15,7 +15,7 @@ window.onload = function() {
         }
         return false;
     }
-}
+
 $(document).ready(function(){
     $('.scroll-to-top').click(function(event){
         event.preventDefault();
@@ -23,3 +23,21 @@ $(document).ready(function(){
         return false;
     });
 });
+
+}
+
+function selectAll(){
+    var arr=document.getElementsByClassName('chk');
+    for(var i=0;i<arr.length;i++){
+        if(arr[i].type=='checkbox')
+            arr[i].checked=true;
+    }
+}
+
+function unSelectAll(){
+    var arr=document.getElementsByClassName('chk');
+    for(var i=0;i<arr.length;i++){
+        if(arr[i].type=='checkbox')
+            arr[i].checked=false;
+    }
+}
