@@ -18,10 +18,46 @@ window.onload = function() {
         return false;
     }
 }
-function validateInput(element) {
-    var value = element.textContent.replace(/[^0-9.]/g, '');
-    if (value.charAt(0) !== '$') {
-        value = '$' + value;
-    }
+function validateInput(event) {
+    var element = event.target;
+    var selection = window.getSelection();
+    var range = selection.getRangeAt(0);
+    var selectionStart = range.startOffset;
+    var selectionEnd = range.endOffset;
+    var value = element.textContent.replace(/[^0-9.$]/g, '');
+
+    // Update the text content of the element before setting the cursor position
     element.textContent = value;
+    // Check if the text node exists before setting the cursor position
+    if (element.firstChild) {
+        if (event.inputType === 'insertText' && event.data && /^[a-zA-Z]/.test(event.data)) {
+            range.setStart(element.firstChild, Math.min(element.firstChild.length, selectionStart));
+            range.setEnd(element.firstChild, Math.min(element.firstChild.length, selectionEnd-1));
+        }
+        else{
+            range.setStart(element.firstChild, Math.min(element.firstChild.length, selectionStart));
+            range.setEnd(element.firstChild, Math.min(element.firstChild.length, selectionEnd));
+        }
+    }
+    selection.removeAllRanges();
+    selection.addRange(range);
+}
+function clearContent(event) {
+    var element = event.target;
+    element.textContent = '';
+    var selection = window.getSelection();
+    var range = document.createRange();
+    range.setStart(element.firstChild, 1); // Set cursor after the '$' sign
+    range.collapse(true);
+    selection.removeAllRanges();
+    selection.addRange(range);
+}
+function handleKeyDown(event) {
+    if (event.key === 'Enter') {
+        event.target.blur();
+    } 
+}
+function handleBlur(event) {
+    var element = event.target;
+    element.textContent = "$" + element.textContent;
 }

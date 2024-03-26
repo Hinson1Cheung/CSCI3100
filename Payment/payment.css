@@ -107,7 +107,7 @@ h5.text-center {
     display: flex;
     -ms-flex-wrap: wrap; /* IE10 */
     flex-wrap: wrap;
-    margin: 0 -8px;
+    margin: 0 -16px;
 }
 .col-25 {
     -ms-flex: 25%; /* IE10 */
@@ -139,7 +139,7 @@ h5.text-center {
 }
 
 input[type=text] {
-    width: 50%;
+    width: 100%;
     margin-bottom: 20px;
     border-radius: 3px;
 }

@@ -1,40 +1,34 @@
 <!DOCTYPE html>
 <html>  
 <head>
-    <title>ShopVista Login Page</title>
+    <title>New user information</title>
     <link rel = "stylesheet"
-          href="login.css">
+          href="Blacklist.css">
 </head>
 <body>
     <div class = "main">
-        <h1>Sign in</h1>
+        <h1>Blacklist user from system</h1>
         <form action ="../index.html"> <!-- creates the form-->
             <label for ="first"> <!-- Username input-->
-                Username:
+                Username to be blacklisted:
              </label>
             <input type = "text"
                     id = "first"
                     name = "first"
-                    placeholder="Enter you username" required>
+                    placeholder="Enter username" required>
             
-            <label for = "password"> <!-- Password input-->
-                Password:
-            </label>
-            <input type = "password"
-                    id = "password"
-                    name = "password"
-                    placeholder = "Enter your password" required>
+            
             <div class = "warp"> <!--Submit button-->
                     <button type = "submit">Submit</button>
             </div>
         </form>
         <p>
-            Not registered?
-            <a href ="signup/index.html"
+            <a href ="../index.html"
                 style = "text-decoration: navy;">
-                Sign up here!
+                Return to functions menu
             </a>
         </p>
+        
     </div>
 </body>
 </html>
