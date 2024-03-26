@@ -19,9 +19,21 @@ window.onload = function() {
     }
 }
 function validateInput(element) {
+    var selection = window.getSelection();
+    var range = selection.getRangeAt(0);
+    var selectionStart = range.startOffset;
+    var selectionEnd = range.endOffset;
     var value = element.textContent.replace(/[^0-9.]/g, '');
     if (value.charAt(0) !== '$') {
         value = '$' + value;
     }
+    // Update the text content of the element before setting the cursor position
     element.textContent = value;
+    // Check if the text node exists before setting the cursor position
+    if (element.firstChild) {
+        range.setStart(element.firstChild, Math.min(element.firstChild.length, selectionStart));
+        range.setEnd(element.firstChild, Math.min(element.firstChild.length, selectionEnd));
+    }
+    selection.removeAllRanges();
+    selection.addRange(range);
 }
