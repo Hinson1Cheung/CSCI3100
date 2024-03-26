@@ -110,25 +110,25 @@ function unSelectAll(){
     }
 }
 
-function toolBar(){
+function toolBar(){ //show functions only when item is selected
     var checkOutBar = document.getElementById("toolbar");
     let selected = false;
-    for(let i=0; i < 10; i++){
+    for(let i=0; i < 10; i++){ //check if has item selected
         if(checkBox[i].checked){
             selected = true;
         }
     }
-    if(selected) {
+    if(selected) { //show bar
         checkOutBar.style.display = "flex";
         checkOutBar.style.position = "sticky";
         checkOutBar.style.bottom = 0;
-    }else{
+    }else{ //hide bar
         checkOutBar.style.display = "none";
     }
 }
 
-var checkBox = document.getElementsByClassName('chk');
+var checkBox = document.getElementsByClassName('chk'); //record the checkboxes
 for (let i=0; i < 10; i++){
     checkBox[i].addEventListener("input", toolBar);
-    console.log("now the " + i + " th one: "+checkBox[i]);    
+    console.log("now the " + i + " th one: "+checkBox[i]); //debug 
 }
