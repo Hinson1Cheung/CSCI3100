@@ -66,7 +66,7 @@ const searchBar = document.getElementById('search-bar');
 const previewContainer = document.getElementById('preview-container');
 
 const products = [
-  { name: 'Sample', image: './image/sample.png', description: 'sample' },
+  { name: 'Sample', image: '.././image/sample.png', description: 'sample' },
 ];
 
 searchBar.addEventListener('input', () => {
