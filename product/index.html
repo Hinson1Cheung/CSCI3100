@@ -43,7 +43,12 @@
                 <p>Product Description</p>
                 
                 <label for="quantity" style="font-size: 15px;">Quantity</label><br>
-                <input type="number" id="quantity" name="quantity" min="1" max="100" value="1" style="width: 60px; height: 30px; border: 1px solid #ccc; border-radius: 4px;"><br><br>
+                <!-- <input type="number" id="quantity" name="quantity" min="1" max="100" value="1" style="width: 60px; height: 30px; border: 1px solid #ccc; border-radius: 4px;"><br><br> -->
+                <div class="number-input">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                    <input type="number" id="quantity" name="quantity" value="1" min="0" max="100">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button><br><br>
+                </div>
                 <a href="../cart" class="btn btn-primary cart-button" style="height: auto; width: 300px;">Add to Cart</a>
                 
             </div>

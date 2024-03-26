@@ -3,9 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="UM.css"><!-- rename this-->
 </head>
 <body>
-    
+    <div class="header bg-white p-3"> <!-- Header -->
+        <div class="header-container">
+            <a href="../index.html">
+                <img src="../image/logo.png" alt="Logo" class="logo">
+            </a>
+            <div class="action-container"> <!-- Add a container for the search bar and the login button -->
+                <div class="search-container">
+                    <form class="input-group" id="search-form"> <!-- Add a search form --> <!-- ID is for JS-->
+                        <input type="text" class="form-control search-input" placeholder="Search">
+                    </form>
+                </div>
+                <a href="../Cart/index.html">
+                    <button class="btn btn-primary my-button">Cart</button>
+                </a>
+                <a href="../login/index.html">
+                    <button class="btn btn-primary my-button">Login</button>
+                </a>
+            </div>
+            <!-- Add a link to the cart page and other url -->
+        </div>
+    </div>
+    </div>
+    <div class="container mt-5">
+        <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
+        <h1 class="text-center">User Management System</h1>
+        <div class="row">
+            <!-- add form here -->
+            <table class ="table-center">
+                <tr>
+                    <th>
+                        <h3>Select operation to be performed</h3>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <a href = "AddUser/index.html">
+                            <button class = "btn btn-primary my-button">Add users to system</button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href = "RmUser/index.html">
+                            <button class = "btn btn-primary my-button">Remove users from system</button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href = "#">
+                            <button class = "btn btn-primary my-button">Check user information</button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href = "BlackList/index.html">
+                            <button class = "btn btn-primary my-button">Blacklist users from system</button>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+             
+        </div>
+    </div>
+    <br>
+    <footer style="display: flex; justify-content: space-between; align-items: center; width: 100%; background-color: #333; color: white; padding: 10px;">
+        <div><a href="#" class="scroll-to-top" title="Scroll to top" style="color: white;">Back to top</a></div>
+        <div>
+            <a href="../StoreManagement" style="color: white; margin-right: 10px;">Store Management</a>
+            <a href="../UserManagement" style="color: white; margin-right: 10px;">User Management</a>
+        </div>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="UM.js"></script> <!-- rename this-->
 </body>
 </html>

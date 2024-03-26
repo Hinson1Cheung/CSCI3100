@@ -112,6 +112,54 @@ h5.text-center {
     box-shadow: none !important;
     color: rgb(0, 0, 0) !important;
 }
+
+.number-input {
+    border: 0;
+    display: inline;
+    margin: auto;
+}
+  
+.number-input,
+.number-input * {
+    box-sizing: border-box;
+}
+
+.number-input input[type=number] {
+    font-family: sans-serif;
+    width: 50px;
+    height: 26px;
+    font-size: 18px;
+    padding: .5rem;
+    border: none;
+    border-width: 0 2px;
+    font-weight: bold;
+    text-align: center;
+    color:#333;
+    margin: auto;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.number-input button {
+    border: none;
+    outline: 0;
+    padding: 0px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    font-size: 18px;
+}
+
+.number-input button:hover {
+    opacity: 0.5;
+}
 #preview-container {
     position: absolute;
     top: 100%;
