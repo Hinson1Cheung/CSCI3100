@@ -80,6 +80,7 @@ h5.text-center {
 .price {
     color: grey;
     font-size: 22px;
+    width: auto;
 }
 
 .card button {
