@@ -223,3 +223,9 @@ input[type=number]::-webkit-outer-spin-button {
     float: left;
     margin-right: 10px;
 }
+
+#toolbar {
+    background-color: white;
+    justify-content: space-between;
+    padding: 16px;
+}

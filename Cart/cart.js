@@ -92,3 +92,43 @@ searchBar.addEventListener('keydown', (event) => {
 window.onbeforeunload = function() {
     searchBar.value = '';
 }
+
+
+function selectAll(){
+    var arr=document.getElementsByClassName('chk');
+    for(var i=0;i<arr.length;i++){
+        if(arr[i].type=='checkbox')
+            arr[i].checked=true;
+    }
+}
+
+function unSelectAll(){
+    var arr=document.getElementsByClassName('chk');
+    for(var i=0;i<arr.length;i++){
+        if(arr[i].type=='checkbox')
+            arr[i].checked=false;
+    }
+}
+
+function toolBar(){
+    var checkOutBar = document.getElementById("toolbar");
+    let selected = false;
+    for(let i=0; i < 10; i++){
+        if(checkBox[i].checked){
+            selected = true;
+        }
+    }
+    if(selected) {
+        checkOutBar.style.display = "flex";
+        checkOutBar.style.position = "sticky";
+        checkOutBar.style.bottom = 0;
+    }else{
+        checkOutBar.style.display = "none";
+    }
+}
+
+var checkBox = document.getElementsByClassName('chk');
+for (let i=0; i < 10; i++){
+    checkBox[i].addEventListener("input", toolBar);
+    console.log("now the " + i + " th one: "+checkBox[i]);    
+}
