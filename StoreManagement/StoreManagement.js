@@ -9,11 +9,6 @@ window.onload = function() {
     var referrer = "Pervious Page";
     var link = document.getElementById('historyLink');
     link.textContent = referrer;
-}
-window.onload = function() {
-    var referrer = "Pervious Page";
-    var link = document.getElementById('historyLink');
-    link.textContent = referrer;
     link.onclick = function() {
         if (window.location.href.includes('#')) {
             history.go(-2);
@@ -24,12 +19,9 @@ window.onload = function() {
     }
 }
 function validateInput(element) {
-    // Remove all characters that are not digits or a period
     var value = element.textContent.replace(/[^0-9.]/g, '');
-    // Ensure the first character is a dollar sign
     if (value.charAt(0) !== '$') {
         value = '$' + value;
     }
-    // Update the text content of the element
     element.textContent = value;
 }

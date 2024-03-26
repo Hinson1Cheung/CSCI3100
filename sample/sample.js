@@ -5,11 +5,13 @@ $(document).ready(function() {
         $(this).find('.product-button').css({'visibility': 'hidden', 'opacity': 0});
     });
 });
-window.onload = function() {
-    var referrer = "Pervious Page";
-    var link = document.getElementById('historyLink');
-    link.textContent = referrer;
-}
+$(document).ready(function(){
+    $('.scroll-to-top').click(function(event){
+        event.preventDefault();
+        $('html, body').animate({scrollTop: 0}, 'slow');
+        return false;
+    });
+});
 window.onload = function() {
     var referrer = "Pervious Page";
     var link = document.getElementById('historyLink');
