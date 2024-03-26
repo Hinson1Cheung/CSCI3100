@@ -7,6 +7,14 @@
     height: 35px;
 
 }
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+footer {
+    margin-top: auto;
+}
 
 .header {
     position: sticky;
