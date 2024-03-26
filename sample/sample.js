@@ -5,3 +5,8 @@ $(document).ready(function() {
         $(this).find('.product-button').css({'visibility': 'hidden', 'opacity': 0});
     });
 });
+window.onload = function() {
+    var referrer = "Pervious Page";
+    var link = document.getElementById('historyLink');
+    link.textContent = referrer;
+}
