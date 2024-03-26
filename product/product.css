@@ -100,3 +100,15 @@ h5.text-center {
     border: 1px solid rgb(0, 0, 0);
     color: rgb(255, 255, 255); 
 }
+.btn-primary:active {
+    background-color: rgb(255, 255, 255) !important;
+    border-color: 1px solid rgb(0, 0, 0) !important;
+    box-shadow: none !important;
+    color: rgb(0, 0, 0) !important;
+}
+.btn-primary:focus {
+    background-color: rgb(255, 255, 255) !important;
+    border-color: 1px solid rgb(0, 0, 0) !important;
+    box-shadow: none !important;
+    color: rgb(0, 0, 0) !important;
+}
