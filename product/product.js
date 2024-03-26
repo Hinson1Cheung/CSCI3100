@@ -13,7 +13,7 @@ $(document).ready(function(){
     });
 });
 window.onload = function() {
-    var referrer = "Pervious Page";
+    var referrer = "Previous Page";
     var link = document.getElementById('historyLink');
     link.textContent = referrer;
     link.onclick = function() {

@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | ShopVisa</title>
+    <title>Cart | ShopVista</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="product.css">
+    <link rel="stylesheet" href="StoreManagement.css">
 </head>
 <body>
     <div class="header bg-white p-3"> <!-- Header -->
@@ -17,7 +17,7 @@
                 <div class="search-container">
                     <form class="input-group" id="search-form"> <!-- Add a search form --> <!-- ID is for JS-->
                         <input type="text" class="form-control search-input" id="search-bar" placeholder="Search">
-                        <div id="preview-container"></div>    
+                        <div id="preview-container"></div>
                     </form>
                 </div>
                 <a href="../Cart/index.html">
@@ -33,29 +33,46 @@
     </div>
     <div class="container mt-5">
         <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
-        <div class="row">
-            <div class="col-md-6">
-                <img src="../image/sample.png" class="img-fluid" alt="Product Image">
-            </div>
-            <div class="col-md-6">
-                <h2>Product Name</h2>
-                <h4>$Product Price</h4>
-                <p>Product Description</p>
-                
-                <label for="quantity" style="font-size: 15px;">Quantity</label><br>
-                <!-- <input type="number" id="quantity" name="quantity" min="1" max="100" value="1" style="width: 60px; height: 30px; border: 1px solid #ccc; border-radius: 4px;"><br><br> -->
-                <div class="number-input">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="100">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button><br><br>
-                </div>
-                <a href="../cart" class="btn btn-primary cart-button" style="height: auto; width: 300px;">Add to Cart</a>
-                
-            </div>
+        <h1 class="text-center">Add New Product</h1>
 
-             
+        <div class="text-center mt-4">
+        <form action ="../index.html"> <!-- creates the form-->
+            <label for ="Name"> <!-- Product Name input-->
+                Product Name:
+             </label>
+            <input type = "text"
+                    id = "Name"
+                    name = "Name"
+                    placeholder="Enter Product Name" required>
+            
+            <label for = "Description"> <!-- Product Description input-->
+                Product Description:
+            </label>
+            <input type = "text"
+                    id = "Description"
+                    name = "Description"
+                    placeholder = "Enter Product Description" required>
+
+            <label for = "Quantity"> <!-- Product Quantity input-->
+                Product Quantity:
+            </label>
+            <input type = "number"
+                    id = "Quantity"
+                    name = "Quantity"
+                    placeholder = "Enter Product Quantity" required>
+
+            <label for="ProductImage">Product Image:</label>
+            <input type="file"
+                    id="ProductImage"
+                    name="ProductImage"
+                    accept="image/*" required>
+            <div class = "warp"> <!--confirm button-->
+                    <button type = "confirm" class="my-button">Confirm</button>
+            </div>
+        </form>
         </div>
     </div>
+    
     <br>
     <footer style="display: flex; justify-content: space-between; align-items: center; width: 100%; background-color: #333; color: white; padding: 10px;">
         <div><a href="#" class="scroll-to-top" title="Scroll to top" style="color: white;">Back to top</a></div>
@@ -66,6 +83,7 @@
         </div>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="product.js"></script>
+    <script src="StoreManagement.js"></script>
 </body>
 </html>
+
