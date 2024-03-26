@@ -53,11 +53,11 @@ function clearContent(event) {
     selection.addRange(range);
 }
 function handleKeyDown(event) {
-    var element = event.target;
     if (event.key === 'Enter') {
-        event.preventDefault(); // Prevent the default action (i.e., line break)
-        event.target.blur(); // Remove focus from the element
-        element.textContent = "$" + element.textContent;
-
-    }
+        event.target.blur();
+    } 
+}
+function handleBlur(event) {
+    var element = event.target;
+    element.textContent = "$" + element.textContent;
 }
