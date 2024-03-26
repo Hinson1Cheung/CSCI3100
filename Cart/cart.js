@@ -122,11 +122,11 @@ function unSelectAll(){
 }
 
 
-function toolBar(){
+function toolBar(){ //show functions only when item is selected
     //count number of selected products
     var checkOutBar = document.getElementById("toolbar");
     let selected = 0;
-    for(let i=0; i < 10; i++){
+    for(let i=0; i < 10; i++){ //check if has item selected
         if(checkBox[i].checked){
             selected++;
         }
@@ -135,17 +135,17 @@ function toolBar(){
     var printCount = document.getElementById("pc");
     printCount.innerHTML = "&emsp;" + selected + " Products Selected ";
     //show bar if any product is selected 
-    if(selected>0) {
+    if(selected>0) { //show bar
         checkOutBar.style.display = "flex";
         checkOutBar.style.position = "sticky";
         checkOutBar.style.bottom = 0;
-    }else{
+    }else{ //hide bar
         checkOutBar.style.display = "none";
     }
 }
 
-var checkBox = document.getElementsByClassName('chk');
+var checkBox = document.getElementsByClassName('chk'); //record the checkboxes
 for (let i=0; i < 10; i++){
     checkBox[i].addEventListener("input", toolBar);
-    console.log("now the " + i + " th one: "+checkBox[i]);    
+    console.log("now the " + i + " th one: "+checkBox[i]); //debug 
 }
