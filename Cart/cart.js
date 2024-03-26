@@ -94,12 +94,22 @@ window.onbeforeunload = function() {
 }
 
 
+function selection(){ //decide need select or unselect all
+    var selectBox = document.getElementById('select');
+    if(selectBox.checked){
+        selectAll();
+    }else{
+        unSelectAll();
+    }
+}
+
 function selectAll(){
     var arr=document.getElementsByClassName('chk');
     for(var i=0;i<arr.length;i++){
         if(arr[i].type=='checkbox')
             arr[i].checked=true;
     }
+    toolBar(); //update bar
 }
 
 function unSelectAll(){
@@ -108,17 +118,24 @@ function unSelectAll(){
         if(arr[i].type=='checkbox')
             arr[i].checked=false;
     }
+    toolBar(); //update bar
 }
 
+
 function toolBar(){
+    //count number of selected products
     var checkOutBar = document.getElementById("toolbar");
-    let selected = false;
+    let selected = 0;
     for(let i=0; i < 10; i++){
         if(checkBox[i].checked){
-            selected = true;
+            selected++;
         }
     }
-    if(selected) {
+    //update html with counted number
+    var printCount = document.getElementById("pc");
+    printCount.innerHTML = "&emsp;" + selected + " Products Selected ";
+    //show bar if any product is selected 
+    if(selected>0) {
         checkOutBar.style.display = "flex";
         checkOutBar.style.position = "sticky";
         checkOutBar.style.bottom = 0;
