@@ -224,8 +224,37 @@ input[type=number]::-webkit-outer-spin-button {
     margin-right: 10px;
 }
 
+.row {
+    align-items: center;
+}
+
 #toolbar {
     background-color: white;
     justify-content: space-between;
     padding: 16px;
+}
+
+.toolbar-btn{
+    background-color: transparent;
+    border: none;
+    border-radius: 100%;
+    height: 45px;
+    width: 45px;
+}
+
+.toolbar-btn:hover {
+    background-color:#eee;
+    opacity: 0.7;
+    border-radius: 100%;
+    height: 45px;
+    width: 45px;
+}
+
+.toolbar-btn:active {
+    background-color:#eee;
+    opacity: 1;
+    border-radius: 100%;
+    border: 1px solid black;
+    height: 45px;
+    width: 45px;
 }

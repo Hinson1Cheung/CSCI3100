@@ -161,7 +161,7 @@ function addUpTotal(){
     }
     //update html with total price
     var printTotal = document.getElementById("total");
-    printTotal.innerHTML = "&emsp;" + " Total Price: $ " + total.toFixed(2);
+    printTotal.innerHTML = "&emsp;" + " Total Price: $ " + total.toFixed(2) +"&emsp;";
 }
 
 var checkBox = document.getElementsByClassName('chk'); //record the checkboxes
