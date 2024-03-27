@@ -93,6 +93,18 @@ window.onbeforeunload = function() {
     searchBar.value = '';
 }
 
+var TEMPTOTALPRODUCTS = 10; //will retrive from backend in the future
+var productPic = document.getElementsByClassName('product-image');
+for(let i=0; i < TEMPTOTALPRODUCTS; i++){
+    console.log(TEMPTOTALPRODUCTS);
+    console.log(productPic);
+    productPic[i].onclick = function(i){
+        if(confirm("View product details page of \n[product name]?")){
+            window.location.href = "../product/index.html";
+        }
+    };
+}
+
 var selectBox = document.getElementById('select');
 function selection(){ //decide need select or unselect all
     if(selectBox.checked){
@@ -120,7 +132,6 @@ function unSelectAll(){
     toolBar(); //update bar
 }
 
-var TEMPTOTALPRODUCTS = 10; //will retrive from backend in the future
 var checkOutBar = document.getElementById("toolbar");
 function toolBar(){ //show functions only when item is selected
     //count number of selected products
