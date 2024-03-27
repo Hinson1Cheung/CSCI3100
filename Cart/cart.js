@@ -93,9 +93,8 @@ window.onbeforeunload = function() {
     searchBar.value = '';
 }
 
-
+var selectBox = document.getElementById('select');
 function selection(){ //decide need select or unselect all
-    var selectBox = document.getElementById('select');
     if(selectBox.checked){
         selectAll();
     }else{
@@ -121,19 +120,24 @@ function unSelectAll(){
     toolBar(); //update bar
 }
 
-
+var TEMPTOTALPRODUCTS = 10; //will retrive from backend in the future
+var checkOutBar = document.getElementById("toolbar");
 function toolBar(){ //show functions only when item is selected
     //count number of selected products
-    var checkOutBar = document.getElementById("toolbar");
     let selected = 0;
-    for(let i=0; i < 10; i++){ //check if has item selected
+    for(let i=0; i < TEMPTOTALPRODUCTS; i++){ //check if has item selected
         if(checkBox[i].checked){
             selected++;
         }
     }
+    if(selected == TEMPTOTALPRODUCTS){
+        selectBox.checked = true;
+    }else{
+        selectBox.checked = false;
+    }
     //update html with counted number
-    var printCount = document.getElementById("pc");
-    printCount.innerHTML = "&emsp;" + selected + " Products Selected ";
+    let printCount = document.getElementById("pc");
+    printCount.innerHTML = "&emsp;" + selected + " Product(s) Selected ";
     //show bar if any product is selected 
     if(selected>0) { //show bar
         checkOutBar.style.display = "flex";
@@ -145,7 +149,21 @@ function toolBar(){ //show functions only when item is selected
 }
 
 var checkBox = document.getElementsByClassName('chk'); //record the checkboxes
-for (let i=0; i < 10; i++){
+for (let i=0; i < TEMPTOTALPRODUCTS; i++){
     checkBox[i].addEventListener("input", toolBar);
     console.log("now the " + i + " th one: "+checkBox[i]); //debug 
+}
+
+function selectDel(){ //delete the selected items
+    let confirmDel = false;
+    if(confirm("Remove selected items from your cart?")){
+        let msgDeleted = "";
+        for(let i=0; i < TEMPTOTALPRODUCTS; i++){ //sent selected item to backend later
+            if(checkBox[i].checked){
+                msgDeleted = msgDeleted + "id " + i + " is deleted\n";
+            }
+        }
+        alert(msgDeleted); //for debug check if selected product is deleted
+        location.reload(); //refresh the page to update products
+    }
 }

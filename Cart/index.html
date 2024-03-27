@@ -34,7 +34,7 @@
     <div class="container mt-5">
         <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
         <h1 class="text-center">Shopping Cart</h1>
-        <div class="row" style="display: flex; justify-content: center;">
+        <div class="row" id="cardcontainer" style="display: flex; justify-content: center;">
             <!-- add form here -->
             <!-- sample display -->
             <div class="card" style="padding-bottom: 10px;">
@@ -208,10 +208,13 @@
                 </div>
                 <div style="color: black; align-self: center;" id="pc"> &emsp;1 Product Selected </div>
             </div>
-            <button class="btn btn-primary my-button" onclick="selectAll()">Select all</button>
-            <button class="btn btn-primary my-button" onclick="unSelectAll(), toolBar()">Unselect all</button>
-            <div style="color: black; align-self: center;">Total Price: </div>
-            <button class="btn btn-primary my-button">Checkout</button>
+            <button class="btn btn-primary my-button" onclick="selectDel()">Delete Item(s)</button>
+            <div class="row">
+                <div style="color: black; align-self: center;">Total Price: (implement calculation later)&emsp;</div>
+                <a href="../Payment/index.html">
+                    <button class="btn btn-primary my-button">Checkout</button>
+                </a>
+            </div>
         </div>
         
     </div>
