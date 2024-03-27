@@ -148,10 +148,31 @@ function toolBar(){ //show functions only when item is selected
     }
 }
 
+function addUpTotal(){
+    let total = 0;
+    for(let i=0; i < 10; i++){ //check if has item selected
+        if(checkBox[i].checked){
+            var qid = "q" + String(checkBox[i].id);
+            var pid = "p" + String(checkBox[i].id);
+            var num = document.getElementById(String(qid)).value;
+            var price = parseFloat(String(document.getElementById(String(pid)).innerHTML).substring(1));
+            total = total + price * num
+        }
+    }
+    //update html with total price
+    var printTotal = document.getElementById("total");
+    printTotal.innerHTML = "&emsp;" + " Total Price: $ " + total.toFixed(2);
+}
+
 var checkBox = document.getElementsByClassName('chk'); //record the checkboxes
+var numberBox = document.getElementsByClassName("number-input");
+var selecButton = document.getElementById("select")
+selecButton.addEventListener("click", addUpTotal);
 for (let i=0; i < TEMPTOTALPRODUCTS; i++){
     checkBox[i].addEventListener("input", toolBar);
-    console.log("now the " + i + " th one: "+checkBox[i]); //debug 
+    checkBox[i].addEventListener("input", addUpTotal);
+    numberBox[i].addEventListener("click", addUpTotal);
+    // console.log("now the " + i + " th one: "+checkBox[i]); //debug 
 }
 
 function selectDel(){ //delete the selected items
