@@ -2,7 +2,7 @@ var mysql = require("mysql2");
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'CSCI3100@123'
+    password: 'password'
 });
 
 SQL_createDB = "CREATE DATABASE IF NOT EXISTS ShopDB; ";
@@ -12,7 +12,7 @@ SQL_UseMaster = "USE Master; ";
 SQL_createTest = "CREATE TABLE IF NOT EXISTS Test(TID INT PRIMARY KEY); ";
 SQL_dropTest = "DROP TABLE Test; ";
 SQL_dropDB = "DROP DATABASE ShopDB; ";
-SQL_insertPID = "INSERT INTO Test VALUES (1234); "
+SQL_insertPID = "INSERT INTO Test VALUES (1233); "
 SQL_showPID = "SELECT * FROM Test; "
 connection.connect(function(err){
     if (err) throw err;
