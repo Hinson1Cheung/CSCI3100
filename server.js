@@ -1,13 +1,11 @@
 const express = require("express");
 const app = express();
-const homePage = require("./Frontend/index.html");
-const mysql = require("mysql2");
+//const homePage = require("./Frontend/index.html");
+//const mysql = require("mysql2");
+const path = require('path');
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/index.html'));
-});
+app.use(express.static(path.join(__dirname, 'Frontend')));
 
-const port = process.env.PORT || 8080;
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
 });
