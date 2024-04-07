@@ -1,5 +1,5 @@
-create database if not exists shopdatabase;
-use shopdatabase;
+create database if not exists dummy;
+use dummy;
 set global local_infile = true;
 -- CREATE TABLES
 create table if not exists users(
