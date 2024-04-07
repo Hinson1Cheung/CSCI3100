@@ -66,11 +66,7 @@ connection.connect(function(err){
         if (err) throw err;
         console.log("Now using database Master\n");
     });
-    /*DROP DATABASE*/
-    connection.query(SQL_dropDB, function(err){
-        if (err) throw err;
-        console.log("Dropped database ShopDB\n");
-    });
+    
 
     connection.end();
 });
