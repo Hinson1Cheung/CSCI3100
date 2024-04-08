@@ -1,5 +1,5 @@
-create database if not exists tester;
-use tester;
+create database if not exists db;
+use db;
 set global local_infile = true;
 -- CREATE TABLES
 create table if not exists users(
