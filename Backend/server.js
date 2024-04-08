@@ -26,24 +26,32 @@ let connection = mysql.createConnection({
     multipleStatements: true, 
     host: 'localhost',
     user: 'root',
-    password: 'password',
-    infileStreamFactory: ()=>fs.createReadStream('Product.csv'), 
-    infileStreamFactory: ()=>fs.createReadStream('Category.csv')
+    password: 'password'
+    // infileStreamFactory: ()=>fs.createReadStream('Product.csv'), 
+    // infileStreamFactory: ()=>fs.createReadStream('Category.csv')
 });
 
-const initSQL = fs.readFileSync('./initializer.sql').toString();
+// const initSQL = fs.readFileSync('./initializer.sql').toString();
+const initSQL1 = fs.readFileSync('./initializer1.sql').toString();
+const initSQL2 = fs.readFileSync('./initializer2.sql').toString();
 
 
 
 connection.connect(function(err){
     if (err) throw err;
-    
-
-    connection.query(initSQL, function(err){
+    // init for Product table
+    connection.config.infileStreamFactory = () =>fs.createReadStream('Product.csv') 
+    connection.query(initSQL1, function(err){
         if (err) throw err;
-        console.log("AN SQL STAEMENT HAS JUST RUN");
+        console.log("initSQL1 STAEMENT HAS JUST RUN");
     });
 
+    // init for Category table
+    connection.config.infileStreamFactory = () => fs.createReadStream('Category.csv');
+    connection.query(initSQL2, function(err){
+        if (err) throw err;
+        console.log("initSQL2 STAEMENT HAS JUST RUN");
+    });
 
     connection.end();
 });
