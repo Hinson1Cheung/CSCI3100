@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require('path');
+//const { getProductById } = require('./poolQuery');
 //const homePage = require("./Frontend/index.html");
 
 
@@ -103,6 +104,11 @@ app.get('/payment', function(req, res){
 app.get('/product', function(req, res){
     res.render('product')
 });
+/*
+app.get('/product/:id', async (req, res) => {
+    const product = await getProductById(req.params.id);
+    res.render('product', { product });
+});*/
 
 app.get('/rmuser', function(req, res){
     res.render('rmuser')
