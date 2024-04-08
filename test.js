@@ -1,6 +1,27 @@
+const express = require("express");
+const app = express();
+const path = require('path');
+//const homePage = require("./Frontend/index.html");
+
+
+
+/*app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'index.html'));
+});
+
+app.get('/index.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'index.html'));
+});
+
+app.get('/homepage.css', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'homepage.css'));
+});
+
+app.get('/homepage.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'homepage.js'));
+}); */
 const mysql = require("mysql2");
 const fs = require("fs");
-
 let connection = mysql.createConnection({
     multipleStatements: true, 
     host: 'localhost',
@@ -25,4 +46,13 @@ connection.connect(function(err){
 
 
     connection.end();
-})
+});
+app.set('views', './views/frontend-ejs')
+app.set('view engine', 'ejs');
+app.get('/', function(req, res){
+    res.render('homepage/homepage');
+});
+
+app.listen(5500, function() {
+    console.log('Server is running on port 5500');
+}); 
