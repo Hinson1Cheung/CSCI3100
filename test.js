@@ -47,10 +47,11 @@ connection.connect(function(err){
 
     connection.end();
 });
-app.set('views', './views/frontend-ejs')
+app.set('views', './views');
+app.use(express.static(__dirname+'/styles'));
 app.set('view engine', 'ejs');
 app.get('/', function(req, res){
-    res.render('homepage/homepage');
+    res.render('homepage');
 });
 
 app.listen(5500, function() {
