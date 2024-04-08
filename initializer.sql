@@ -1,46 +1,61 @@
-create database if not exists dummy;
-use dummy;
+create database if not exists tester;
+use tester;
 set global local_infile = true;
 -- CREATE TABLES
 create table if not exists users(
     UName varchar(256) unique not null,
     PWord varchar(256) not null,
-    UID int(10) primary key auto_increment,
+    UID int primary key auto_increment,
     balance float not null default 0
 );
 
 create table if not exists admins(
     AName varchar(256) unique not null,
     Pword varchar(256) not null,
-    AID int(10) primary key auto_increment
+    AID int primary key auto_increment
 );
 
 create table if not exists product(
-    productID int(15) primary key auto_increment,
+    productID int primary key auto_increment,
     pName varchar(256) not null,
     imageURL varchar(256), 
-    rating int, 
+    rating float, 
     quantity int not null default 0,
-    category varchar(256) not null,
+    catID int not null,
     description text, 
     price float not null
 );
 
 create table if not exists ShopCart(
-    cartID int(10) primary key auto_increment,
+    cartID int primary key auto_increment,
     count int not null,
-    UID int(10) not null references user(UID),
-    productID int(50) not null references product(productID)
+    UID int not null references user(UID),
+    productID int not null references product(productID)
 );
 
 create table if not exists category(
-    catID int(5) primary key auto_increment, 
+    catID int primary key auto_increment, 
     catName varchar(256) not null
 );
 
 create table if not exists transaction (
-    transID int(30) primary key auto_increment, 
-    productID int(15) not null references product(productID), 
-    UID int(10) not null references user(UID), 
-    sum int not null, 
+    transID int primary key auto_increment, 
+    productID int not null references product(productID), 
+    UID int not null references user(UID), 
+    sum int not null
 );
+
+load data local infile 'Product.csv' into table product
+fields terminated by ','
+enclosed by '"'
+lines terminated by '\r\n'
+ignore 1 lines
+(productID, pName, imageURL, rating, quantity, catID, description, price);
+
+load data local infile 'Category.csv' into table category
+fields terminated by ','
+enclosed by '"'
+lines terminated by '\r\n'
+ignore 1 lines
+(catID,catName);
+

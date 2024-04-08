@@ -12,8 +12,8 @@ SQL_UseMaster = "USE Master; ";
 SQL_createTest = "CREATE TABLE IF NOT EXISTS Test(TID INT PRIMARY KEY); ";
 SQL_dropTest = "DROP TABLE Test; ";
 SQL_dropDB = "DROP DATABASE ShopDB; ";
-SQL_insertPID = "INSERT INTO Test VALUES (1233); "
-SQL_showPID = "SELECT * FROM Test; "
+SQL_insertPID = "INSERT INTO Test VALUES (1233); ";
+SQL_showPID = "SELECT * FROM Test; ";
 connection.connect(function(err){
     if (err) throw err;
     console.log("Connected to Database");
