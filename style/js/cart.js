@@ -92,12 +92,16 @@ searchBar.addEventListener('keydown', (event) => {
 window.onbeforeunload = function() {
     searchBar.value = '';
 }
+// Parse the String data into JSON
+var jsonData = JSON.parse(cartDataJS);
+var TEMPTOTALPRODUCTS = jsonData[0]['total'];
+// console.log(TEMPTOTALPRODUCTS); 
 
-var TEMPTOTALPRODUCTS = 10; //will retrive from backend in the future
+// var TEMPTOTALPRODUCTS = 10; //will retrive from backend in the future
 var productPic = document.getElementsByClassName('product-image');
 for(let i=0; i < TEMPTOTALPRODUCTS; i++){
-    console.log(TEMPTOTALPRODUCTS);
-    console.log(productPic);
+    // console.log(TEMPTOTALPRODUCTS);
+    // console.log(productPic);
     productPic[i].onclick = function(i){
         if(confirm("View product details page of \n[product name]?")){
             window.location.href = "../product/index.html";

@@ -226,9 +226,13 @@ input[type=number]::-webkit-outer-spin-button {
 
 .row {
     align-items: center;
+    position: sticky;
+    display: flex;
 }
 
 #toolbar {
+    position: sticky;
+    display: flex;
     background-color: white;
     justify-content: space-between;
     padding: 16px;

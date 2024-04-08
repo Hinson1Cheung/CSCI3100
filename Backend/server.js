@@ -86,7 +86,14 @@ app.get('/blacklist', function(req, res){
 });
 
 app.get('/cart', function(req, res){
-    res.render('cart')
+    // res.render('cart');
+    let sql = "select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART group by UID) as a order by productID ASC;";
+    connection.query(sql, function(err, results){
+        if (err) throw err;
+        res.render('cart', {action: 'list', cartData: results});
+        // res.json(results);
+    })
+    // connection.end();
 });
 
 app.get('/catalogue', function(req, res){

@@ -31,7 +31,26 @@
         <div class="row" id="cardcontainer" style="display: flex; justify-content: center;">
             <!-- add form here -->
             <!-- sample display -->
-            <div class="card" style="padding-bottom: 10px;">
+            <% cartData.forEach((product, index) => { %>
+                <div class="card" style="padding-bottom: 10px;">
+                    <div class="checkbox-wrapper-18">
+                        <div class="round">
+                            <input type="checkbox" class="chk" id="<%= index + 1 %>" />
+                            <label for="<%= index + 1 %>"></label>
+                        </div>
+                    </div>
+                    <img src="<%= product.imageURL %>" alt="<%= product.pName %>" class="product-image" style="width:100%">
+                    <h5><%= product.pName %></h5>
+                    <p class="price" id="p<%= index + 1 %>">$<%= product.price.toFixed(2) %></p>
+                    <div class="number-input">
+                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                        <input type="number" class="quantity" id="q<%= index + 1 %>" value="<%= product.count %>" min="0" max="100">
+                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                    </div>
+                </div>
+            <% }); %>
+            
+            <!-- <div class="card" style="padding-bottom: 10px;">
                 <div class="checkbox-wrapper-18">
                     <div class="round">
                         <input type="checkbox" class="chk" id="1" />
@@ -46,8 +65,8 @@
                     <input type="number" class="quantity" id="q1" value="1" min="0" max="100">
                     <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                 </div>
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
+            </div> -->
+            <!-- <div class="card" style="padding-bottom: 10px;">
                 <div class="checkbox-wrapper-18">
                     <div class="round">
                       <input type="checkbox" class="chk" id="2" />
@@ -191,7 +210,7 @@
                     <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="row" style="display: none;" id="toolbar">
             <div class="row">
                 <div class="checkbox-wrapper-18";>
@@ -210,6 +229,10 @@
                 </a>
             </div>
         </div>
+        <script>
+            // Get query data from server.js and pass data from cart.ejs to cart.js as String
+            var cartDataJS = '<%- JSON.stringify(cartData) %>';
+        </script>
         
     </div>
     
