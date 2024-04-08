@@ -165,7 +165,7 @@ function toolBar(){ //show functions only when item is selected
 
 function addUpTotal(){
     let total = 0;
-    for(let i=0; i < 10; i++){ //check if has item selected
+    for(let i=0; i < TEMPTOTALPRODUCTS; i++){ //check if has item selected
         if(checkBox[i].checked){
             var qid = "q" + String(checkBox[i].id);
             var pid = "p" + String(checkBox[i].id);
