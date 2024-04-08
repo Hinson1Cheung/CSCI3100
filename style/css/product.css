@@ -1,0 +1,304 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+footer {
+    margin-top: auto;
+}
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+h1.text-center {
+    font-family: 'Arial', sans-serif;
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+}
+.input-group input {
+    border: none;
+    box-shadow: none;
+}
+.input-group .form-control:hover {
+    box-shadow: none;
+    border-bottom: 2px solid #000;
+    border-radius: 0;
+}
+.input-group .form-control:focus {
+    box-shadow: none;
+}
+.search-input {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAABG5JREFUaEPtmVmolVUUx39XUxxzSMiBlDS1csCxB1ECMcQc6iFECx+inECzATEzUTAtBDGHB0u0EvUtaPRFUzBHUrPMRBMl0UTMKVNTU9t/WZ/cDt85Z+/v+87hHHDB5XLvWXut/d9rXqeGKqeaKr8/WQJoBDQB6gF/A5fK8ThpALQERgDPAf2BR3IufBE44D77FvgCOFwKQEkAdAXeA553vx+odanTwHngBiBwbc0aEctPwGzg6yyBhABoBnwAvGoX12W/Ab4ENgF/5VxMriTLjDKwAi76HpgKCFBq8gXQCfgKeBK4AiwHFsRcutCFhgCLge7AP8B4YG1aBD4ABpkPyy2+A14CziRULKu8a64kEXOAeQll3T1WDEBHYLd78VbOpz8GpgA30yi0sy8AnwKNgUnAR0llFgLwILAD6AYscwH6WlIlec49A2xwVrgDDAW2JJFfCMBKC9iNwLPO9P8mUVDkjB5lidNzEugCXAvVkQ+AgvVnK0iPOdf5M1RwAL/qhB5opmW5gKP5Y0CFRwXqHeD9IInhzD2crh+By4CyndKzN8VZ4GHgD3v1R4Gr3tKSM64Bxrn24w3gwxAxcQCUn5VxFAMTQoSl4FWq3uqCeScwIEROHABV1+HW58g/y0F1zOJNXcZ7KKRAxgE46zJDC0DCgrNCCrRRMMsa23zl5AJoDlwAjllA+crJgm+Re/k3gZetyHnJzAWgoNXlf3BF5ikvCdkxKePNNxDqmbwoF0Bn4EiSYPLSVphpOrDQue0M++0lMhdAG0uhB61r9BKSEZOaOjV6k4EVvjJzAdS16nvLglh9SrlonbP+i5YB1SN5UVwW2ueGlN6AKuQvXlKyYToEPA6oAz7uKzIOgMbFWWZOBVU5SPP0CfvpEKIwDkA/y0J7bCQMkZeUV4GrcVWTnsZNb4oDoP8dNVOqZ9e8W0rSKuY3QD2YHk8u7E352mk1VmqwNHj3AW57SwxnnGuj5ecu5jSpBVE+AOpN9rpZuJerzNPcmmRpkFR/Zs0dGlkbWNoO3h0VmsgGApttbh5WAldS06bLawbQzKFKHEzFhvqJVlQ0ZKhD3RWsIf6ANhzaJ+mR1EYPdpsK1Z5gKgZAAjVgyI2y2uU8YTsmjarnXNugnepIW9mUBICEKs1pkaXYWG81wrvY2K100dfdQ7xtVV55v719pqlPGzztnYLIxwKRQL3SJzZwXLeJbZVbG+4vorG1W+yOdTPvW+5MO3OVz4Ax9vrRcYGQDsWdN4UAkFDtR/WCcqmGpuUUsN22z3IJLb40EKk17wv0NMuJXYtdnf/VvbYGF/U8qgO1QQRZIhRApEib51fcRUZ7dK1aQ2qvujomCaQGkRRAbROrgqpeaDGlMbS+rUh+B9SWq0krRKlAZAHA218LMCYGUSkAhC0RiEoCkAhEpQEIBlGJAIJAVCoAbxCVDEAg1OSp+KkNiUjN39PRH5UOINcSWsPry8J7K/hqABCB0IJB303/7/uDagGQtwbeB5BFH5FGxn+6rswx5F/s7AAAAABJRU5ErkJggg=='); /* replace 'path_to_your_image' with the actual path to your image */
+    background-repeat: no-repeat;
+    background-position: left; 
+    background-size: 20px;
+    padding-left: 30px; 
+}
+.action-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.search-container {
+    max-width: 1000px;
+    margin: auto;
+}
+h5.text-center {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+.logo{
+    width: 80px;
+    height: auto;
+
+}
+.product-item {
+    text-align: center;
+}
+.product-item .product-button {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.25s linear;
+}
+.product-item:hover .product-button {
+    visibility: visible;
+    opacity: 0;
+    transition: opacity 0.25s linear;
+}
+.product-image {
+    width: 100%;
+    height: auto;
+}
+.my-button {
+    background-color: rgb(0, 0, 0);
+    border-radius: 0px;
+    border: 1px solid rgb(0, 0, 0);
+    color: white;
+}
+.my-button:hover {
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(0, 0, 0);
+    color: rgb(0, 0, 0); 
+}
+.cart-button {
+    background-color: rgb(255, 255, 255);
+    border-radius: 0px;
+    border: 1px solid rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
+}
+.cart-button:hover {
+    background-color: rgb(0, 0, 0);
+    border: 1px solid rgb(0, 0, 0);
+    color: rgb(255, 255, 255); 
+}
+.btn-primary:active {
+    background-color: rgb(255, 255, 255) !important;
+    border-color: 1px solid rgb(0, 0, 0) !important;
+    box-shadow: none !important;
+    color: rgb(0, 0, 0) !important;
+}
+.btn-primary:focus {
+    background-color: rgb(255, 255, 255) !important;
+    border-color: 1px solid rgb(0, 0, 0) !important;
+    box-shadow: none !important;
+    color: rgb(0, 0, 0) !important;
+}
+
+.number-input {
+    border: 0;
+    display: inline;
+    margin: auto;
+}
+  
+.number-input,
+.number-input * {
+    box-sizing: border-box;
+}
+
+.number-input input[type=number] {
+    font-family: sans-serif;
+    width: 50px;
+    height: 26px;
+    font-size: 18px;
+    padding: .5rem;
+    border: none;
+    border-width: 0 2px;
+    font-weight: bold;
+    text-align: center;
+    color:#333;
+    margin: auto;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.number-input button {
+    border: none;
+    outline: 0;
+    padding: 0px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    font-size: 18px;
+}
+
+.number-input button:hover {
+    opacity: 0.5;
+}
+#preview-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: none;
+    padding: 10px;
+}
+#preview-container h3 {
+    margin-bottom: 5px;
+}
+#preview-container img {
+    width: 100px;
+    height: 100px;
+    float: left;
+    margin-right: 10px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.heading {
+    font-size: 25px;
+    margin-right: 25px;
+}
+
+.fa {
+    font-size: 25px;
+}
+
+.checked {
+    color: orange;
+}
+
+/* Three column layout */
+.side {
+    float: left;
+    width: 10%;
+    margin-top:10px;
+}
+
+.middle {
+    margin-top:10px;
+    float: left;
+    width: 75%;
+}
+
+/* Place text to the right */
+.right {
+    text-align: right;
+}
+
+/* Clear floats after the columns */
+.raterow:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* The bar container */
+.bar-container {
+    width: 100%;
+    background-color: #f1f1f1;
+    text-align: center;
+    color: white;
+}
+
+/* Individual bars */
+.bar-5 {width: 60%; height: 18px; background-color: #000;}
+.bar-4 {width: 20%; height: 18px; background-color: #000;}
+.bar-3 {width: 0%; height: 18px; background-color: #000;}
+.bar-2 {width: 0%; height: 18px; background-color: #000;}
+.bar-1 {width: 20%; height: 18px; background-color: #000;}
+
+/* Responsive layout - make the columns stack on top of each other instead of next to each other */
+@media (max-width: 400px) {
+    .side, .middle {
+    width: 100%;
+    }
+    .right {
+    display: none;
+    }
+}
+
+.comment-time{
+    font-size: 12px;
+}
+
+.comment-content{
+    font-style: italic;
+}
+
+.dropbtn {
+    background-color:transparent;
+    color: black;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    min-width: 120px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: transparent;
+    /* min-width: 160px; */
+    /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
+    z-index: 1;
+}
+
+.dropdown-block {
+    font-size: 15px;
+    color: black;
+    max-height: 24px;
+    min-width: 120px;
+    text-decoration: none;
+    display: block;
+    border: 1px #f1f1f1 solid;
+    background-color: white;
+}
+
+.dropdown-block:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #eee;
+}
+

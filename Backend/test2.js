@@ -20,35 +20,60 @@ app.get('/homepage.css', (req, res) => {
 app.get('/homepage.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'Frontend', 'homepage.js'));
 }); */
+const mysql = require("mysql2");
 const fs = require("fs");
-const connection = require('./dataBase')
-const pool = require('./dbPool');
+let connection = mysql.createConnection({
+    multipleStatements: true, 
+    host: 'localhost',
+    user: 'root',
+    password: 'password',
+    infileStreamFactory: ()=>fs.createReadStream('Product.csv'), 
+    infileStreamFactory: ()=>fs.createReadStream('Category.csv')
+});
+
 const initSQL = fs.readFileSync('./initializer.sql').toString();
-test1 = 'select * from product;';
-test2 = 'select * from category';
-async function executequery(query){
-    try{
-        var result = await pool.query(query);
-        return result;
-    }
-    catch(err){
-        throw err;
-    }
-}
-
-r1 = executequery(initSQL);
-r2 = executequery(test1);
-r3 = executequery(test2);
-console.log(r1);
-console.log(r2);
 
 
+
+connection.connect(function(err){
+    if (err) throw err;
+    
+
+    connection.query(initSQL, function(err){
+        if (err) throw err;
+        console.log("AN SQL STAEMENT HAS JUST RUN");
+    });
+
+
+    connection.end();
+});
 app.set('views', '../views');
 app.use(express.static(__dirname+'/../style'));
 
 app.set('view engine', 'ejs');
 app.get('/', function(req, res){
     res.render('homepage');
+});
+
+//redirect code
+app.get('/login', function(req, res){
+    res.render('login');
+});
+
+app.get('/cart', function(req, res){
+    res.render('cart');
+});
+
+app.get('/adminhome', function(req, res){
+    res.render('adminhome')
+});
+
+app.get('/homepage', function(req, res){
+    res.render('homepage')
+});
+
+app.get('/adminlogin', function(req, res){
+    res.render('adminlogin')
 });
 
 app.listen(5500, function() {
