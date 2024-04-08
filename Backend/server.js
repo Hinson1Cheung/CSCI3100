@@ -54,7 +54,7 @@ connection.connect(function(err){
         console.log("initSQL2 STAEMENT HAS JUST RUN");
     });
 
-    connection.end();
+    // connection.end();
 });
 app.set('views', path.join(__dirname, '../views'));
 app.use(express.static(__dirname+'/../style'));
