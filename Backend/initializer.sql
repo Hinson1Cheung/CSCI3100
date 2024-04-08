@@ -52,10 +52,5 @@ lines terminated by '\r\n'
 ignore 1 lines
 (productID, pName, imageURL, rating, quantity, catID, description, price);
 
-load data local infile 'Category.csv' into table category
-fields terminated by ','
-enclosed by '"'
-lines terminated by '\r\n'
-ignore 1 lines
-(catID,catName);
+
 
