@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const router = express.Router();
+var bodyParser = require('body-parser');
 const path = require('path');
 //const homePage = require("./Frontend/index.html");
 
@@ -48,7 +50,7 @@ connection.connect(function(err){
     connection.end();
 });
 app.set('views', './views');
-app.use(express.static(__dirname+'/styles'));
+app.use(express.static(__dirname+'/style'));
 app.set('view engine', 'ejs');
 app.get('/', function(req, res){
     res.render('homepage');
