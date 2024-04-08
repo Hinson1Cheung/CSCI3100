@@ -47,7 +47,7 @@ connection.connect(function(err){
 
     connection.end();
 });
-app.set('views', '../views');
+app.set('views', path.join(__dirname, '../views'));
 app.use(express.static(__dirname+'/../style'));
 
 app.set('view engine', 'ejs');
