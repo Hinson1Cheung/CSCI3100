@@ -25,3 +25,51 @@ window.onload = function() {
         return false;
     }
 }
+
+// Parse the String data into JSON
+var jsonData = JSON.parse(productInfoJS);
+const loginFlag = JSON.parse(loginJS);
+console.log(loginFlag);
+async function addToCart(){
+    const productID = jsonData.productID;
+    const quantity = jsonData.quantity;
+    const pName = jsonData.pName;
+    var count = document.getElementById("quantity").value;
+    if (count > quantity) {
+        alert("The quantity you entered exceed the product stock.\nPlease try again.");
+        return;
+    }
+    if (loginFlag) {
+        await fetch('/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({productID: productID, addCount: count}),
+        })
+        .then(response => response.json())
+        .then(data =>  {
+            console.log('Success:', data); 
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+        console.log(jsonData);
+        alert("Product: " + pName + " of quantity of " + String(count) + " added to your cart successfully!");
+        window.location.href = "/product/" + String(productID);
+    }
+    else {
+        await fetch('/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({loginFlag}),
+        });
+        alert("You need to login first!");
+        window.location.href = "/login";
+    }
+    
+    // alert("Product: " + pName + "of quantity: " + String(count) + " added to your cart successfully!");
+    // location.reload();
+}
