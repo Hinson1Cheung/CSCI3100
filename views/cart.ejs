@@ -28,7 +28,7 @@
     <div class="container mt-5">
         <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
         <h1 class="text-center">Shopping Cart</h1>
-        <div class="row" id="cardcontainer" style="display: flex; justify-content: center;">
+        <div class="row" id="cardcontainer" style="display: flex; justify-content: center; align-items: stretch;">
             <!-- add form here -->
             <!-- sample display -->
             <% cartData.forEach((product, index) => { %>
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <img src="<%= product.imageURL %>" alt="<%= product.pName %>" class="product-image" style="width:100%">
-                    <h5><%= product.pName %></h5>
+                    <h5 class="title"><%= product.pName %></h5>
                     <p class="price" id="p<%= index + 1 %>">$<%= product.price.toFixed(2) %></p>
                     <div class="number-input">
                         <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
@@ -49,6 +49,7 @@
                     </div>
                 </div>
             <% }); %>
+        </div>
         
         <script>
             // Get query data from server.js and pass data from cart.ejs to cart.js as String
