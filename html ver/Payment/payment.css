@@ -1,10 +1,3 @@
-.top {
-    position: fixed;
-    bottom: 0;
-    width: 35px;
-    height: 35px;
-
-}
 body {
     display: flex;
     flex-direction: column;
@@ -13,7 +6,6 @@ body {
 footer {
     margin-top: auto;
 }
-
 .header {
     position: sticky;
     top: 0;
@@ -69,118 +61,23 @@ h5.text-center {
     height: auto;
 
 }
-
-.checkbox-wrapper-18 .round {
-    position: relative;
+.product-item {
+    text-align: center;
 }
-
-.checkbox-wrapper-18 .round label {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 50%;
-    cursor: pointer;
-    height: 28px;
-    width: 28px;
-    display: block;
-}
-
-.checkbox-wrapper-18 .round label:after {
-    border: 2px solid #fff;
-    border-top: none;
-    border-right: none;
-    content: "";
-    height: 6px;
-    left: 8px;
-    opacity: 0;
-    position: absolute;
-    top: 9px;
-    transform: rotate(-45deg);
-    width: 12px;
-}
-
-.checkbox-wrapper-18 .round input[type="checkbox"] {
+.product-item .product-button {
     visibility: hidden;
-    display: none;
     opacity: 0;
+    transition: opacity 0.25s linear;
 }
-
-.checkbox-wrapper-18 .round input[type="checkbox"]:checked + label {
-    background-color: #333;
-    border-color: #333;
+.product-item:hover .product-button {
+    visibility: visible;
+    opacity: 0;
+    transition: opacity 0.25s linear;
 }
-
-.checkbox-wrapper-18 .round input[type="checkbox"]:checked + label:after {
-    opacity: 1;
+.product-image {
+    width: 100%;
+    height: auto;
 }
-
-.card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    max-width: 200px;
-    margin: 10px;
-    text-align: center;
-    font-family: arial;
-}
-
-.price {
-    color: grey;
-    font-size: 22px;
-}
-
-.card button {
-    border: none;
-    outline: 0;
-    padding: 0px;
-    color: white;
-    background-color: #000;
-    text-align: center;
-    cursor: pointer;
-    width: 26px;
-    height: 26px;
-    font-size: 18px;
-}
-
-.card button:hover {
-    opacity: 0.5;
-}
-
-h5.text-center {
-    font-family: 'Arial', sans-serif;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #333;
-}
-
-.number-input {
-    border: 0;
-    display: flex;
-    margin: auto;
-}
-  
-.number-input,
-.number-input * {
-    box-sizing: border-box;
-}
-
-.number-input input[type=number] {
-    font-family: sans-serif;
-    width: 50px;
-    height: 26px;
-    font-size: 18px;
-    padding: .5rem;
-    border: none;
-    border-width: 0 2px;
-    font-weight: bold;
-    text-align: center;
-    color:#333;
-    margin: auto;
-}
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
-}
-
 .my-button {
     background-color: rgb(0, 0, 0);
     border-radius: 0px;
@@ -204,6 +101,80 @@ input[type=number]::-webkit-outer-spin-button {
     box-shadow: none !important;
     color: rgb(0, 0, 0) !important;
 }
+/*below for payment only*/
+.row {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    -ms-flex-wrap: wrap; /* IE10 */
+    flex-wrap: wrap;
+    margin: 0 -16px;
+}
+.col-25 {
+    -ms-flex: 25%; /* IE10 */
+    flex: 25%;
+}
+
+.col-50 {
+    -ms-flex: 50%; /* IE10 */
+    flex: 50%;
+}
+
+.col-75 {
+    -ms-flex: 75%; /* IE10 */
+    flex: 75%;
+}
+
+.col-25,
+.col-50,
+.col-75 {
+  padding: 0 16px;
+}
+
+
+.container {
+    background-color: #f2f2f2;
+    padding: 5px 20px 15px 20px;
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+}
+
+input[type=text] {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 3px;
+}
+
+label {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.icon-container {
+    margin-bottom: 20px;
+    padding: 7px 0;
+    font-size: 24px;
+}
+
+.btna {
+    background-color: #000080;
+    color: white;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    width: 50%;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+.btna:hover{
+    background-color: #0000AA;
+}
+
+span.price {
+    float: right;
+    color: grey;
+}
 #preview-container {
     position: absolute;
     top: 100%;
@@ -222,43 +193,4 @@ input[type=number]::-webkit-outer-spin-button {
     height: 100px;
     float: left;
     margin-right: 10px;
-}
-
-.row {
-    align-items: center;
-    position: sticky;
-    display: flex;
-}
-
-#toolbar {
-    position: sticky;
-    display: flex;
-    background-color: white;
-    justify-content: space-between;
-    padding: 16px;
-}
-
-.toolbar-btn{
-    background-color: transparent;
-    border: none;
-    border-radius: 100%;
-    height: 45px;
-    width: 45px;
-}
-
-.toolbar-btn:hover {
-    background-color:#eee;
-    opacity: 0.7;
-    border-radius: 100%;
-    height: 45px;
-    width: 45px;
-}
-
-.toolbar-btn:active {
-    background-color:#eee;
-    opacity: 1;
-    border-radius: 100%;
-    border: 1px solid black;
-    height: 45px;
-    width: 45px;
 }

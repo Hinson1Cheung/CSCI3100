@@ -1,17 +1,17 @@
 ﻿productID,Pname,imageURL,rating,qunatity,category,description,price
-1,Scuderia Ferrari SF24 1:64 Model,./Frontend/image/SF24.jpg,4.5,10,1,"A 1:64 model of the SF24 F1 car, the car used by Scuderia Ferrari during the 2024 racing season",4000
-2,Hokkaido Melons,./Frontend/image/HokkaidoMelons.jpg,4,20,2,Fresh melons imported from Hokkaido,80
-3,Thai Dried Mangos,./Frontend/image/DMango.jpg,5,10,2,"Dried Mangoes imported from Phuket, Thailand",30
-4,Daekim Kimchi,./Frontend/image/Kimchi.jpg,3.5,3,2,"Kimchi made by Daekim from Busan, South Korea",15
-5,Embalmed Beef,./Frontend/image/ebeef.jpg,0.5,1,2,"Fresh embalmed beef from Connecticut, USA",5
-6,Battlefied 1: Revolution - PS4 Version,./Frontend/image/BF1.jpg,5,3,3,"A copy of Battlefield 1 - a 32 vs 32 shooter game based on the Great War, with all DLC included",450
-7,F1 23 - PC Version,./Frontend/image/F123.jpg,4,1,3,"A copy of F1 23 for PC - a racing game based on the Formula 1 racing series, featuring iconic racetracks such as Suzuka, Monaco etc.  ",550
-8,Street Fighter 6 - Xbox Version,./Frontend/image/SF6.jpg,4.5,2,3,A copy of Street Fighter 6 for Xbox Series X,350
-9,Red Bull Racing RB20 1:64 Model,./Frontend/image/RB20.jpg,4.5,5,1,"A 1:64 model of the RB 20 F1 car, the dominant car used by Red Bull Racing during the 2024 racing season",4500
-10,Dyson Pump,./Frontend/image/DysonPump.jpg,4,32,4,Dyson water pump to pump water,100
-11,Computer Wafer,./Frontend/image/CWafer.jpg,2,1,4,"A computer wafer, used for making computer chips",10000
-12,Honda Civic Car Muffler,./Frontend/image/hondamuffler.jpg,4,2,5,A car muffler for Honda,8000
-13,Mecedes Petronas 2023 Team Polo,./Frontend/image/MCD2023.jpg,5,3,6,Official polo shirt from the Mercedes-Petronas F1 Team,1200
-14,Oshi No Ko Casual T-Shirt,./Frontend/image/OshiTShirt.jpg,4.5,10,6,T-Shirt with Oshi No Ko patterns on it,135
-15,HK G3A3,./Frontend/image/G3A3jpg,3,200,7,Surplus G3A3 rifles from the Bunderswehr: WARNING! Do not buy unless you have a firearm license,4000
-16,Cannon EOS 60D,./Frontend/image/EOS60D.jpg,5,1,8,Spare camera,300
+1,Scuderia Ferrari SF24 1:64 Model,./image/SF24.jpg,4.5,10,1,"A 1:64 model of the SF24 F1 car, the car used by Scuderia Ferrari during the 2024 racing season",4000
+2,Hokkaido Melons,./image/HokkaidoMelons.jpg,4,20,2,Fresh melons imported from Hokkaido,80
+3,Thai Dried Mangos,./image/DMango.jpg,5,10,2,"Dried Mangoes imported from Phuket, Thailand",30
+4,Daekim Kimchi,./image/Kimchi.jpg,3.5,3,2,"Kimchi made by Daekim from Busan, South Korea",15
+5,Embalmed Beef,./image/ebeef.jpg,0.5,1,2,"Fresh embalmed beef from Connecticut, USA",5
+6,Battlefied 1: Revolution - PS4 Version,./image/BF1.jpg,5,3,3,"A copy of Battlefield 1 - a 32 vs 32 shooter game based on the Great War, with all DLC included",450
+7,F1 23 - PC Version,./image/F123.jpg,4,1,3,"A copy of F1 23 for PC - a racing game based on the Formula 1 racing series, featuring iconic racetracks such as Suzuka, Monaco etc.  ",550
+8,Street Fighter 6 - Xbox Version,./image/SF6.jpg,4.5,2,3,A copy of Street Fighter 6 for Xbox Series X,350
+9,Red Bull Racing RB20 1:64 Model,./image/RB20.jpg,4.5,5,1,"A 1:64 model of the RB 20 F1 car, the dominant car used by Red Bull Racing during the 2024 racing season",4500
+10,Dyson Pump,./image/DysonPump.jpg,4,32,4,Dyson water pump to pump water,100
+11,Computer Wafer,./image/CWafer.jpg,2,1,4,"A computer wafer, used for making computer chips",10000
+12,Honda Civic Car Muffler,./image/hondamuffler.jpg,4,2,5,A car muffler for Honda,8000
+13,Mecedes Petronas 2023 Team Polo,./image/MCD2023.jpg,5,3,6,Official polo shirt from the Mercedes-Petronas F1 Team,1200
+14,Oshi No Ko Casual T-Shirt,./image/OshiTShirt.jpg,4.5,10,6,T-Shirt with Oshi No Ko patterns on it,135
+15,HK G3A3,./image/G3A3.jpg,3,200,7,Surplus G3A3 rifles from the Bunderswehr: WARNING! Do not buy unless you have a firearm license,4000
+16,Cannon EOS 60D,./image/EOS60D.jpg,5,1,8,Spare camera,300

@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart | ShopVista</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/cart.css">
+    <link rel="stylesheet" href="cart.css">
 </head>
 <body>
     <div class="header bg-white p-3"> <!-- Header -->
         <div class="header-container">
-            <a href="/homepage">
+            <a href="../index.html">
                 <img src="../image/logo.png" alt="Logo" class="logo">
             </a>
             <div class="action-container"> <!-- Add a container for the search bar and the login button -->
@@ -20,6 +20,12 @@
                         <div id="preview-container"></div>
                     </form>
                 </div>
+                <a href="../Cart/index.html">
+                    <button class="btn btn-primary my-button">Cart</button>
+                </a>
+                <a href="../login/index.html">
+                    <button class="btn btn-primary my-button">Login</button>
+                </a>
             </div>
             <!-- Add a link to the cart page and other url -->
         </div>
@@ -31,26 +37,7 @@
         <div class="row" id="cardcontainer" style="display: flex; justify-content: center;">
             <!-- add form here -->
             <!-- sample display -->
-            <% cartData.forEach((product, index) => { %>
-                <div class="card" style="padding-bottom: 10px;">
-                    <div class="checkbox-wrapper-18">
-                        <div class="round">
-                            <input type="checkbox" class="chk" id="<%= index + 1 %>" />
-                            <label for="<%= index + 1 %>"></label>
-                        </div>
-                    </div>
-                    <img src="<%= product.imageURL %>" alt="<%= product.pName %>" class="product-image" style="width:100%">
-                    <h5><%= product.pName %></h5>
-                    <p class="price" id="p<%= index + 1 %>">$<%= product.price.toFixed(2) %></p>
-                    <div class="number-input">
-                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                        <input type="number" class="quantity" id="q<%= index + 1 %>" value="<%= product.count %>" min="0" max="100">
-                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                    </div>
-                </div>
-            <% }); %>
-            
-            <!-- <div class="card" style="padding-bottom: 10px;">
+            <div class="card" style="padding-bottom: 10px;">
                 <div class="checkbox-wrapper-18">
                     <div class="round">
                         <input type="checkbox" class="chk" id="1" />
@@ -65,8 +52,8 @@
                     <input type="number" class="quantity" id="q1" value="1" min="0" max="100">
                     <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                 </div>
-            </div> -->
-            <!-- <div class="card" style="padding-bottom: 10px;">
+            </div>
+            <div class="card" style="padding-bottom: 10px;">
                 <div class="checkbox-wrapper-18">
                     <div class="round">
                       <input type="checkbox" class="chk" id="2" />
@@ -210,7 +197,7 @@
                     <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                 </div>
             </div>
-        </div> -->
+        </div>
         <div class="row" style="display: none;" id="toolbar">
             <div class="row">
                 <div class="checkbox-wrapper-18";>
@@ -224,15 +211,11 @@
             <div><button class="toolbar-btn" onclick="selectDel()"><img src="../image/delete.png" style="height: 30px;" alt="delete"></button></div>
             <div class="row" style="border: 1px black solid;">
                 <div style="font-size: large; font-family: Georgia, 'Times New Roman', Times, serif; align-self: center;" id="total">Total Price: $0.0 &emsp;</div>
-                <a href="/payment">
+                <a href="../Payment/index.html">
                     <button class="btn btn-primary my-button">Checkout</button>
                 </a>
             </div>
         </div>
-        <script>
-            // Get query data from server.js and pass data from cart.ejs to cart.js as String
-            var cartDataJS = '<%- JSON.stringify(cartData) %>';
-        </script>
         
     </div>
     
@@ -240,12 +223,13 @@
     <footer style="display: flex; justify-content: space-between; align-items: center; width: 100%; background-color: #333; color: white; padding: 10px;">
         <div><a href="#" class="scroll-to-top" title="Scroll to top" style="color: white;">Back to top</a></div>
         <div>
-           
-            <a href="/adminlogin" style="color: white;">Admin Login</a>
+            <a href="../StoreManagement/index.html" style="color: white; margin-right: 10px;">Store Management</a>
+            <a href="../UserManagement/index.html" style="color: white; margin-right: 10px;">User Management</a>
+            <a href="../AdminLogin/index.html" style="color: white;">Admin Login</a>
         </div>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="/js/cart.js"></script>
+    <script src="cart.js"></script>
 </body>
 </html>
 
