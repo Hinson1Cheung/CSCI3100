@@ -23,9 +23,19 @@
                 <a href="/cart">
                     <button class="btn btn-primary my-button">Cart</button>
                 </a>
-                <a href="/login">
+                <!--<a href="/login">
                     <button class="btn btn-primary my-button">Login</button>
-                </a>
+                </a>>-->
+                <% if (loggedin) { %>
+                    <a href="/userprofile">
+                        <button class="btn btn-primary my-button">Profile</button>
+                    </a> <!-- If logged in, show profile button -->
+                <% } else { %>
+                    <a href="/login">
+                        <button class="btn btn-primary my-button">Login</button>
+                    </a> <!-- If not logged in, show login button -->
+                <% } %>
+
             </div>
             <!-- Add a link to the cart page and other url -->
         </div>
