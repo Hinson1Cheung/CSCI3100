@@ -7,7 +7,8 @@ create table if not exists users(
     UName varchar(256) unique not null,
     PWord varchar(256) not null,
     UID int primary key auto_increment,
-    balance float not null default 0
+    balance float not null default 0, 
+    propicURL = text
 );
 
 create table if not exists admins(
