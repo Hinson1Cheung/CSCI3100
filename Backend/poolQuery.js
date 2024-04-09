@@ -10,9 +10,12 @@ async function executeQuery(query, params) {
 }
 
 async function getProductById(productId) {
-    const query = 'SELECT * FROM products WHERE productId = ?';
-    const product = await executeQuery(query, [productId]);
+    const sql = 'SELECT * FROM product WHERE productId = ?';
+    const product = await executeQuery(sql, [productId]);
     return product;
 }
 
-module.exports = executeQuery;
+module.exports = {
+    executeQuery,
+    getProductById
+};

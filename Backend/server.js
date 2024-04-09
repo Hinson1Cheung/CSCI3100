@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const session = require("express-session")
 const path = require('path');
-//const { getProductById } = require('./poolQuery');
+const { getProductById } = require('./poolQuery.js');
 //const homePage = require("./Frontend/index.html");
 
 const mysql = require("mysql2");
@@ -49,7 +49,6 @@ app.get('/', function(req, res){
     let sql = 'SELECT * FROM product ORDER BY rating DESC LIMIT 12'; // Query to get top 12 highest-rated products
     connection.query(sql, (err, result) => {
       if (err) throw err;
-      console.log(result);
       res.render('homepage', { products: result }); // Pass product data to EJS template
     });
 });
@@ -88,7 +87,11 @@ app.get('/cart', function(req, res){
 });
 
 app.get('/catalogue', function(req, res){
-    res.render('catalogue')
+    let sql = 'SELECT * FROM product';
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+      res.render('catalogue', { products: result });
+    });
 });
 
 app.get('/edituser', function(req, res){
@@ -112,14 +115,10 @@ app.get('/payment', function(req, res){
     res.render('payment')
 });
 
-app.get('/product', function(req, res){
-    res.render('product')
-});
-/*
 app.get('/product/:id', async (req, res) => {
     const product = await getProductById(req.params.id);
     res.render('product', { product });
-});*/
+});
 
 app.get('/rmuser', function(req, res){
     res.render('rmuser')
