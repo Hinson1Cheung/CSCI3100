@@ -117,18 +117,8 @@ app.get('/payment', function(req, res){
 });
 
 app.get('/product/:id', async (req, res) => {
-    try {
-        const product = await getProductById(req.params.id);
-        if (!product) {
-            res.status(404).send('Product not found');
-            return;
-        }
-        console.log(product);
-        res.render('product', { product });
-    } catch (error) {
-        console.error('Error getting product:', error);
-        res.status(500).send('Error getting product');
-    }
+    const product = await getProductById(req.params.id);
+    res.render('product', { products: product });
 });
 
 app.get('/rmuser', function(req, res){

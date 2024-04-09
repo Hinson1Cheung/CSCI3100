@@ -28,7 +28,7 @@ searchBar.addEventListener('input', () => {
         productElement.classList.add('preview-item');
         productElement.innerHTML = `
             <h3>${product.pName}</h3>
-            <img src="${product.imageURL}" alt="${product.pName}">
+            <img src="../${product.imageURL}" alt="${product.pName}">
             <p>${product.description}</p>
         `;
 
