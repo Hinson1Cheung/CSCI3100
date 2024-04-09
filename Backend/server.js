@@ -112,7 +112,8 @@ app.get('/homepage', function(req, res){
 });
 
 app.get('/login', function(req, res){
-    res.render('login')
+    res.render('login');
+    
 });
 
 app.get('/payment', function(req, res){
