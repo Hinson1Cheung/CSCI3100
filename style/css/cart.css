@@ -116,6 +116,7 @@ h5.text-center {
 .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 200px;
+    min-width: 200px;
     margin: 10px;
     height: auto;
     text-align: center;
@@ -123,6 +124,16 @@ h5.text-center {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+}
+.title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.title:focus, .title:hover {
+    overflow: visible;
+    white-space: normal;
 }
 
 .price {
