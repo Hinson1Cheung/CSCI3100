@@ -8,16 +8,9 @@ const pool = require('./dbPool.js');
 const { getProductById } = require('./poolQuery.js');
 const multer = require('multer');
 
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, './style/images');
-    },
-    filename: function(req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
-});
 
-const upload = multer({ storage: storage });
+
+
 //const homePage = require("./Frontend/index.html");
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
@@ -71,6 +64,9 @@ app.use(express.static(__dirname+'/../style'));
 app.use(express.json());
 
 app.set('view engine', 'ejs');
+
+
+
 app.get('/', function(req, res){
     let sql = 'SELECT * FROM product ORDER BY rating DESC LIMIT 12'; // Query to get top 12 highest-rated products
     connection.query(sql, (err, result) => {
@@ -172,7 +168,7 @@ app.get('/rmuser', function(req, res){
     res.render('rmuser')
 });
 
-app.get('/signup', function(req, res){
+app.get('/signup',(req, res)=>{
     res.render('signup');
     app.post('/reg', (req, res)=>{
         var username = req.body.username;
@@ -180,6 +176,9 @@ app.get('/signup', function(req, res){
         var password1 = req.body.password1;
         var balance = req.body.balance;
         var imagePath = req.body.profilepic;
+        if (imagePath!= null){
+            imagePath = '/'+imagePath
+        }
         //check if user already exists
         check = 'select * from users where username = "' + username + '";';
         connection.query(check, function(err, result){
@@ -189,7 +188,7 @@ app.get('/signup', function(req, res){
                 res.redirect('/signup');
             } else {
                 if (password == password1){
-                    query = 'insert into users (username, password, balance, propicURL) values ("' + username + '", "' + password + '", ' + balance + ', "./image/' + imagePath + '");';
+                    query = 'insert into users (username, password, balance, propicURL) values ("' + username + '", "' + password + '", ' + balance + ', "./image' + imagePath + '");';
                     console.log("query = ", query);
                     connection.query(query, function(err, result){
                         if (err) throw err;
