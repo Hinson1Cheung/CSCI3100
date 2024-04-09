@@ -106,6 +106,29 @@ app.get('/cart', function(req, res){
     }
 });
 
+app.post('/del', (req, res)=>{
+    const productID = req.body.productID;
+    const productNum = req.body.quantity;
+    // console.log("productID: ", productID);
+    // console.log("productNum: ", productNum);
+    for (let i = 0; i < productID.length; i++){
+        let sql1 = 'delete from SHOPCART where productID=' + productID[i] + ';';
+        connection.query(sql1, function(err, result){
+            if (err) throw err;
+            // console.log("sql1:  ", result);
+        });
+        let sql2 = 'update PRODUCT set quantity = quantity + ' + productNum[i] + ' where productID=' + productID[i] + ';';
+        connection.query(sql2, function(err, result){
+            if (err) throw err;
+            // console.log("sql2:  ", result);
+        }); 
+    }
+    res.json({success: true});
+    if (res.json.success){
+        res.redirect('/cart');
+    }
+});
+
 app.get('/catalogue', function(req, res){
     let sql = 'SELECT * FROM product';
     connection.query(sql, (err, result) => {

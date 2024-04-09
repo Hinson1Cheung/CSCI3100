@@ -21,7 +21,11 @@ $(document).ready(function(){
 
 // Parse the String data into JSON
 var jsonData = JSON.parse(cartDataJS);
-var TEMPTOTALPRODUCTS = jsonData[0]['total'];
+var TEMPTOTALPRODUCTS = 0;
+if (jsonData .length != 0) {
+    TEMPTOTALPRODUCTS = jsonData[0]['total'];
+}
+
 // console.log(TEMPTOTALPRODUCTS); 
 
 // var TEMPTOTALPRODUCTS = 10; //will retrive from backend in the future
@@ -117,16 +121,54 @@ for (let i=0; i < TEMPTOTALPRODUCTS; i++){
     // console.log("now the " + i + " th one: "+checkBox[i]); //debug 
 }
 
-function selectDel(){ //delete the selected items
-    let confirmDel = false;
+var pidList = [];
+for (let i=0; i < TEMPTOTALPRODUCTS; i++){
+    pidList.push(jsonData[i]['productID']);
+}
+var quantityList = [];
+for (let i=0; i < TEMPTOTALPRODUCTS; i++){
+    quantityList.push(jsonData[i]['count']);
+}
+async function selectDel(){ //delete the selected items
     if(confirm("Remove selected items from your cart?")){
+        const productID = [];
+        const quantity = [];
+        // console.log(pidList)
         let msgDeleted = "";
-        for(let i=0; i < TEMPTOTALPRODUCTS; i++){ //sent selected item to backend later
+        for(let i=0; i < TEMPTOTALPRODUCTS; i++){ 
             if(checkBox[i].checked){
-                msgDeleted = msgDeleted + "id " + i + " is deleted\n";
+                pName = document.getElementById("n" + String(i+1)).innerHTML;
+                productID.push(pidList[i]);
+                quantity.push(quantityList[i]);
+                msgDeleted = msgDeleted + "Product: " + pName + " is deleted\n";
             }
         }
+        // console.log(productID);
+        await fetch('/del', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({productID: productID, quantity: quantity}), // Send the productIDs to server
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
         alert(msgDeleted); //for debug check if selected product is deleted
         location.reload(); //refresh the page to update products
-    }
+    }  
+    // if(confirm("Remove selected items from your cart?")){
+    //     let msgDeleted = "";
+    //     for(let i=0; i < TEMPTOTALPRODUCTS; i++){ //sent selected item to backend later
+    //         if(checkBox[i].checked){
+    //             msgDeleted = msgDeleted + "id " + i + " is deleted\n";
+    //         }
+    //     }
+    //     alert(msgDeleted); //for debug check if selected product is deleted
+    //     location.reload(); //refresh the page to update products
+    // }
 }
