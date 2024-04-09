@@ -1,13 +1,16 @@
 const express = require("express");
 const app = express();
-const session = require("express-session")
+const session = require("express-session");
+const flash = require("express-flash");
 const path = require('path');
 const parser = require('body-parser');
 //const { getProductById } = require('./poolQuery');
 //const homePage = require("./Frontend/index.html");
-
+app.use(parser.json());
+app.use(parser.urlencoded({ extended: true }));
 const connection = require("./dataBase");
 const fs = require("fs");
+const bodyParser = require("body-parser");
 
 
 // const initSQL = fs.readFileSync('./initializer.sql').toString();
@@ -94,10 +97,16 @@ app.get('/homepage', function(req, res){
 app.get('/login', function(req, res){
     res.render('login');
     app.post('/log', (req, res)=>{
-        var username = ;
-        
-        connection.query(query, function(req, res){
-            console.log(result);
+        var username = req.body.username;
+        var password = req.body.password;
+        query = 'select * from user where username = "' + username + '" and password = "' + password + '";';
+        connection.query(query, function(err, result){
+            if (err) throw err;
+            if (result.length > 0){
+                res.redirect('/homepage');
+            } else {
+                res.redirect('/login');
+            }
         })
     })
 });
