@@ -91,13 +91,13 @@ app.get('/blacklist', function(req, res){
 app.get('/cart', function(req, res){
     // res.render('cart');
     if (req.session.loggedin){
-        let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART group by UID) as a order by productID ASC;';
+        userID = req.session.uid;
+        let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART group by UID) as a where SHOPCART.UID=' + String(userID) + ' order by productID ASC;';
         connection.query(sql, function(err, results){
         if (err) throw err;
         res.render('cart', {action: 'list', cartData: results});
-        console.log(results);
-        console.log(req.session.uid);
-        // res.json(results);
+        // console.log(results);
+        // console.log(req.session.uid);
     });
     // connection.end();
     }
