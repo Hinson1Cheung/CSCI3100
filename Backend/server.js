@@ -5,23 +5,6 @@ const path = require('path');
 //const { getProductById } = require('./poolQuery');
 //const homePage = require("./Frontend/index.html");
 
-
-
-/*app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'Frontend', 'index.html'));
-});
-
-app.get('/index.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'Frontend', 'index.html'));
-});
-
-app.get('/homepage.css', (req, res) => {
-    res.sendFile(path.join(__dirname, 'Frontend', 'homepage.css'));
-});
-
-app.get('/homepage.js', (req, res) => {
-    res.sendFile(path.join(__dirname, 'Frontend', 'homepage.js'));
-}); */
 const mysql = require("mysql2");
 const fs = require("fs");
 let connection = mysql.createConnection({
@@ -63,7 +46,12 @@ app.use(express.json());
 
 app.set('view engine', 'ejs');
 app.get('/', function(req, res){
-    res.render('homepage');
+    let sql = 'SELECT * FROM product ORDER BY rating DESC LIMIT 12'; // Query to get top 12 highest-rated products
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+      console.log(result);
+      res.render('homepage', { products: result }); // Pass product data to EJS template
+    });
 });
 
 //button redirect code
@@ -108,7 +96,11 @@ app.get('/edituser', function(req, res){
 });
 
 app.get('/homepage', function(req, res){
-    res.render('homepage')
+    let sql = 'SELECT * FROM product ORDER BY rating DESC LIMIT 12'; // Query to get top 12 highest-rated products
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+      res.render('homepage', { products: result }); // Pass product data to EJS template
+    });
 });
 
 app.get('/login', function(req, res){

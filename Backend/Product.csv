@@ -1,4 +1,4 @@
-﻿productID,Pname,imageURL,rating,qunatity,category,description,price
+﻿productID,pName,imageURL,rating,qunatity,category,description,price
 1,Scuderia Ferrari SF24 1:64 Model,./image/SF24.jpg,4.5,10,1,"A 1:64 model of the SF24 F1 car, the car used by Scuderia Ferrari during the 2024 racing season",4000
 2,Hokkaido Melons,./image/HokkaidoMelons.jpg,4,20,2,Fresh melons imported from Hokkaido,80
 3,Thai Dried Mangos,./image/DMango.jpg,5,10,2,"Dried Mangoes imported from Phuket, Thailand",30
