@@ -95,6 +95,7 @@ app.get('/catalogue', function(req, res){
     connection.query(sql, (err, result) => {
       if (err) throw err;
       res.render('catalogue', { products: result });
+      
     });
 });
 
@@ -121,6 +122,7 @@ app.get('/login', function(req, res){
             if (result.length > 0){
                 req.session.loggedin = true;
                 req.session.uid = result[0].UID;
+                req.session.username = result[0].username;
                 res.redirect('/');
             } else {
                 req.flash('error', 'Invalid credentials, please try again');
@@ -139,6 +141,8 @@ app.get('/cart', function(req, res){
         res.render('cart', {action: 'list', cartData: results});
         console.log(results);
         console.log(req.session.uid);
+        console.log(req.session.username);
+        
         // res.json(results);
     });
     // connection.end();
@@ -155,6 +159,8 @@ app.get('/payment', function(req, res){
 
 app.get('/product/:id', async (req, res) => {
     const product = await getProductById(req.params.id);
+    req.session.productID = product.productID;
+    console.log(req.session.productID);
     res.render('product', { products: product });
 });
 
