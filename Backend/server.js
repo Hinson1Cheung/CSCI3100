@@ -87,7 +87,11 @@ app.get('/cart', function(req, res){
 });
 
 app.get('/catalogue', function(req, res){
-    res.render('catalogue')
+    let sql = 'SELECT * FROM product';
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+      res.render('catalogue', { products: result });
+    });
 });
 
 app.get('/edituser', function(req, res){
