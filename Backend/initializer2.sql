@@ -10,4 +10,4 @@ lines terminated by '\r\n'
 ignore 1 lines
 (catID,catName);
 
-insert into users(UName, PWord, balance) values('Daniel Ricciardo', 'RedBullHondaRBPT', 10000000);
+insert into users(UName, PWord, balance) values('Daniel Ricciardo', 'RedBullHondaRBPT', 10000000, './image/DannyRic.jpg');
