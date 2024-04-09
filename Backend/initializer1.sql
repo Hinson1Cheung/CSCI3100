@@ -4,8 +4,8 @@ use db;
 set global local_infile = true;
 -- CREATE TABLES
 create table if not exists users(
-    UName varchar(256) unique not null,
-    PWord varchar(256) not null,
+    username varchar(256) unique not null,
+    password varchar(256) not null,
     UID int primary key auto_increment,
     balance float not null default 0, 
     propicURL text, 
@@ -13,8 +13,8 @@ create table if not exists users(
 );
 
 create table if not exists admins(
-    AName varchar(256) unique not null,
-    Pword varchar(256) not null,
+    adminname varchar(256) unique not null,
+    password varchar(256) not null,
     AID int primary key auto_increment
 );
 
