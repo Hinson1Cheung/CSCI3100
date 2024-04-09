@@ -122,7 +122,7 @@ app.get('/homepage', function(req, res){
     let sql = 'SELECT * FROM product ORDER BY rating DESC LIMIT 12'; // Query to get top 12 highest-rated products
     connection.query(sql, (err, result) => {
       if (err) throw err;
-      res.render('homepage', { products: result }); // Pass product data to EJS template
+      res.render('homepage', { products: result ,loggedin: req.session.loggedin}); // Pass product data to EJS template
     });
 });
 
