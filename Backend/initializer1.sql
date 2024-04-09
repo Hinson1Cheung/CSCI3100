@@ -8,7 +8,8 @@ create table if not exists users(
     PWord varchar(256) not null,
     UID int primary key auto_increment,
     balance float not null default 0, 
-    propicURL = text
+    propicURL = text, 
+    blacklistFlag = int not null default 0;
 );
 
 create table if not exists admins(
