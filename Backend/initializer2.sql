@@ -9,3 +9,5 @@ enclosed by '"'
 lines terminated by '\r\n'
 ignore 1 lines
 (catID,catName);
+
+insert into users(UName, PWord, balance) values('Daniel Ricciardo', 'RedBullHondaRBPT', 10000000);
