@@ -4,14 +4,31 @@ const session = require("express-session");
 const flash = require("express-flash");
 const path = require('path');
 const parser = require('body-parser');
-//const { getProductById } = require('./poolQuery');
+const pool = require('./dbPool.js');
+const { getProductById } = require('./poolQuery.js');
 //const homePage = require("./Frontend/index.html");
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
-const connection = require("./dataBase");
-const fs = require("fs");
-const bodyParser = require("body-parser");
 
+app.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60000 }
+}));
+
+app.use(flash());
+
+const mysql = require("mysql2");
+const fs = require("fs");
+let connection = mysql.createConnection({
+    multipleStatements: true, 
+    host: 'localhost',
+    user: 'root',
+    password: 'password'
+    // infileStreamFactory: ()=>fs.createReadStream('Product.csv'), 
+    // infileStreamFactory: ()=>fs.createReadStream('Category.csv')
+});
 
 // const initSQL = fs.readFileSync('./initializer.sql').toString();
 const initSQL1 = fs.readFileSync('./initializer1.sql').toString();
@@ -19,18 +36,24 @@ const initSQL2 = fs.readFileSync('./initializer2.sql').toString();
 
 
 
-connection.config.infileStreamFactory = () =>fs.createReadStream('Product.csv') 
+connection.connect(function(err){
+    if (err) throw err;
+    // init for Product table
+    connection.config.infileStreamFactory = () =>fs.createReadStream('Product.csv') 
     connection.query(initSQL1, function(err){
         if (err) throw err;
         console.log("initSQL1 STAEMENT HAS JUST RUN");
     });
-// init for Category table
-connection.config.infileStreamFactory = () => fs.createReadStream('Category.csv');
-connection.query(initSQL2, function(err){
-    if (err) throw err;
-    console.log("initSQL2 STAEMENT HAS JUST RUN");
-});
 
+    // init for Category table
+    connection.config.infileStreamFactory = () => fs.createReadStream('Category.csv');
+    connection.query(initSQL2, function(err){
+        if (err) throw err;
+        console.log("initSQL2 STAEMENT HAS JUST RUN");
+    });
+
+    // connection.end();
+});
 app.set('views', path.join(__dirname, '../views'));
 app.use(express.static(__dirname+'/../style'));
 app.use(express.json());
@@ -40,8 +63,7 @@ app.get('/', function(req, res){
     let sql = 'SELECT * FROM product ORDER BY rating DESC LIMIT 12'; // Query to get top 12 highest-rated products
     connection.query(sql, (err, result) => {
       if (err) throw err;
-      //console.log(result);
-      res.render('homepage', { products: result }); // Pass product data to EJS template
+      res.render('homepage', { products: result ,loggedin: req.session.loggedin}); // Pass product data to EJS template
     });
 });
 
@@ -66,20 +88,14 @@ app.get('/blacklist', function(req, res){
     res.render('blacklist')
 });
 
-app.get('/cart', function(req, res){
-    // res.render('cart');
-    let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART group by UID) as a order by productID ASC;';
-    connection.query(sql, function(err, results){
-        if (err) throw err;
-        res.render('cart', {action: 'list', cartData: results});
-        //console.log(results);
-        // res.json(results);
-    })
-    // connection.end();
-});
+
 
 app.get('/catalogue', function(req, res){
-    res.render('catalogue')
+    let sql = 'SELECT * FROM product';
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+      res.render('catalogue', { products: result });
+    });
 });
 
 app.get('/edituser', function(req, res){
@@ -103,7 +119,9 @@ app.get('/login', function(req, res){
         connection.query(query, function(err, result){
             if (err) throw err;
             if (result.length > 0){
-                res.redirect('/homepage');
+                req.session.loggedin = true;
+                req.session.uid = result[0].UID;
+                res.redirect('/');
             } else {
                 req.flash('error', 'Invalid credentials, please try again');
                 res.redirect('/login');
@@ -112,18 +130,33 @@ app.get('/login', function(req, res){
     })
 });
 
+app.get('/cart', function(req, res){
+    // res.render('cart');
+    if (req.session.loggedin){
+        let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART group by UID) as a order by productID ASC;';
+        connection.query(sql, function(err, results){
+        if (err) throw err;
+        res.render('cart', {action: 'list', cartData: results});
+        console.log(results);
+        console.log(req.session.uid);
+        // res.json(results);
+    });
+    // connection.end();
+    }
+    else{
+        res.redirect('/login');
+    }
+});
+
+
 app.get('/payment', function(req, res){
     res.render('payment')
 });
 
-app.get('/product', function(req, res){
-    res.render('product')
-});
-/*
 app.get('/product/:id', async (req, res) => {
     const product = await getProductById(req.params.id);
-    res.render('product', { product });
-});*/
+    res.render('product', { products: product });
+});
 
 app.get('/rmuser', function(req, res){
     res.render('rmuser')
@@ -144,6 +177,16 @@ app.get('/usermenu', function(req, res){
 app.get('/viewuser', function(req, res){
     res.render('viewuser')
 });
+
+app.get('/userprofile', function(req, res){
+    res.render('userprofile')
+})
+
+app.get('/api/products', async (req, res) => {
+    const [products] = await pool.query('SELECT * FROM product');
+    res.json(products);
+});
+
 //end of redirect
 
 app.listen(5500, function() {

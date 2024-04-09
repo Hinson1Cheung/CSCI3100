@@ -96,6 +96,7 @@ app.get('/cart', function(req, res){
         if (err) throw err;
         res.render('cart', {action: 'list', cartData: results});
         console.log(results);
+        console.log(req.session.uid);
         // res.json(results);
     });
     // connection.end();
@@ -135,6 +136,7 @@ app.get('/login', function(req, res){
             if (err) throw err;
             if (result.length > 0){
                 req.session.loggedin = true;
+                req.session.uid = result[0].UID;
                 res.redirect('/');
             } else {
                 req.flash('error', 'Invalid credentials, please try again');
