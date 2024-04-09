@@ -25,17 +25,36 @@ var TEMPTOTALPRODUCTS = 0;
 if (jsonData .length != 0) {
     TEMPTOTALPRODUCTS = jsonData[0]['total'];
 }
-
+// Initialize all useful arrays and variables
+var checkBox = document.getElementsByClassName('chk'); //record the checkboxes
+var numberBox = document.getElementsByClassName("number-input");
+var selecButton = document.getElementById("select")
+selecButton.addEventListener("click", addUpTotal);
+for (let i=0; i < TEMPTOTALPRODUCTS; i++){
+    checkBox[i].addEventListener("input", toolBar);
+    checkBox[i].addEventListener("input", addUpTotal);
+    numberBox[i].addEventListener("click", addUpTotal);
+    // console.log("now the " + i + " th one: "+checkBox[i]); //debug 
+}
 // console.log(TEMPTOTALPRODUCTS); 
-
+var pidList = [];
+for (let i=0; i < TEMPTOTALPRODUCTS; i++){
+    pidList.push(jsonData[i]['productID']);
+}
+var quantityList = [];
+for (let i=0; i < TEMPTOTALPRODUCTS; i++){
+    quantityList.push(jsonData[i]['count']);
+}
 // var TEMPTOTALPRODUCTS = 10; //will retrive from backend in the future
 var productPic = document.getElementsByClassName('product-image');
 for(let i=0; i < TEMPTOTALPRODUCTS; i++){
     // console.log(TEMPTOTALPRODUCTS);
     // console.log(productPic);
+    let pName = document.getElementById("n" + String(i+1)).innerHTML;
+    let pID = pidList[i];
     productPic[i].onclick = function(i){
-        if(confirm("View product details page of \n[product name]?")){
-            window.location.href = "../product/index.html";
+        if(confirm("View product details page of \n"+ pName +"?")){
+            window.location.href = "/product/" + String(pID);
         }
     };
 }
@@ -110,25 +129,8 @@ function addUpTotal(){
     printTotal.innerHTML = "&emsp;" + " Total Price: $ " + total.toFixed(2) +"&emsp;";
 }
 
-var checkBox = document.getElementsByClassName('chk'); //record the checkboxes
-var numberBox = document.getElementsByClassName("number-input");
-var selecButton = document.getElementById("select")
-selecButton.addEventListener("click", addUpTotal);
-for (let i=0; i < TEMPTOTALPRODUCTS; i++){
-    checkBox[i].addEventListener("input", toolBar);
-    checkBox[i].addEventListener("input", addUpTotal);
-    numberBox[i].addEventListener("click", addUpTotal);
-    // console.log("now the " + i + " th one: "+checkBox[i]); //debug 
-}
 
-var pidList = [];
-for (let i=0; i < TEMPTOTALPRODUCTS; i++){
-    pidList.push(jsonData[i]['productID']);
-}
-var quantityList = [];
-for (let i=0; i < TEMPTOTALPRODUCTS; i++){
-    quantityList.push(jsonData[i]['count']);
-}
+
 async function selectDel(){ //delete the selected items
     if(confirm("Remove selected items from your cart?")){
         const productID = [];
@@ -137,7 +139,7 @@ async function selectDel(){ //delete the selected items
         let msgDeleted = "";
         for(let i=0; i < TEMPTOTALPRODUCTS; i++){ 
             if(checkBox[i].checked){
-                pName = document.getElementById("n" + String(i+1)).innerHTML;
+                let pName = document.getElementById("n" + String(i+1)).innerHTML;
                 productID.push(pidList[i]);
                 quantity.push(quantityList[i]);
                 msgDeleted = msgDeleted + "Product: " + pName + " is deleted\n";
