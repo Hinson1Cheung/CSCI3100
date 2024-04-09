@@ -1,3 +1,4 @@
+drop database db;
 create database if not exists db;
 use db;
 set global local_infile = true;
@@ -6,7 +7,9 @@ create table if not exists users(
     UName varchar(256) unique not null,
     PWord varchar(256) not null,
     UID int primary key auto_increment,
-    balance float not null default 0
+    balance float not null default 0, 
+    propicURL = text, 
+    blacklistFlag = int not null default 0;
 );
 
 create table if not exists admins(

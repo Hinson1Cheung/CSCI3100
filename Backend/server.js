@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const session = require("express-session")
 const path = require('path');
 //const { getProductById } = require('./poolQuery');
 //const homePage = require("./Frontend/index.html");
@@ -41,6 +42,7 @@ connection.connect(function(err){
 });
 app.set('views', path.join(__dirname, '../views'));
 app.use(express.static(__dirname+'/../style'));
+app.use(express.json());
 
 app.set('view engine', 'ejs');
 app.get('/', function(req, res){
@@ -75,10 +77,11 @@ app.get('/blacklist', function(req, res){
 
 app.get('/cart', function(req, res){
     // res.render('cart');
-    let sql = "select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART group by UID) as a order by productID ASC;";
+    let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART group by UID) as a order by productID ASC;';
     connection.query(sql, function(err, results){
         if (err) throw err;
         res.render('cart', {action: 'list', cartData: results});
+        console.log(results);
         // res.json(results);
     })
     // connection.end();
@@ -101,7 +104,8 @@ app.get('/homepage', function(req, res){
 });
 
 app.get('/login', function(req, res){
-    res.render('login')
+    res.render('login');
+    
 });
 
 app.get('/payment', function(req, res){
