@@ -1,9 +1,13 @@
 const searchBar = document.getElementById('search-bar');
 const previewContainer = document.getElementById('preview-container');
 
-const products = [
-  { name: 'Sample', image: './image/sample.png', description: 'sample' },
-];
+let products = [];
+
+// Fetch products from the server when the page loads
+window.onload = async () => {
+    const response = await fetch('/api/products');
+    products = await response.json();
+};
 
 searchBar.addEventListener('input', () => {
     const searchTerm = searchBar.value.toLowerCase();
@@ -15,7 +19,7 @@ searchBar.addEventListener('input', () => {
 
     previewContainer.innerHTML = '';
 
-    const matchingProducts = products.filter(product => product.name.toLowerCase().includes(searchTerm));
+    const matchingProducts = products.filter(product => product.pName.toLowerCase().includes(searchTerm));
 
     if (matchingProducts.length > 0) {
         const product = matchingProducts[0];
@@ -23,13 +27,13 @@ searchBar.addEventListener('input', () => {
         const productElement = document.createElement('div');
         productElement.classList.add('preview-item');
         productElement.innerHTML = `
-            <h3>${product.name}</h3>
-            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.pName}</h3>
+            <img src="${product.imageURL}" alt="${product.pName}">
             <p>${product.description}</p>
         `;
 
         productElement.addEventListener('click', () => {
-            window.location.href = `product/index.html`;
+            window.location.href = `/product/${product.productID}`;
         });
 
         previewContainer.appendChild(productElement);

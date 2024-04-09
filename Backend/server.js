@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const session = require("express-session")
 const path = require('path');
+const pool = require('./dbPool.js');
 const { getProductById } = require('./poolQuery.js');
 //const homePage = require("./Frontend/index.html");
 
@@ -116,8 +117,18 @@ app.get('/payment', function(req, res){
 });
 
 app.get('/product/:id', async (req, res) => {
-    const product = await getProductById(req.params.id);
-    res.render('product', { product });
+    try {
+        const product = await getProductById(req.params.id);
+        if (!product) {
+            res.status(404).send('Product not found');
+            return;
+        }
+        console.log(product);
+        res.render('product', { product });
+    } catch (error) {
+        console.error('Error getting product:', error);
+        res.status(500).send('Error getting product');
+    }
 });
 
 app.get('/rmuser', function(req, res){
@@ -139,6 +150,12 @@ app.get('/usermenu', function(req, res){
 app.get('/viewuser', function(req, res){
     res.render('viewuser')
 });
+
+app.get('/api/products', async (req, res) => {
+    const [products] = await pool.query('SELECT * FROM product');
+    res.json(products);
+});
+
 //end of redirect
 
 app.listen(5500, function() {
