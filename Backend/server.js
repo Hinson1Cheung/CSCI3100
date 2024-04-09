@@ -1,10 +1,23 @@
 const express = require("express");
 const app = express();
-const session = require("express-session")
+const session = require("express-session");
+const flash = require("express-flash");
 const path = require('path');
+const parser = require('body-parser');
 const pool = require('./dbPool.js');
 const { getProductById } = require('./poolQuery.js');
 //const homePage = require("./Frontend/index.html");
+app.use(parser.json());
+app.use(parser.urlencoded({ extended: true }));
+
+app.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60000 }
+}));
+
+app.use(flash());
 
 const mysql = require("mysql2");
 const fs = require("fs");
@@ -109,8 +122,22 @@ app.get('/homepage', function(req, res){
 
 app.get('/login', function(req, res){
     res.render('login');
-    
+    app.post('/log', (req, res)=>{
+        var username = req.body.username;
+        var password = req.body.password;
+        query = 'select * from users where username = "' + username + '" and password = "' + password + '";';
+        connection.query(query, function(err, result){
+            if (err) throw err;
+            if (result.length > 0){
+                res.redirect('/homepage');
+            } else {
+                req.flash('error', 'Invalid credentials, please try again');
+                res.redirect('/login');
+            }
+        })
+    })
 });
+
 
 app.get('/payment', function(req, res){
     res.render('payment')

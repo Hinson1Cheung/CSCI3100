@@ -36,6 +36,11 @@
                 Sign up here!
             </a>
         </p>
+        <% if (messages.error) { %>
+            <div class="alert alert-danger", style = "color: red; font-weight: bold; font-size: 10px; ">
+                <%= messages.error %>
+            </div>
+        <% } %> <!-- Error message if the user enters the wrong username or password-->
     </div>
 </body>
 </html>
