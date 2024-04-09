@@ -117,8 +117,12 @@ h5.text-center {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 200px;
     margin: 10px;
+    height: auto;
     text-align: center;
-    font-family: arial;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .price {
@@ -137,6 +141,12 @@ h5.text-center {
     width: 26px;
     height: 26px;
     font-size: 18px;
+}
+
+.product-image {
+    height: 180px;
+    width: 100%;
+    object-fit: contain;
 }
 
 .card button:hover {
@@ -228,6 +238,7 @@ input[type=number]::-webkit-outer-spin-button {
     align-items: center;
     position: sticky;
     display: flex;
+    flex-wrap: wrap;
 }
 
 #toolbar {
