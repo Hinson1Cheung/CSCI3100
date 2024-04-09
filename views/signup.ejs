@@ -8,13 +8,13 @@
 <body>
     <div class = "main">
         <h1>Sign up for an account</h1>
-        <form action ="/homepage"> <!-- creates the form-->
-            <label for ="first"> <!-- Username input-->
+        <form action ="/reg", method = "post"> <!-- creates the form-->
+            <label for ="username"> <!-- Username input-->
                 Username:
              </label>
             <input type = "text"
-                    id = "first"
-                    name = "first"
+                    id = "username"
+                    name = "username"
                     placeholder="Enter you username" required>
             
             <label for = "password"> <!-- Password input-->
@@ -24,23 +24,34 @@
                     id = "password"
                     name = "password"
                     placeholder = "Enter your new password" required>
-            <label for = "password"> <!-- Password input-->
+            <label for = "password1"> <!-- Password input-->
                 Enter password again:
             </label>
             <input type = "password"
-                    id = "password"
-                    name = "password"
+                    id = "password1"
+                    name = "password1"
                     placeholder = "Repeat new password" required>
 
-            <label for="ProductImage">Profile Picture:</label>
+            <label for ="balance">Account Balance</label>
+            <input type = "number"
+                    id = "balance"
+                    name = "balance"
+                    placeholder="Enter your account balance">
+
+            <label for="profilepic">Profile Picture:</label>
                 <input type="file"
-                    id="ProductImage"
-                    name="ProductImage"
+                    id="profilepic"
+                    name="profilepic"
                     accept="image/*">
                             
             <div class = "warp"> <!--Submit button-->
                     <button type = "submit">Submit</button>
             </div>
+            <% if (messages.error) { %>
+                <div class="alert alert-danger", style = "color: red; font-weight: bold; font-size: 15px; ">
+                    <%= messages.error %>
+                </div>
+            <% } %> <!-- Error message if the user enters the wrong username or password-->
         </form>
         
     </div>

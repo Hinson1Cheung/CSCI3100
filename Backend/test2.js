@@ -6,6 +6,18 @@ const path = require('path');
 const parser = require('body-parser');
 const pool = require('./dbPool.js');
 const { getProductById } = require('./poolQuery.js');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './style/images');
+    },
+    filename: function(req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage });
 //const homePage = require("./Frontend/index.html");
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
@@ -88,14 +100,29 @@ app.get('/blacklist', function(req, res){
     res.render('blacklist')
 });
 
-
+app.get('/cart', function(req, res){
+    // res.render('cart');
+    if (req.session.loggedin){
+        userID = req.session.uid;
+        let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART group by UID) as a where SHOPCART.UID=' + String(userID) + ' order by productID ASC;';
+        connection.query(sql, function(err, results){
+        if (err) throw err;
+        res.render('cart', {action: 'list', cartData: results});
+        // console.log(results);
+        // console.log(req.session.uid);
+    });
+    // connection.end();
+    }
+    else{
+        res.redirect('/login');
+    }
+});
 
 app.get('/catalogue', function(req, res){
     let sql = 'SELECT * FROM product';
     connection.query(sql, (err, result) => {
       if (err) throw err;
       res.render('catalogue', { products: result });
-      
     });
 });
 
@@ -107,7 +134,7 @@ app.get('/homepage', function(req, res){
     let sql = 'SELECT * FROM product ORDER BY rating DESC LIMIT 12'; // Query to get top 12 highest-rated products
     connection.query(sql, (err, result) => {
       if (err) throw err;
-      res.render('homepage', { products: result }); // Pass product data to EJS template
+      res.render('homepage', { products: result ,loggedin: req.session.loggedin}); // Pass product data to EJS template
     });
 });
 
@@ -122,7 +149,6 @@ app.get('/login', function(req, res){
             if (result.length > 0){
                 req.session.loggedin = true;
                 req.session.uid = result[0].UID;
-                req.session.username = result[0].username;
                 res.redirect('/');
             } else {
                 req.flash('error', 'Invalid credentials, please try again');
@@ -132,26 +158,6 @@ app.get('/login', function(req, res){
     })
 });
 
-app.get('/cart', function(req, res){
-    // res.render('cart');
-    if (req.session.loggedin){
-        let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART group by UID) as a order by productID ASC;';
-        connection.query(sql, function(err, results){
-        if (err) throw err;
-        res.render('cart', {action: 'list', cartData: results});
-        console.log(results);
-        console.log(req.session.uid);
-        console.log(req.session.username);
-        
-        // res.json(results);
-    });
-    // connection.end();
-    }
-    else{
-        res.redirect('/login');
-    }
-});
-
 
 app.get('/payment', function(req, res){
     res.render('payment')
@@ -159,8 +165,6 @@ app.get('/payment', function(req, res){
 
 app.get('/product/:id', async (req, res) => {
     const product = await getProductById(req.params.id);
-    req.session.productID = product.productID;
-    console.log(req.session.productID);
     res.render('product', { products: product });
 });
 
@@ -169,7 +173,36 @@ app.get('/rmuser', function(req, res){
 });
 
 app.get('/signup', function(req, res){
-    res.render('signup')
+    res.render('signup');
+    app.post('/reg', (req, res)=>{
+        var username = req.body.username;
+        var password = req.body.password;
+        var password1 = req.body.password1;
+        var balance = req.body.balance;
+        var imagePath = req.body.profilepic;
+        //check if user already exists
+        check = 'select * from users where username = "' + username + '";';
+        connection.query(check, function(err, result){
+            if (err) throw err;
+            if (result.length > 0){
+                req.flash('error', 'Username already exists, please try again');
+                res.redirect('/signup');
+            } else {
+                if (password == password1){
+                    query = 'insert into users (username, password, balance, propicURL) values ("' + username + '", "' + password + '", ' + balance + ', "./image/' + imagePath + '");';
+                    console.log("query = ", query);
+                    connection.query(query, function(err, result){
+                        if (err) throw err;
+                        req.flash('success', 'Account created successfully');
+                        res.redirect('/login');
+                    });
+                } else {
+                    req.flash('error', 'Passwords do not match, please try again');
+                    res.redirect('/signup');
+                }
+            }
+        })
+    })
 });
 
 app.get('/storemanage', function(req, res){
