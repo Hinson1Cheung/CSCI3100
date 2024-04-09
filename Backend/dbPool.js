@@ -5,6 +5,7 @@ const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: 'password',
+    database: 'db',
     infileStreamFactory: ()=>fs.createReadStream('Product.csv'), 
     infileStreamFactory: ()=>fs.createReadStream('Category.csv')
 });
