@@ -44,198 +44,36 @@
                     <p class="price" id="p<%= index + 1 %>">$<%= product.price.toFixed(2) %></p>
                     <div class="number-input">
                         <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                        <input type="number" class="quantity" id="q<%= index + 1 %>" value="<%= product.count %>" min="0" max="100">
+                        <input type="number" class="quantity" id="q<%= index + 1 %>" value="<%= product.count %>" min="1" max="100">
                         <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                     </div>
                 </div>
             <% }); %>
-            
-            <!-- <div class="card" style="padding-bottom: 10px;">
-                <div class="checkbox-wrapper-18">
-                    <div class="round">
-                        <input type="checkbox" class="chk" id="1" />
-                        <label for="1"></label>
-                    </div>
-                </div>
-                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="price" id="p1">$19.99</p>
-                <div class="number-input">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                    <input type="number" class="quantity" id="q1" value="1" min="0" max="100">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                </div>
-            </div> -->
-            <!-- <div class="card" style="padding-bottom: 10px;">
-                <div class="checkbox-wrapper-18">
-                    <div class="round">
-                      <input type="checkbox" class="chk" id="2" />
-                      <label for="2"></label>
-                    </div>
-                </div>
-                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="price" id="p2">$9.99</p>
-                <div class="number-input">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                    <input type="number" class="quantity" id="q2" value="1" min="0" max="100">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                </div>
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <div class="checkbox-wrapper-18">
-                    <div class="round">
-                      <input type="checkbox" class="chk" id="3" />
-                      <label for="3"></label>
-                    </div>
-                </div>
-                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="price" id="p3">$9.99</p>
-                <div class="number-input">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                    <input type="number" class="quantity" id="q3" value="1" min="0" max="100">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                </div>
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <div class="checkbox-wrapper-18">
-                    <div class="round">
-                      <input type="checkbox" class="chk" id="4" />
-                      <label for="4"></label>
-                    </div>
-                </div>
-                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="price" id="p4">$9.99</p>
-                <div class="number-input">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                    <input type="number" class="quantity" id="q4" value="1" min="0" max="100">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                </div>
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <div class="checkbox-wrapper-18">
-                    <div class="round">
-                      <input type="checkbox" class="chk" id="5" />
-                      <label for="5"></label>
-                    </div>
-                </div>
-                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="price" id="p5">$9.99</p>
-                <div class="number-input">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                    <input type="number" class="quantity" id="q5" value="1" min="0" max="100">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                </div>
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <div class="checkbox-wrapper-18">
-                    <div class="round">
-                      <input type="checkbox" class="chk" id="6" />
-                      <label for="6"></label>
-                    </div>
-                </div>
-                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="price" id="p6">$9.99</p>
-                <div class="number-input">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                    <input type="number" class="quantity" id="q6" value="1" min="0" max="100">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                </div>
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <div class="checkbox-wrapper-18">
-                    <div class="round">
-                      <input type="checkbox" class="chk" id="7" />
-                      <label for="7"></label>
-                    </div>
-                </div>
-                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="price" id="p7">$9.99</p>
-                <div class="number-input">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                    <input type="number" class="quantity" id="q7" value="1" min="0" max="100">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                </div>
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <div class="checkbox-wrapper-18">
-                    <div class="round">
-                      <input type="checkbox" class="chk" id="8" />
-                      <label for="8"></label>
-                    </div>
-                </div>
-                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="price" id="p8">$9.99</p>
-                <div class="number-input">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                    <input type="number" class="quantity" id="q8" value="1" min="0" max="100">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                </div>
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <div class="checkbox-wrapper-18">
-                    <div class="round">
-                      <input type="checkbox" class="chk" id="9" />
-                      <label for="9"></label>
-                    </div>
-                </div>
-                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="price" id="p9">$9.99</p>
-                <div class="number-input">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                    <input type="number" class="quantity" id="q9" value="1" min="0" max="100">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                </div>
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <div class="checkbox-wrapper-18">
-                    <div class="round">
-                      <input type="checkbox" class="chk" id="10" />
-                      <label for="10"></label>
-                    </div>
-                </div>
-                <img src="../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="price" id="p10">$9.99</p>
-                <div class="number-input">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                    <input type="number" class="quantity" id="q10" value="1" min="0" max="100">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                </div>
-            </div>
-        </div> -->
-        <div class="row" style="display: none;" id="toolbar">
-            <div class="row">
-                <div class="checkbox-wrapper-18";>
-                    <div class="round">
-                    <input type="checkbox" id="select" onclick="selection()"/>
-                    <label for="select" style="margin-bottom: 0;"></label>
-                    </div>
-                </div>
-                <div style="color: black; align-self: center;" id="pc"> &emsp;1 Product Selected </div>
-            </div>
-            <div><button class="toolbar-btn" onclick="selectDel()"><img src="../image/delete.png" style="height: 30px;" alt="delete"></button></div>
-            <div class="row" style="border: 1px black solid;">
-                <div style="font-size: large; font-family: Georgia, 'Times New Roman', Times, serif; align-self: center;" id="total">Total Price: $0.0 &emsp;</div>
-                <a href="/payment">
-                    <button class="btn btn-primary my-button">Checkout</button>
-                </a>
-            </div>
-        </div>
+        
         <script>
             // Get query data from server.js and pass data from cart.ejs to cart.js as String
             var cartDataJS = '<%- JSON.stringify(cartData) %>';
         </script>
         
     </div>
-    
+    <div class="row" style="display: none;" id="toolbar">
+        <div class="row">
+            <div class="checkbox-wrapper-18";>
+                <div class="round">
+                <input type="checkbox" id="select" onclick="selection()"/>
+                <label for="select" style="margin-bottom: 0;"></label>
+                </div>
+            </div>
+            <div style="color: black; align-self: center;" id="pc"> &emsp;1 Product Selected </div>
+        </div>
+        <div><button class="toolbar-btn" onclick="selectDel()"><img src="../image/delete.png" style="height: 30px;" alt="delete"></button></div>
+        <div class="row" style="border: 1px black solid;">
+            <div style="font-size: large; font-family: Georgia, 'Times New Roman', Times, serif; align-self: center;" id="total">Total Price: $0.0 &emsp;</div>
+            <a href="/payment">
+                <button class="btn btn-primary my-button">Checkout</button>
+            </a>
+        </div>
+    </div>
     <br>
     <footer style="display: flex; justify-content: space-between; align-items: center; width: 100%; background-color: #333; color: white; padding: 10px;">
         <div><a href="#" class="scroll-to-top" title="Scroll to top" style="color: white;">Back to top</a></div>
