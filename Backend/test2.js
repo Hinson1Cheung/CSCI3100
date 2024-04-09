@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
-const session = require("express-session")
+const session = require("express-session");
+var sequelize = require("sequelize");
+const bcrypt = require("bcrypt");
 const path = require('path');
 //const { getProductById } = require('./poolQuery');
 //const homePage = require("./Frontend/index.html");
@@ -60,7 +62,7 @@ connection.connect(function(err){
 app.set('views', path.join(__dirname, '../views'));
 app.use(express.static(__dirname+'/../style'));
 app.use(express.json());
-
+var router = express.Router();
 app.set('view engine', 'ejs');
 app.get('/', function(req, res){
     res.render('homepage');
@@ -112,7 +114,7 @@ app.get('/homepage', function(req, res){
 });
 
 app.get('/login', function(req, res){
-    res.render('login');
+    res.render('login')
     
 });
 
