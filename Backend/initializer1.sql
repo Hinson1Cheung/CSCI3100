@@ -1,4 +1,4 @@
-drop database db;
+drop database if exists db;
 create database if not exists db;
 use db;
 set global local_infile = true;
