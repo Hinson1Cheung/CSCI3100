@@ -218,9 +218,38 @@ app.get('/edituser', function(req, res){
     res.render('edituser')
 });
 
-app.get('/search', function(req, res){
-    const keyword = decodeURIComponent(req.query.query);
-    res.render('search', { keyword: keyword });
+app.get('/search', async (req, res) => {
+    const searchTerm = decodeURIComponent(req.query.query);
+    const min = req.query.min;
+    const max = req.query.max;
+    let products;
+    if (min == undefined) {
+        if (max == undefined) {
+            [products] = await pool.query(
+                'SELECT * FROM product WHERE pName LIKE ? OR productID = ?',
+                [`%${searchTerm}%`, searchTerm]
+            );
+        } else {
+            [products] = await pool.query(
+                'SELECT * FROM product WHERE (pName LIKE ? OR productID = ?) AND price <= ?',
+                [`%${searchTerm}%`, searchTerm, max]
+            );
+        }
+    } else {
+        if (max == undefined) {
+            [products] = await pool.query(
+                'SELECT * FROM product WHERE (pName LIKE ? OR productID = ?) AND price >= ?',
+                [`%${searchTerm}%`, searchTerm, min]
+            );
+        }
+        else {
+            [products] = await pool.query(
+                'SELECT * FROM product WHERE (pName LIKE ? OR productID = ?) AND price >= ? AND price <= ?',
+                [`%${searchTerm}%`, searchTerm, min, max]
+            );
+        }
+    }
+    res.render('search', { products: products });
 });
 
 app.get('/homepage', function(req, res){

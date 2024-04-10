@@ -26,13 +26,34 @@
     </div>
     </div>
     <div class="container mt-4">
-        <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;" title="Previous Page">Go back</a>
         <div class="row">
             <div class="search-container">
                 <form class="input-group mt-2" id="search-form"> <!-- Add a search form --> <!-- ID is for JS-->
                     <input type="text" class="form-control search-input" id="search-bar" placeholder="Search">
-                    <div id="preview-container"></div>
                 </form>
+                <form class="input-group mt-2" id="filter-form"> <!-- Add a filter form --> <!-- ID is for JS-->
+                    <input type="number" id="min" class="form-control" placeholder="Min price">
+                    <input type="number" id="max" class="form-control" placeholder="Max price">
+                </form>
+                <% if (products.length > 0) { %>
+                    <% products.forEach(product => { %>
+                        <div class="product-item">
+                            <h3><%= product.pName %><samp style="font-size: 12px;"> ID: <%= product.productID %></samp></h3>
+                            <h4 style="font-size: 18px;">Price: $<%= product.price %> Stock: <%= product.quantity %></h4>
+                            <div class="product-details">
+                                <img src="../<%= product.imageURL %>" alt="<%= product.pName %>" style="height: 100px; width: auto;">
+                                <div class="product-buttons">
+                                    <p><%= product.description %></p>
+                                    <div class="product-buttons">
+                                        <a href="/product/<%= product.productID %>" class="btn btn-primary product-button my-button">Go to Product</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>No matching products found.</p>
+                <% } %>
             </div>
         </div>
     </div>

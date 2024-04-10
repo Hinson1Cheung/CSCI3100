@@ -19,7 +19,7 @@ searchBar.addEventListener('input', () => {
 
     previewContainer.innerHTML = '';
 
-    const matchingProducts = products.filter(product => product.pName.toLowerCase().includes(searchTerm));
+    const matchingProducts = products.filter(product => product.pName.toLowerCase().includes(searchTerm) || product.productID === searchTerm);
 
     if (matchingProducts.length > 0) {
         const product = matchingProducts[0];
