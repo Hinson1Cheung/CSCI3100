@@ -11,4 +11,4 @@ ignore 1 lines
 (catID,catName);
 
 insert into users(username, password, balance, propicURL) values('user1', 'pw', 10000000, './image/DannyRic.jpg');
-insert into (adminname, password) values('admin1', 'pw');
+insert into admins(adminname, password) values('admin1', 'pw');

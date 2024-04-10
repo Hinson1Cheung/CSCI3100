@@ -88,10 +88,33 @@ app.get('/adduser', function(req, res){
 
 app.get('/adminhome', function(req, res){
     res.render('adminhome')
+    
 });
 
 app.get('/adminlogin', function(req, res){
     res.render('adminlogin')
+    app.post('/adm', (req, res)=>{
+        var username = req.body.username;
+        var password = req.body.password;
+        var adminkey = req.body.key;
+        query = 'select * from admins where adminname = "' + username + '" and password = "' + password + '";';
+        connection.query(query, function(err, result){
+            if (err) throw err;
+            if (result.length > 0){
+                if(adminkey =='adminkey'){
+                    res.redirect('/adminhome');
+                }
+                else{
+                    req.flash('error', 'Invalid credentials, please try again');
+                    res.redirect('/login');
+                }
+
+            } else {
+                req.flash('error', 'Invalid credentials, please try again');
+                res.redirect('/login');
+            }
+        })
+    })
 });
 
 app.get('/blacklist', function(req, res){

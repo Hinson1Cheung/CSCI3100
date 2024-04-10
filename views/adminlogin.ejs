@@ -8,13 +8,13 @@
 <body>
     <div class = "main">
         <h1>Sign in as admin</h1>
-        <form action ="/adminhome"> <!-- creates the form-->
+        <form action ="/adm", method = "post"> <!-- creates the form-->
             <label for ="first"> <!-- Username input-->
                 Username:
              </label>
             <input type = "text"
-                    id = "first"
-                    name = "first"
+                    id = "username"
+                    name = "username"
                     placeholder="Enter you username" required>
             
             <label for = "password"> <!-- Password input-->
@@ -27,7 +27,7 @@
             <label for = "adminKey"> <!-- Key input-->
                 AdminKey:
             </label>
-            <input type = "key"
+            <input type = "text"
                     id = "key"
                     name = "key"
                     placeholder = "Enter your key" required>

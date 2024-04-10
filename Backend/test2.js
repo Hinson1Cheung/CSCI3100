@@ -92,6 +92,22 @@ app.get('/adminhome', function(req, res){
 
 app.get('/adminlogin', function(req, res){
     res.render('adminlogin')
+    app.post('/adlog', (req, res)=>{
+        var username = req.body.username;
+        var password = req.body.password;
+        query = 'select * from users where username = "' + username + '" and password = "' + password + '";';
+        connection.query(query, function(err, result){
+            if (err) throw err;
+            if (result.length > 0){
+                req.session.loggedin = true;
+                req.session.uid = result[0].UID;
+                res.redirect('/');
+            } else {
+                req.flash('error', 'Invalid credentials, please try again');
+                res.redirect('/login');
+            }
+        })
+    })
 });
 
 app.get('/blacklist', function(req, res){
