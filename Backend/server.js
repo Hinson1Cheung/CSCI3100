@@ -102,6 +102,11 @@ app.get('/cart', function(req, res){
     // res.render('cart');
     if (req.session.loggedin){
         const userID = req.session.uid;
+        let sql1 = 'update SHOPCART set checkedProd = 0 where UID=' + userID + ';';
+        connection.query(sql1, function(err, result){
+            if (err) throw err;
+            console.log("sql1:  ", result);
+        });
         let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART group by UID) as a where SHOPCART.UID=' + String(userID) + ' order by productID ASC;';
         connection.query(sql, function(err, results){
         if (err) throw err;
@@ -122,12 +127,12 @@ app.post('/del', (req, res)=>{
     // console.log("productID: ", productID);
     // console.log("productNum: ", productNum);
     for (let i = 0; i < productID.length; i++){
-        let sql1 = 'delete from SHOPCART where productID=' + productID[i] + ';';
+        let sql1 = 'delete from SHOPCART where UID=' + String(userID) +  ' and productID=' + productID[i] + ';';
         connection.query(sql1, function(err, result){
             if (err) throw err;
             // console.log("sql1:  ", result);
         });
-        let sql2 = 'update PRODUCT set quantity = quantity + ' + productNum[i] + ' where productID=' + productID[i] + ';';
+        let sql2 = 'update PRODUCT set quantity = quantity + ' + productNum[i] + ' where UID=' + String(userID) +  ' and productID=' + productID[i] + ';';
         connection.query(sql2, function(err, result){
             if (err) throw err;
             // console.log("sql2:  ", result);
@@ -137,6 +142,34 @@ app.post('/del', (req, res)=>{
     if (res.json.success){
         res.redirect('/cart');
     }
+});
+
+app.post('/checkout', (req, res)=>{
+    const productID = req.body.productID;
+    for (let i = 0; i < productID.length; i++){
+        let sql = 'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ';';
+        connection.query(sql, function(err, result){
+            if (err) throw err;
+        });
+    }
+    res.json({success: true});
+    // if (res.json.success){
+    //     res.redirect('/cart');
+    // }
+});
+
+app.post('/backCart', (req, res)=>{
+    const productID = req.body.productID;
+    for (let i = 0; i < productID.length; i++){
+        let sql = 'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ';';
+        connection.query(sql, function(err, result){
+            if (err) throw err;
+        });
+    }
+    res.json({success: true});
+    // if (res.json.success){
+    //     res.redirect('/cart');
+    // }
 });
 
 app.post('/add', (req, res)=>{
@@ -282,7 +315,17 @@ app.get('/login', function(req, res){
 
 
 app.get('/payment', function(req, res){
-    res.render('payment')
+    if (req.session.loggedin){
+        const userID = req.session.uid;
+        let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL, checkedProd from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART where checkedProd=1 group by UID) as a where SHOPCART.UID=' + String(userID) + ' and checkedProd=1 order by productID ASC;';
+        connection.query(sql, function(err, results){
+            if (err) throw err;
+            res.render('payment', {action: 'list', checkedProdData: results});
+        })
+    }else {
+        console.log("No payment session yet. Please login.");
+        res.redirect('/login');
+    }
 });
 
 app.get('/product/:id', async (req, res) => {

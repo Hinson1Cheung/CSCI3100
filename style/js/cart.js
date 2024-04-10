@@ -25,7 +25,7 @@ var TEMPTOTALPRODUCTS = 0;
 if (jsonData .length != 0) {
     TEMPTOTALPRODUCTS = jsonData[0]['total'];
 }
-// Initialize all useful arrays and variables
+// Initialize all useful html arrays and variables
 var checkBox = document.getElementsByClassName('chk'); //record the checkboxes
 var numberBox = document.getElementsByClassName("number-input");
 var selecButton = document.getElementById("select")
@@ -37,6 +37,8 @@ for (let i=0; i < TEMPTOTALPRODUCTS; i++){
     // console.log("now the " + i + " th one: "+checkBox[i]); //debug 
 }
 // console.log(TEMPTOTALPRODUCTS); 
+
+//retrive data from db (list disconnect with db)
 var pidList = [];
 for (let i=0; i < TEMPTOTALPRODUCTS; i++){
     pidList.push(jsonData[i]['productID']);
@@ -45,6 +47,7 @@ var quantityList = [];
 for (let i=0; i < TEMPTOTALPRODUCTS; i++){
     quantityList.push(jsonData[i]['count']);
 }
+
 // var TEMPTOTALPRODUCTS = 10; //will retrive from backend in the future
 var productPic = document.getElementsByClassName('product-image');
 for(let i=0; i < TEMPTOTALPRODUCTS; i++){
@@ -174,3 +177,31 @@ async function selectDel(){ //delete the selected items
     //     location.reload(); //refresh the page to update products
     // }
 }
+
+
+async function testCheck(){ //delete the selected items
+    //array to be commit to db
+    const productID = [];
+    //const checkedProd = [];
+    for(let i=0; i < TEMPTOTALPRODUCTS; i++){ 
+        if(checkBox[i].checked){
+            let pName = document.getElementById("n" + String(i+1)).innerHTML;
+            productID.push(pidList[i]);
+            //checkedProd.push(checkedProd[i]);
+        }
+    }
+    await fetch('/checkout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({productID: productID}), // Send the productIDs to server
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}  

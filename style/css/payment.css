@@ -175,6 +175,9 @@ span.price {
     float: right;
     color: grey;
 }
+span.quantity {
+    color: grey;
+}
 #preview-container {
     position: absolute;
     top: 100%;
