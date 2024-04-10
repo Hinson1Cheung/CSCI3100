@@ -220,6 +220,24 @@ app.post('/del', (req, res)=>{
     }
 });
 
+app.post('/delproduct', (req, res)=>{
+    const productID = req.body.productID;
+    // console.log("productID: ", productID);
+    // console.log("productNum: ", productNum);
+    for (let i = 0; i < productID.length; i++){
+        let sql1 = 'delete from product where productID=' + productID[i] + ';';
+        // console.log("sql_delete: ", sql1);
+        connection.query(sql1, function(err, result){
+            if (err) throw err;
+            // console.log("sql1:  ", result);
+        });
+    }
+    res.json({success: true});
+    if (res.json.success){
+        res.redirect('/storemanage');
+    }
+});
+
 app.post('/checkout', (req, res)=>{
     if (req.session.loggedin) {
         const userID = req.session.uid;
@@ -512,6 +530,7 @@ app.get('/product/:id', async (req, res) => {
             console.log(result);
             res.render('product', { products: product, loggedin: login, check: result});
         });
+        
     }
     else {
         console.log(product);
@@ -565,10 +584,10 @@ app.get('/signup',(req, res)=>{
 });
 
 app.get('/storemanage', function(req, res){
-    let sql = 'SELECT * FROM product';
-    connection.query(sql, (err, result) => {
-      if (err) throw err;
-      res.render('storemanage', { products: result });
+    let sql = 'SELECT * FROM product;';
+    connection.query(sql, function(err, results){
+    if (err) throw err;
+    res.render('storemanage', {action: 'list', products: results});
     });
 });
 
