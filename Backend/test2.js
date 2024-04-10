@@ -29,6 +29,7 @@ app.use(flash());
 const mysql = require("mysql2");
 const fs = require("fs");
 const fileUpload = require("express-fileupload");
+const { name } = require("ejs");
 let connection = mysql.createConnection({
     multipleStatements: true, 
     host: 'localhost',
@@ -84,11 +85,51 @@ app.get('/addproduct', function(req, res){
 });
 
 app.get('/adduser', function(req, res){
-    res.render('adduser')
+    res.render('adduser');
+    app.post('/au', (req, res)=>{
+        var username = req.body.username;
+        var password = req.body.password;
+        var password1 = req.body.password1;
+        var balance = req.body.balance;
+        var imgsrc = req.files.profilepic;
+        var filePath = req.files.profilepic.name;
+       
+        if (filePath!= null){
+            filePath = '/'+ filePath
+        }
+        //check if user already exists
+        check = 'select * from users where username = "' + username + '";';
+        connection.query(check, function(err, result){
+            if (err) throw err;
+            if (result.length > 0){
+                req.flash('error', 'Username already exists, please try again');
+                res.redirect('/adduser');
+            }
+            else{
+                let sql = 'insert into users (username, password, balance, propicURL) values ("' + username + '", "' + password + '", ' + balance + ', "./image/' + filePath + '");';
+                connection.query(sql, function(err, result){
+                if (err) throw err;
+                imgsrc.mv('../style/image/'+filePath, function(err){
+                    if (err) throw err;
+                });
+                req.flash('success', 'User added successfully');
+                res.redirect('/adminhome');
+        });
+            }
+        });
+        
+    });
+
 });
 
 app.get('/adminhome', function(req, res){
-    res.render('adminhome')
+    if (req.session.adminLogin){
+        res.render('adminhome')
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
     
 });
 
@@ -103,6 +144,7 @@ app.get('/adminlogin', function(req, res){
             if (err) throw err;
             if (result.length > 0){
                 if(adminkey =='adminkey'){
+                    req.session.adminLogin = true;
                     res.redirect('/adminhome');
                 }
                 else{
@@ -161,11 +203,11 @@ app.post('/del', (req, res)=>{
                 if (err) throw err;
                 // console.log("sql1:  ", result);
             });
-            let sql2 = 'update PRODUCT set quantity = quantity + ' + productNum[i] + ' where productID=' + productID[i] + ';';
-            connection.query(sql2, function(err, result){
-                if (err) throw err;
-                // console.log("sql2:  ", result);
-            }); 
+            // let sql2 = 'update PRODUCT set quantity = quantity + ' + productNum[i] + ' where productID=' + productID[i] + ';';
+            // connection.query(sql2, function(err, result){
+            //     if (err) throw err;
+            //     // console.log("sql2:  ", result);
+            // }); 
         }
         res.json({success: true});
         if (res.json.success){
@@ -182,15 +224,27 @@ app.post('/checkout', (req, res)=>{
     if (req.session.loggedin) {
         const userID = req.session.uid;
         const productID = req.body.productID;
+        
         for (let i = 0; i < productID.length; i++){
-            let sql = 'update SHOPCART set checkedProd = 0 where UID=' + String(userID) +';'+
-                    'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ' and UID=' + String(userID) +';';
+            let sql = 'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ' and UID=' + String(userID) +';';
             connection.query(sql, function(err, result){
                 if (err) throw err;
-                console.log(result);
             });
         }
-        res.json({success: true});
+        let debug = 'select * from shopcart where UID=' + userID + ';';
+        connection.query(debug, function(err, result){
+            if (err) throw err;
+            console.log("debug: ", result);
+        });
+        //delete all records where checkedProd = 0
+        // let rm = 'delete from shopcart where checkedProd = 0 and UID=' + userID + ';';
+        // connection.query(rm, function(err, result){
+        //     if (err) throw err;
+        // });
+        // connection.query(remove, function(err, result){
+        //     if (err) throw err;
+        // });
+        // res.json({success: true});
     }else {
         console.log("Please login first");
         res.redirect('/login');
@@ -231,7 +285,7 @@ app.post('/add', (req, res)=>{
         let max_id = 0;
         let sql2 = 'select * from SHOPCART where UID=' + String(userID) +  ' and productID='+ String(productID) + ';';
         let sql3 = ''; //dependent on sql2
-        let sql4 = 'update PRODUCT set quantity = quantity - ' + productNum + ' where productID=' + productID + ';';
+        //let sql4 = 'update PRODUCT set quantity = quantity - ' + productNum + ' where productID=' + productID + ';';
         
         // async parallel to run sql1, sql2, and sql4 in parallel since they are independent
         async.parallel({
@@ -264,14 +318,14 @@ app.post('/add', (req, res)=>{
                     // console.timeEnd("res2");
                 })
             },
-            res4: function(callback){
-                connection.query(sql4, function(err, res4){
+            //res4: function(callback){
+                //connection.query(sql4, function(err, res4){
                     // console.time("res4");
-                    if (err) { callback(err)}
+                    //if (err) { callback(err)}
                     // console.log("res4 done ");
                     // console.timeEnd("res4");
-                });
-            }
+                //});
+            //}
         });
 
         // dependent sql query need to be delayed for 10ms
@@ -372,31 +426,97 @@ app.get('/login', function(req, res){
 });
 
 
-app.get('/payment', function(req, res){
+app.get('/payment', async function(req, res){
     if (req.session.loggedin){
         const userID = req.session.uid;
-        let sql = 'select pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND UID = ' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID=' + userID + ';';
-        connection.query(sql, function(err, results){
-            if (err) throw err;
-            res.render('payment', {action: 'list', checkedProdData: results});
-        })
-        
+       
+        // let sql = 'select shopcart.productID, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND UID = ' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID=' + userID + ';';
+        let sql = 'select * from (select shopcart.productID, checkedProd, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID='+ userID +') as a where checkedProd=1;';
+        const {totalcost, productIDs, price, count, productname, prodsum, length} = await new Promise(function (resolve, reject){
+            connection.query(sql, function(err, results){
+                if (err) throw err;
+                res.render('payment', {action: 'list', checkedProdData: results});
+                let productIDs = results.map(a => a.productID);
+                let price = results.map(a => a.price);
+                let count = results.map(a => a.count);
+                let productname = results.map(a => a.pName);
+                let prodsum = results.map(a => a.ssum);
+                resolve({totalcost: results[0].total, length: results.length, productIDs, price, count, productname, prodsum});
+            });
+            
+        });
+       //begin payment procedure
+        app.use('/pay', (req, res)=>{
+              //first level check: check if balance is enough
+              let sql = 'select balance from users where UID=' + userID + ';';
+              connection.query(sql, function(err, result){
+                    if (err) throw err;
+                    if (result[0].balance < totalcost){
+                        req.flash('error', 'Insufficient balance, please top up in user profile');
+                        res.redirect('/userprofile');
+                    }
+                    else{
+                        //check complete, proceed to payment
+                        //update balance
+                        let updateBalance = 'update users set balance = balance - ' + totalcost + ' where UID=' + userID + ';';
+                        connection.query(updateBalance, function(err, result){
+                            if (err) throw err;
+                        });
+                        //update product stocks 
+                        for (let i = 0; i < length; i++){
+                            let updateStock = 'update product set quantity = quantity - ' + count[i] + ' where productID=' + productIDs[i] + ';';
+                            connection.query(updateStock, function(err, result){
+                                if (err) throw err;
+                                //insert into transaction records
+                                
+                                let insert = 'insert into transaction (UID, productID, sum, count) values (' + userID + ',' + productIDs[i] + ',' + prodsum[i] + ', '+count[i]+');';
+                                connection.query(insert, function(err, result){
+                                    if (err) throw err;
+                                    
+                                });
+                            });
+                        }
+                        let deleteCart = 'delete from shopcart where checkedProd=1 and UID = ' + userID + ';';
+                        connection.query(deleteCart, function(err, result){
+                                    if (err) throw err;
+                        });
+                        let returnnewbalance = 'select balance from users where UID=' + userID + ';';
+                            connection.query(returnnewbalance, function(err, result){
+                            if (err) throw err;
+                            req.flash('success', 'Payment successful, new balance = ' + result[0].balance);
+                            res.redirect('/cart');
+                        });
+                        
+                    }
 
-    }
+                });
+            });
+        }
     else {
         console.log("No payment session yet. Please login.");
         res.redirect('/login');
     }
 });
 
+
+
 app.get('/product/:id', async (req, res) => {
     const product = await getProductById(req.params.id);
     let login = false;
     if (req.session.loggedin == true) {
         login = true;
+        let sql = 'select count from SHOPCART where productID = ' + req.params.id + ' and UID = ' + req.session.uid + ';';
+        connection.query(sql, function(err, result){
+            if (err) throw err;
+            console.log(product);
+            console.log(result);
+            res.render('product', { products: product, loggedin: login, check: result});
+        });
     }
-    // console.log(login);
-    res.render('product', { products: product, loggedin: login});
+    else {
+        console.log(product);
+        res.render('product', { products: product, loggedin: login, check: false});
+    }
 });
 
 app.get('/rmuser', function(req, res){
@@ -412,8 +532,7 @@ app.get('/signup',(req, res)=>{
         var balance = req.body.balance;
         var imgsrc = req.files.profilepic;
         var filePath = req.files.profilepic.name;
-        console.log("imgsrc = ", imgsrc);
-        console.log("filePath = ", filePath);
+       
         if (filePath!= null){
             filePath = '/'+ filePath
         }
@@ -457,10 +576,8 @@ app.get('/usermenu', function(req, res){
     res.render('usermenu')
 });
 
-
-
 app.get('/viewuser', function(req, res){
-    let sql = 'SELECT * FROM users';
+    let sql = 'SELECT * FROM users;';
     connection.query(sql, (err, result) => {
       if (err) throw err;
       res.render('viewuser', { products: result });
@@ -496,6 +613,7 @@ app.get('/userprofile', function(req, res){
 
 }
 );
+
 
 app.get('/api/products', async (req, res) => {
     const [products] = await pool.query('SELECT * FROM product');

@@ -159,6 +159,11 @@ SELECT * FROM user;-->
 
         </div>
     </footer>
+    <% if (messages.error) { %>
+        <script>
+            alert('<%= messages.error %>');
+        </script>
+    <% } %> <!-- Error message if the user enters the wrong username or password-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/js/view.js"></script>
     <script src="/js/search.js"></script>

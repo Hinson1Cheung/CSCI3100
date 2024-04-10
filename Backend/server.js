@@ -432,48 +432,66 @@ app.get('/payment', async function(req, res){
        
         // let sql = 'select shopcart.productID, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND UID = ' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID=' + userID + ';';
         let sql = 'select * from (select shopcart.productID, checkedProd, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID='+ userID +') as a where checkedProd=1;';
-        const totalcost = await new Promise(function (resolve, reject){
+        const {totalcost, productIDs, price, count, productname, prodsum, length} = await new Promise(function (resolve, reject){
             connection.query(sql, function(err, results){
                 if (err) throw err;
                 res.render('payment', {action: 'list', checkedProdData: results});
-                resolve(results[0].total)
-            });
-        });
-        
-        //check and deduct balance from user
-        app.post('/pay' ,(req, res)=>{
-            const userID = req.session.uid;
-            let checkBalance = 'select balance from users where UID = ' + userID + ';';
-            connection.query(checkBalance, function(err, result){
-                if (err) throw err;
-                if (result[0].balance >= totalcost){
-                    let updateBalance = 'update users set balance = balance - ' + totalcost + ' where UID = ' + userID + ';';
-                    connection.query(updateBalance, function(err, result){
-                        if (err) throw err;
-                        returnnewbalance = 'select balance from users where UID = ' + userID + ';';
-                        connection.query(returnnewbalance, function(err, result){
-                            if (err) throw err;
-                            req.flash("success", "Payment successful!, new balance: " + result[0].balance);
-                            let updateProductQuantity = 'update product, shopcart set product.quantity = product.quantity - shopcart.count where product.productID = shopcart.productID and checkedProd=1 and shopcart.UID = ' + userID + ';';
-                            connection.query(updateProductQuantity, function(err, result){
-                                if (err) throw err;
-                                let deleteCart = 'delete from shopcart where checkedProd=1 and UID = ' + userID + ';';
-                                connection.query(deleteCart, function(err, result){
-                                    if (err) throw err;
-                                    res.redirect('/cart');
-                                });
-                            });
-                        });
-                    });
-                } else {
-                    req.flash("error", "Insufficient balance");
-                    res.redirect('/payment');
-                }
+                let productIDs = results.map(a => a.productID);
+                let price = results.map(a => a.price);
+                let count = results.map(a => a.count);
+                let productname = results.map(a => a.pName);
+                let prodsum = results.map(a => a.ssum);
+                resolve({totalcost: results[0].total, length: results.length, productIDs, price, count, productname, prodsum});
             });
             
         });
-        
-    }
+       //begin payment procedure
+        app.use('/pay', (req, res)=>{
+              //first level check: check if balance is enough
+              let sql = 'select balance from users where UID=' + userID + ';';
+              connection.query(sql, function(err, result){
+                    if (err) throw err;
+                    if (result[0].balance < totalcost){
+                        req.flash('error', 'Insufficient balance, please top up in user profile');
+                        res.redirect('/userprofile');
+                    }
+                    else{
+                        //check complete, proceed to payment
+                        //update balance
+                        let updateBalance = 'update users set balance = balance - ' + totalcost + ' where UID=' + userID + ';';
+                        connection.query(updateBalance, function(err, result){
+                            if (err) throw err;
+                        });
+                        //update product stocks 
+                        for (let i = 0; i < length; i++){
+                            let updateStock = 'update product set quantity = quantity - ' + count[i] + ' where productID=' + productIDs[i] + ';';
+                            connection.query(updateStock, function(err, result){
+                                if (err) throw err;
+                                //insert into transaction records
+                                
+                                let insert = 'insert into transaction (UID, productID, sum, count) values (' + userID + ',' + productIDs[i] + ',' + prodsum[i] + ', '+count[i]+');';
+                                connection.query(insert, function(err, result){
+                                    if (err) throw err;
+                                    
+                                });
+                            });
+                        }
+                        let deleteCart = 'delete from shopcart where checkedProd=1 and UID = ' + userID + ';';
+                        connection.query(deleteCart, function(err, result){
+                                    if (err) throw err;
+                        });
+                        let returnnewbalance = 'select balance from users where UID=' + userID + ';';
+                            connection.query(returnnewbalance, function(err, result){
+                            if (err) throw err;
+                            req.flash('success', 'Payment successful, new balance = ' + result[0].balance);
+                            res.redirect('/cart');
+                        });
+                        
+                    }
+
+                });
+            });
+        }
     else {
         console.log("No payment session yet. Please login.");
         res.redirect('/login');

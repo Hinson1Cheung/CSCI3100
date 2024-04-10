@@ -51,7 +51,8 @@ create table if not exists transaction (
     transID int primary key auto_increment, 
     productID int not null references product(productID), 
     UID int not null references user(UID), 
-    sum int not null
+    sum int not null, 
+    count int not null
 );
 
 load data local infile 'Product.csv' into table product
