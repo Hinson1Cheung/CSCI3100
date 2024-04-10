@@ -144,7 +144,7 @@ app.post('/add', (req, res)=>{
         const productID = req.body.productID;
         const productNum = req.body.addCount;
         const userID = req.session.uid;
-        // console.log("userID: ", userID);
+        console.log("userID: ", userID);
         // console.log("productID: ", productID);
         // console.log("productNum: ", productNum);
         let sql1 = "select MAX(cartID) as max_id from SHOPCART;";
@@ -249,11 +249,24 @@ app.get('/login', function(req, res){
             }
         })
     })
+    
 });
 
 
-app.get('/payment', function(req, res){
+
+
+app.get('/payment', function(req, res, next){
     res.render('payment')
+    //payment system
+    let fetchSQL = 'select * from ShopCart where UID = ' + req.session.uid + ';';
+    connection.query(fetchSQL, function(err, result){
+        req.session.count[i]  = result[i];
+        console.log(req.session.cart);
+    });
+    if (req.session.uid){
+
+    }
+    
 });
 
 app.get('/product/:id', async (req, res) => {
