@@ -374,12 +374,15 @@ app.get('/login', function(req, res){
 app.get('/payment', function(req, res){
     if (req.session.loggedin){
         const userID = req.session.uid;
-        let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL, checkedProd from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART where checkedProd=1 group by UID) as a where SHOPCART.UID=' + String(userID) + ' and checkedProd=1 order by productID ASC;';
+        let sql = 'select pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND UID = ' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID=' + userID + ';';
         connection.query(sql, function(err, results){
             if (err) throw err;
             res.render('payment', {action: 'list', checkedProdData: results});
         })
-    }else {
+        
+
+    }
+    else {
         console.log("No payment session yet. Please login.");
         res.redirect('/login');
     }

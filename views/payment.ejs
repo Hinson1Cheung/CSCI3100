@@ -70,10 +70,10 @@
                         </span>
                     </h4>
                     <% checkedProdData.forEach((product, index) => { %>
-                        <p><a href="/product/<%= product.productID %>"><%= product.pName %></a><span class="quantity"> x<%= product.count %></span><span class="price"><%= product.price %></span></p> <!-- example, should redirect to product page-->
+                        <p><a href="/product/<%= product.productID %>"><%= product.pName %></a><span class="quantity"> x<%= product.count %></span><span class="price"><%= product.ssum %></span></p> <!-- example, should redirect to product page-->
                     <% }); %>
                     <hr>
-                    <p>Total <span class="price" id="total" style="color:black"><b>$30</b></span></p>
+                    <p>Total <span class="price" id="total" style="color:black"><b><%= checkedProdData[0].total %></b></span></p>
                 </div>
             </div>
             </div>
