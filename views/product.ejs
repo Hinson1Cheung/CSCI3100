@@ -136,12 +136,12 @@
             <div class="col-md-12"></br></div>
 
             <div class="col-md-12">
-                <div class="heading">
+                <div class="heading" style="display: flex; align-items: center;">
                     <span>Consumer Comments</span>
-                    <span>2</span>
-                    <span style="align-self: flex-end;">
-                        <div class="dropdown">
-                            <button class="dropbtn"><img src="../image/sort-arrows-couple-pointing-up-and-down.png" style="height: 20px;"/>Order</button>
+                    <span> &emsp;2&emsp; </span>
+                    <span>
+                        <!-- <div class="dropdown">
+                            <button id="dropbtn"><img src="../image/sort-arrows-couple-pointing-up-and-down.png" style="height: 20px;"/>Order</button>
                             <div class="dropdown-content">
                                 <button class="dropdown-block">
                                     Sort by Time
@@ -150,7 +150,11 @@
                                     Sort by Rating
                                 </button>
                             </div>
-                        </div>
+                        </div> -->
+                        <span id="comment-switcher" style="display: flex; align-items: center;">
+                            <button type="button" class="comment-switcher-btn" id="comment-orderbtn" onclick="switchOrder()"><img src="../image/down.png" style="height: 20px;"></button>
+                            <button type="button" class="comment-switcher-btn" id="comment-typebtn" onclick="switchType()">By Time</button>
+                        </span>
                     </span>
                 </div>
                 <hr style="border:3px solid #f1f1f1">

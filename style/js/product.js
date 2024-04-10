@@ -77,3 +77,35 @@ async function addToCart(){
     // alert("Product: " + pName + "of quantity: " + String(count) + " added to your cart successfully!");
     // location.reload();
 }
+
+// var orderBtn = document.getElementById("dropbtn");
+// var dropdownBtn = document.getElementsByClassName("dropdown-block");
+// dropdownBtn[0].addEventListener("click", changeOrder("Time")); //sort by time
+// dropdownBtn[1].addEventListener("click", changeOrder("Rating")); //sort by rating
+// function changeOrder(orderType){
+//     console.log("clicked by "+orderType);
+//     orderBtn.innerHTML = "<img src=\"../image/sort-arrows-couple-pointing-up-and-down.png\" style=\"height: 20px;\"/>" + orderType;
+// }
+
+
+var orderBtn = document.getElementById("comment-orderbtn");
+var typeBtn = document.getElementById("comment-typebtn");
+console.log(typeBtn);
+// orderBtn.addEventListener("change",switchOrder);
+// typeBtn.addEventListener("change",switchType);
+function switchOrder(){
+    console.log(orderBtn.innerHTML);
+    if(orderBtn.innerHTML == "<img src=\"../image/down.png\" style=\"height: 20px;\">"){
+        orderBtn.innerHTML = "<img src=\"../image/up.png\" style=\"height: 20px;\">";
+    }else{
+        orderBtn.innerHTML = "<img src=\"../image/down.png\" style=\"height: 20px;\">";
+    }
+}
+function switchType(){
+    console.log(typeBtn.innerHTML);
+    if(typeBtn.innerHTML == "By Time"){
+        typeBtn.innerHTML = "By Rating";
+    }else{
+        typeBtn.innerHTML = "By Time";
+    }
+}
