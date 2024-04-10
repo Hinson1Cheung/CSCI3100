@@ -33,7 +33,9 @@ create table if not exists ShopCart(
     cartID int primary key auto_increment,
     count int not null,
     UID int not null references user(UID),
-    productID int not null references product(productID)
+    productID int not null references product(productID),
+    checked int not null default 0,
+    checkedCount int not null default 0
 );
 
 
