@@ -37,7 +37,7 @@
             <!-- add form here, hello -->
             <div class = "col-md-6"> <!-- Left column -->
                 <div class = "container">
-                    <form action = " "> <!-- payment form-->
+                    <form action = "/pay", method="post"> <!-- payment form-->
                         <div class = "row">
                             <div class = "column">
                                 <h3>Shipping information</h3>
@@ -70,10 +70,10 @@
                         </span>
                     </h4>
                     <% checkedProdData.forEach((product, index) => { %>
-                        <p><a href="/product/<%= product.productID %>"><%= product.pName %></a><span class="quantity"> x<%= product.count %></span><span class="price"><%= product.ssum %></span></p> <!-- example, should redirect to product page-->
+                        <p><a href="/product/<%= product.productID %>"><%= product.pName %></a><span class="quantity"> x<%= product.count %></span><span class="price">$<%= product.ssum %></span></p> <!-- example, should redirect to product page-->
                     <% }); %>
                     <hr>
-                    <p>Total <span class="price" id="total" style="color:black"><b><%= checkedProdData[0].total %></b></span></p>
+                    <p>Total <span class="price" id="total" style="color:black"><b>$<%= checkedProdData[0].total %></b></span></p>
                 </div>
             </div>
             </div>
@@ -96,5 +96,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/js/payment.js"></script>
     <script src="/js/search.js"></script>
+
+    <% if (messages.error) { %>
+        <script>
+            alert('<%= messages.error %>');
+        </script>
+    <% } %>
+            
+    </script>
 </body>
 </html>
