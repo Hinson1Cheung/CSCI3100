@@ -1,0 +1,143 @@
+<!-- NEW SPECIFICATION: view user now does view all user, pass SQL:
+SELECT * FROM user;-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart | ShopVista</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/view.css">
+</head>
+<body>
+    <div class="header bg-white p-3"> <!-- Header -->
+        <div class="header-container">
+            <a href="/homepage">
+                <img src="/image/logo.png" alt="Logo" class="logo">
+            </a>
+            <div class="action-container"> <!-- Add a container for the search bar and the login button -->
+                <div class="search-container">
+                    <form class="input-group" id="search-form"> <!-- Add a search form --> <!-- ID is for JS-->
+                        <input type="text" class="form-control search-input" id="search-bar" placeholder="Search">
+                        <div id="preview-container"></div>
+                    </form>
+                </div>
+                <a href="/cart">
+                    <button class="btn btn-primary my-button">Cart</button>
+                </a>
+                <a href="/login">
+                    <button class="btn btn-primary my-button">Login</button>
+                </a>
+            </div>
+            <!-- Add a link to the cart page and other url -->
+        </div>
+    </div>
+    </div>
+    <div class="container mt-5">
+        <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
+        <h1 class="text-center">View user information</h1>
+       
+        <div class="row" style="display: flex; justify-content: center;">
+            <!-- add form here -->
+            <!-- sample display -->
+            
+
+            <div class="card" style="padding-bottom: 10px;">
+                <img src="/image/user_profile.jpg" alt="Sample" class="product-image" style="width:100%">
+                <h5>User Profile</h5>
+                <p class="quantity">User Name: Yuan</p>
+                <p class="quantity">User ID: 117728</p>
+
+            </div>
+        </div>
+    </div>   
+    <div class="container mt-5">
+        <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
+        <h1 class="text-center_">Recent purchases</h1>
+        
+        <div class="row" style="display: flex; justify-content: center;">
+            <!-- add form here -->
+            <!-- sample display -->
+            
+
+            <div class="card" style="padding-bottom: 10px;">
+                <img src="/image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="quantity">Quantity: 10</p>
+                <p class="quantity">Purchased Date: 29/3/2024</p>
+                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
+                
+            </div>
+            <div class="card" style="padding-bottom: 10px;">
+                <img src="../../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="quantity">Quantity: 10</p>
+                <p class="quantity">Purchased Date: 29/3/2024</p>
+                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
+                
+            </div>
+            <div class="card" style="padding-bottom: 10px;">
+                <img src="../../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="quantity">Quantity: 10</p>
+                <p class="quantity">Purchased Date: 29/3/2024</p>
+                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
+                
+            </div>
+            <div class="card" style="padding-bottom: 10px;">
+                <img src="../../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="quantity">Quantity: 10</p>
+                <p class="quantity">Purchased Date: 29/3/2024</p>
+                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
+                
+            </div>
+            <div class="card" style="padding-bottom: 10px;">
+                <img src="../../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="quantity">Quantity: 10</p>
+                <p class="quantity">Purchased Date: 29/3/2024</p>
+                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
+                
+            </div>
+            <div class="card" style="padding-bottom: 10px;">
+                <img src="../../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="quantity">Quantity: 10</p>
+                <p class="quantity">Purchased Date: 29/3/2024</p>
+                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
+                
+            </div>
+            <div class="card" style="padding-bottom: 10px;">
+                <img src="../../image/sample.png" alt="Sample" class="product-image" style="width:100%">
+                <h5>Sample Product</h5>
+                <p class="quantity">Quantity: 10</p>
+                <p class="quantity">Purchased Date: 29/3/2024</p>
+                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
+                
+            </div>
+
+        </div>
+        <div class="text-center mt-4">
+            <a href="/rmuser" class="btn btn-primary my-button">Delete user information</a>
+            <a href="/edituser" class="btn btn-primary my-button">Change user information</a>
+
+        </div>
+    </div>
+    
+    <br>
+    <footer style="display: flex; justify-content: space-between; align-items: center; width: 100%; background-color: #333; color: white; padding: 10px;">
+        <div><a href="#" class="scroll-to-top" title="Scroll to top" style="color: white;">Back to top</a></div>
+        <div>
+            <a href="/storemanage" style="color: white; margin-right: 10px;">Store Management</a>
+            <a href="/usermanage" style="color: white; margin-right: 10px;">User Management</a>
+
+        </div>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/js/view.js"></script>
+    <script src="/js/search.js"></script>
+</body>
+</html>
+
