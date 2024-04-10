@@ -5,10 +5,11 @@ const flash = require("express-flash");
 const path = require('path');
 const parser = require('body-parser');
 const pool = require('./dbPool.js');
+const uploader = require('express-fileupload');
 const { getProductById } = require('./poolQuery.js');
 const multer = require('multer');
 
-
+app.use(uploader());
 
 
 //const homePage = require("./Frontend/index.html");
@@ -26,6 +27,7 @@ app.use(flash());
 
 const mysql = require("mysql2");
 const fs = require("fs");
+const fileUpload = require("express-fileupload");
 let connection = mysql.createConnection({
     multipleStatements: true, 
     host: 'localhost',
@@ -304,9 +306,12 @@ app.get('/signup',(req, res)=>{
         var password = req.body.password;
         var password1 = req.body.password1;
         var balance = req.body.balance;
-        var imagePath = req.body.profilepic;
-        if (imagePath!= null){
-            imagePath = '/'+imagePath
+        var imgsrc = req.files.profilepic;
+        var filePath = req.files.profilepic.name;
+        console.log("imgsrc = ", imgsrc);
+        console.log("filePath = ", filePath);
+        if (filePath!= null){
+            filePath = '/'+ filePath
         }
         //check if user already exists
         check = 'select * from users where username = "' + username + '";';
@@ -317,10 +322,13 @@ app.get('/signup',(req, res)=>{
                 res.redirect('/signup');
             } else {
                 if (password == password1){
-                    query = 'insert into users (username, password, balance, propicURL) values ("' + username + '", "' + password + '", ' + balance + ', "./image' + imagePath + '");';
+                    query = 'insert into users (username, password, balance, propicURL) values ("' + username + '", "' + password + '", ' + balance + ', "./image' + filePath + '");';
                     console.log("query = ", query);
                     connection.query(query, function(err, result){
                         if (err) throw err;
+                        imgsrc.mv('../style/image'+filePath, function(err){
+                            if (err) throw err;
+                        });
                         req.flash('success', 'Account created successfully');
                         res.redirect('/login');
                     });
