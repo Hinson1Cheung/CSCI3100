@@ -29,6 +29,7 @@ app.use(flash());
 const mysql = require("mysql2");
 const fs = require("fs");
 const fileUpload = require("express-fileupload");
+const { name } = require("ejs");
 let connection = mysql.createConnection({
     multipleStatements: true, 
     host: 'localhost',
@@ -457,12 +458,31 @@ app.get('/usermenu', function(req, res){
 });
 
 app.get('/viewuser', function(req, res){
-    let sql = 'SELECT * FROM product';
-    connection.query(sql, (err, result) => {
-      if (err) throw err;
-      res.render('viewuser', { products: result });
-    });
-});
+
+    if (req.session.loggedin){
+        //const userID = req.session.uid;
+        const userID = req.session.uid;
+
+        let sql = 'SELECT username, propicURL FROM users WHERE UID = '+userID+';';
+        
+        connection.query(sql, function(err, results){
+            if (err) throw err;
+            res.render('viewuser', {name: results[0].username,picpath : results[0].propicURL ,userid: userID});
+        })
+        let sql_2 = 'SELECT  p.productID, p.imageURL, p.pName, p.price    FROM transaction t JOIN product p ON t.productID = p.productID WHERE t.UID = '+ userID+'';
+
+        connection.query(sql_2, [userID], function (err, results_product) {
+            if (err) throw err;
+            res.render('products',results_product);
+        });        
+        
+    }
+    else {
+        console.log("No payment session yet. Please login.");
+        res.redirect('/login');
+    }
+}
+);
 
 app.get('/userprofile', function(req, res){
     res.render('userprofile')

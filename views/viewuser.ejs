@@ -44,10 +44,10 @@ SELECT * FROM user;-->
             
 
             <div class="card" style="padding-bottom: 10px;">
-                <img src="/image/user_profile.jpg" alt="Sample" class="product-image" style="width:100%">
+                <img src= "<%= picpath %>"  alt="Sample" class="product-image" style="width:100%">
                 <h5>User Profile</h5>
-                <p class="quantity">User Name: Yuan</p>
-                <p class="quantity">User ID: 117728</p>
+                <p class="quantity">User Name: <%= name %> </p>
+                <p class="quantity">User ID: <%= userid %> </p>
 
             </div>
         </div>
@@ -59,25 +59,26 @@ SELECT * FROM user;-->
         <div class="row" style="display: flex; justify-content: center;">
             <!-- add form here -->
             <!-- sample display -->
-            <div class="container mt-5">
-                <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;" title="Previous Page">Go back</a>
-                <h1 class="text-center">Products</h1>
-                <div class="row">
-                    <% products.forEach(function(product) { %>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                            <div class="product-item" style="margin-top: 10px; margin-bottom: 10px;">
-                                <img src="<%= product.imageURL %>" class="product-image" alt="<%= product.name %>" style="width: auto; height: 250px;">
-                                <div>
-                                    <h5 class="mt-0 mb-1 text-center"><%= product.pName %></h5>
-                                    <h6 class="text-center">Price: $<%= product.price.toFixed(2) %></h6>
-                                    <a href="/product/<%= product.productID %>" class="btn btn-primary product-button my-button">Go to Product</a>
-                                    <br>
-                                </div>
+        </div>
+        <div class="container mt-5">
+            <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;" title="Previous Page">Go back</a>
+            <h1 class="text-center">Products</h1>
+            <div class="row">
+                <% products.forEach(function(product) { %>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="product-item" style="margin-top: 10px; margin-bottom: 10px;">
+                            <img src="<%= product.imageURL %>" class="product-image" alt="<%= product.pName %>" style="width: auto; height: 250px;">
+                            <div>
+                                <h5 class="mt-0 mb-1 text-center"><%= product.pName %></h5>
+                                <h6 class="text-center">Price: $<%= product.price.toFixed(2) %></h6>
+                                <a href="/product/<%= product.productID %>" class="btn btn-primary product-button my-button">Go to Product</a>
+                                <br>
                             </div>
                         </div>
-                    <% }); %>
-                </div>
-            </div>            
+                    </div>
+                <% }); %>
+            </div>
+        </div>            
 
             <div class="card" style="padding-bottom: 10px;">
                 <img src="/image/sample.png" alt="Sample" class="product-image" style="width:100%">
