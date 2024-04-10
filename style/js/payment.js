@@ -19,8 +19,7 @@ $(document).ready(function(){
     });
 });
 
-window.addEventListener('beforeunload',backCart);
-
+// window.onhashchange = backCart();
 
 // Parse the String data into JSON
 var jsonData = JSON.parse(checkedProdDataJS);
@@ -28,7 +27,6 @@ var TEMPTOTALPRODUCTS = 0;
 if (jsonData.length != 0) {
     TEMPTOTALPRODUCTS = jsonData[0]['total'];
 }
-console.log(jsonData);
 //retrive data from db (list disconnect with db)
 var pidList = [];
 for (let i=0; i < TEMPTOTALPRODUCTS; i++){
@@ -54,20 +52,20 @@ function addUpTotal(){
     var printTotal = document.getElementById("total");
     printTotal.innerHTML = "<b>$" + total.toFixed(2) + "</b>";
 }
-async function backCart(){ //delete the selected items
-    console.log("reset checkedProd");
-    await fetch('/backCart', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({productID: pidList}), // Send the productIDs to server
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}  
+// async function backCart(){ //delete the selected items
+//     console.log("reset checkedProd");
+//     await fetch('/backCart', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({productID: pidList}), // Send the productIDs to server
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log('Success:', data);
+//     })
+//     .catch((error) => {
+//         console.error('Error:', error);
+//     });
+// }  

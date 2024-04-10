@@ -178,32 +178,42 @@ app.post('/del', (req, res)=>{
 });
 
 app.post('/checkout', (req, res)=>{
-    const productID = req.body.productID;
-    for (let i = 0; i < productID.length; i++){
-        let sql = 'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ';';
-        connection.query(sql, function(err, result){
-            if (err) throw err;
-        });
+    if (req.session.loggedin) {
+        const userID = req.session.uid;
+        const productID = req.body.productID;
+        for (let i = 0; i < productID.length; i++){
+            let sql = 'update SHOPCART set checkedProd = 0 where UID=' + String(userID) +';'+
+                    'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ' and UID=' + String(userID) +';';
+            connection.query(sql, function(err, result){
+                if (err) throw err;
+            });
+        }
+        res.json({success: true});
+    }else {
+        console.log("Please login first");
+        res.redirect('/login');
     }
-    res.json({success: true});
-    // if (res.json.success){
-    //     res.redirect('/cart');
-    // }
 });
 
-app.post('/backCart', (req, res)=>{
-    const productID = req.body.productID;
-    for (let i = 0; i < productID.length; i++){
-        let sql = 'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ';';
-        connection.query(sql, function(err, result){
-            if (err) throw err;
-        });
-    }
-    res.json({success: true});
-    // if (res.json.success){
-    //     res.redirect('/cart');
-    // }
-});
+// app.post('/backCart', (req, res)=>{
+//     if (req.session.loggedin) {
+//         const userID = req.session.uid;
+//         const productID = req.body.productID;
+//         for (let i = 0; i < productID.length; i++){
+//             let sql = 'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ' and UID=' + String(userID) +';';
+//             connection.query(sql, function(err, result){
+//                 if (err) throw err;
+//             });
+//         }
+//         res.json({success: true});
+//     }else {
+//         console.log("Please login first");
+//         res.redirect('/login');
+//     }
+//     // if (res.json.success){
+//     //     res.redirect('/cart');
+//     // }
+// });
 
 app.post('/add', (req, res)=>{
     if (req.session.loggedin) {
