@@ -342,7 +342,11 @@ app.get('/signup',(req, res)=>{
 });
 
 app.get('/storemanage', function(req, res){
-    res.render('storemanage')
+    let sql = 'SELECT * FROM product';
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+      res.render('storemanage', { products: result });
+    });
 });
 
 app.get('/usermenu', function(req, res){
