@@ -20,12 +20,6 @@
                         <div id="preview-container"></div>
                     </form>
                 </div>
-                <a href="/cart">
-                    <button class="btn btn-primary my-button">Cart</button>
-                </a>
-                <a href="/login">
-                    <button class="btn btn-primary my-button">Login</button>
-                </a>
             </div>
             <!-- Add a link to the cart page and other url -->
         </div>
@@ -33,37 +27,54 @@
     </div>
     <div class="container mt-5">
         <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
-        <h1 class="text-center">Store Management</h1>
-        <div class="row" style="display: flex; justify-content: center;">
+        <h1 class="text-center">Shopping Cart</h1>
+        <div class="row" id="cardcontainer" style="display: flex; justify-content: center; align-items: stretch;">
             <!-- add form here -->
             <!-- sample display -->
-            <% products.forEach(function(product) { %>
+            <% products.forEach((product, index) => { %>
                 <div class="card" style="padding-bottom: 10px;">
-                    <img src="<%= product.imageURL %>" alt="Sample" class="product-image" style="width:100%">
-                    <h5 class="mt-0 mb-1 text-center"><%= product.pName %></h5>
-                    <h6 class="text-center">Price: $<%= product.price.toFixed(2) %></h6>
-                    <p class="quantity">Quantity: <%= product.quantity %></p>
-                    <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
-                    <div class="text-center" >
-                        <button class="btn btn-primary" style="width: 80px; height: 30px;">Remove</button>
+                    <div class="checkbox-wrapper-18">
+                        <div class="round">
+                            <input type="checkbox" class="chk" id="<%= index + 1 %>" />
+                            <label for="<%= index + 1 %>"></label>
+                        </div>
                     </div>
+                    <img src="<%= product.imageURL %>" alt="<%= product.pName %>" class="product-image" style="width:100%">
+                    <h5 class="pname" id="n<%= index + 1 %>"><%= product.pName %></h5>
+                    <p class="price" id="p<%= index + 1 %>">$<%= product.price.toFixed(2) %></p>
+                    <!-- <div class="number-input">
+                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                        <input type="number" class="quantity" id="q<%= index + 1 %>" value="<%= product.count %>" min="1" max="100">
+                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                    </div> -->
                 </div>
             <% }); %>
         </div>
-        <div class="text-center mt-4">
-            <a href="/addproduct" class="btn btn-primary my-button">Add new Product</a>
-            <a href="/adminhome" class="btn btn-primary my-button">Save Change</a>
-            <a href="/adminhome" class="btn btn-primary my-button">Cancel Change</a>
-        </div>
+        
+        <script>
+            // Get query data from server.js and pass data from cart.ejs to cart.js as String
+            var productsJS = '<%- JSON.stringify(products) %>';
+        </script>
+        
     </div>
-    
+    <div class="row" style="display: none;" id="toolbar">
+        <div class="row">
+            <div class="checkbox-wrapper-18";>
+                <div class="round">
+                <input type="checkbox" id="select" onclick="selection()"/>
+                <label for="select" style="margin-bottom: 0;"></label>
+                </div>
+            </div>
+            <div style="color: black; align-self: center;" id="pc"> &emsp;1 Product Selected </div>
+        </div>
+        <div><button class="toolbar-btn" onclick="selectDel()" ><img src="../image/delete.png" style="height: 30px;" alt="delete"></button></div>
+    </div>
     <br>
     <footer style="display: flex; justify-content: space-between; align-items: center; width: 100%; background-color: #333; color: white; padding: 10px;">
         <div><a href="#" class="scroll-to-top" title="Scroll to top" style="color: white;">Back to top</a></div>
         <div>
-            <a href="/storemanage" style="color: white; margin-right: 10px;">Store Management</a>
-            <a href="/usermenu" style="color: white; margin-right: 10px;">User Management</a>
            
+            <a href="/adminlogin" style="color: white;">Admin Login</a>
         </div>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
