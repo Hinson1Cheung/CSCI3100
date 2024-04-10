@@ -371,22 +371,27 @@ app.get('/login', function(req, res){
 });
 
 
-app.get('/payment', function(req, res){
+app.get('/payment', async function(req, res){
     if (req.session.loggedin){
         const userID = req.session.uid;
+       
         let sql = 'select pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND UID = ' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID=' + userID + ';';
-        connection.query(sql, function(err, results){
-            if (err) throw err;
-            res.render('payment', {action: 'list', checkedProdData: results});
-        })
+        const totalcost = await new Promise(function (resolve, reject){
+            connection.query(sql, function(err, results){
+                if (err) throw err;
+                res.render('payment', {action: 'list', checkedProdData: results});
+                resolve(results[0].total)
+            });
+        });
         
-
+        req.session.totalcost = totalcost;
     }
     else {
         console.log("No payment session yet. Please login.");
         res.redirect('/login');
     }
 });
+
 
 app.get('/product/:id', async (req, res) => {
     const product = await getProductById(req.params.id);
