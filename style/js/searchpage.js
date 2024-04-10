@@ -1,13 +1,6 @@
-$(document).ready(function() {
-    $('.product-item').hover(function() {
-        $(this).find('.product-button').css({'visibility': 'visible', 'opacity': 1});
-    }, function() {
-        $(this).find('.product-button').css({'visibility': 'hidden', 'opacity': 0});
-    });
-});
-
 const searchBar = document.getElementById('search-bar');
-const previewContainer = document.getElementById('preview-container');
+const minPrice = document.getElementById('min');
+const maxPrice = document.getElementById('max');
 
 let products = [];
 
@@ -15,67 +8,100 @@ let products = [];
 window.onload = async () => {
     const response = await fetch('/api/products');
     products = await response.json();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTerm = decodeURIComponent(urlParams.get('query'));
+    const min = decodeURIComponent(urlParams.get('min'));
+    const max = decodeURIComponent(urlParams.get('max'));
+
+    searchBar.value = searchTerm;
+    minPrice.value = min;
+    maxPrice.value = max;
+
+    // Trigger the 'input' event to filter the products
+    searchBar.dispatchEvent(new Event('input'));
 };
 
 searchBar.addEventListener('input', () => {
     const searchTerm = searchBar.value.toLowerCase();
 
     if (!searchTerm) {
-        previewContainer.style.display = 'none';
         return;
     }
-
-    previewContainer.innerHTML = '';
 
     const matchingProducts = products.filter(product => product.pName.toLowerCase().includes(searchTerm));
 
     if (matchingProducts.length > 0) {
-        const product = matchingProducts[0];
+        matchingProducts.forEach(product => {
+            const productElement = document.createElement('div');
+            productElement.classList.add('preview-item');
+            productElement.innerHTML = `
+                <div class="product-item">
+                    <h3>${product.pName}</h3>
+                    <div class="product-details">
+                        <img src="../${product.imageURL}" alt="${product.pName}">
+                        <p>${product.description}</p>
+                    </div>
+                </div>
+            `;
 
-        const productElement = document.createElement('div');
-        productElement.classList.add('preview-item');
-        productElement.innerHTML = `
-            <h3>${product.pName}</h3>
-            <img src="../${product.imageURL}" alt="${product.pName}">
-            <p>${product.description}</p>
-        `;
-
-        productElement.addEventListener('click', () => {
-            window.location.href = `/product/${product.productID}`;
+            productElement.addEventListener('click', () => {
+                window.location.href = `/product/${product.productID}`;
+            });
         });
-
-        previewContainer.appendChild(productElement);
-        previewContainer.style.display = 'block';
-    } else {
-        previewContainer.innerHTML = '<p>No products found.</p>';
-        previewContainer.style.display = 'block';
     }
-});
-
-searchBar.addEventListener('focus', () => {
-    const searchTerm = searchBar.value.toLowerCase();
-
-    if (searchTerm) {
-        previewContainer.style.display = 'block';
-    }
-});
-
-document.addEventListener('click', (event) => {
-  if (!event.target.closest('.search-container')) {
-    previewContainer.style.display = 'none';
-  }
 });
 
 searchBar.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         event.preventDefault();
 
-        // Get the first preview item
-        const firstPreviewItem = document.querySelector('.preview-item');
+        const searchTerm = searchBar.value.toLowerCase();
+        const minprice = document.getElementById('min').value;
+        const maxprice = document.getElementById('max').value;
 
-        // If the first preview item exists, trigger a click event on it
-        if (firstPreviewItem) {
-            firstPreviewItem.click();
+        const matchingProduct = products.find(product => product.pName.toLowerCase() === searchTerm);
+
+        if (matchingProduct) {
+            window.location.href = `/product/${matchingProduct.productID}`;
+        } else {
+            window.location.href = `/search?query=${encodeURIComponent(searchTerm)}&min=${minprice}&max=${maxprice}`;
+        }
+    }
+});
+
+minPrice.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+
+        const searchTerm = searchBar.value.toLowerCase();
+        const minprice = document.getElementById('min').value;
+        const maxprice = document.getElementById('max').value;
+
+        const matchingProduct = products.find(product => product.pName.toLowerCase() === searchTerm);
+
+        if (matchingProduct) {
+            window.location.href = `/product/${matchingProduct.productID}`;
+        } else {
+            window.location.href = `/search?query=${encodeURIComponent(searchTerm)}&min=${minprice}&max=${maxprice}`;
+        }
+    }
+});
+
+maxPrice.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+
+        const searchTerm = searchBar.value.toLowerCase();
+        const minprice = document.getElementById('min').value;
+        const maxprice = document.getElementById('max').value;
+
+        const matchingProduct = products.find(product => product.pName.toLowerCase() === searchTerm);
+
+        if (matchingProduct) {
+            window.location.href = `/product/${matchingProduct.productID}`;
+        } else {
+            window.location.href = `/search?query=${encodeURIComponent(searchTerm)}&min=${minprice}&max=${maxprice}`;
         }
     }
 });
