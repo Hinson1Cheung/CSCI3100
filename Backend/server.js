@@ -209,7 +209,8 @@ app.get('/edituser', function(req, res){
 });
 
 app.get('/search', function(req, res){
-    res.render('search')
+    const keyword = decodeURIComponent(req.query.query);
+    res.render('search', { keyword: keyword });
 });
 
 app.get('/homepage', function(req, res){

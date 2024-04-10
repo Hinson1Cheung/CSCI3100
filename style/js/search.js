@@ -39,8 +39,7 @@ searchBar.addEventListener('input', () => {
         previewContainer.appendChild(productElement);
         previewContainer.style.display = 'block';
     } else {
-        previewContainer.innerHTML = '<p>No products found.</p>';
-        previewContainer.style.display = 'block';
+        previewContainer.style.display = 'none';
     }
 });
 
@@ -62,12 +61,14 @@ searchBar.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         event.preventDefault();
 
-        // Get the first preview item
-        const firstPreviewItem = document.querySelector('.preview-item');
+        const searchTerm = searchBar.value.toLowerCase();
 
-        // If the first preview item exists, trigger a click event on it
-        if (firstPreviewItem) {
-            firstPreviewItem.click();
+        const matchingProduct = products.find(product => product.pName.toLowerCase() === searchTerm);
+
+        if (matchingProduct) {
+            window.location.href = `/product/${matchingProduct.productID}`;
+        } else {
+            window.location.href = `/search?query=${encodeURIComponent(searchTerm)}`;
         }
     }
 });
