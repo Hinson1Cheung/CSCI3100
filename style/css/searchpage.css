@@ -29,6 +29,13 @@ h1.text-center {
     font-weight: bold;
     color: #333;
 }
+.input-group {
+    width: 500%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+}
+
 .input-group input {
     border: none;
     box-shadow: none;

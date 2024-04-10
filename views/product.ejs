@@ -33,7 +33,7 @@
     </div>
     </div>
     <div class="container mt-5">
-        <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
+        <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;">Go Back</a>
         <div class="row">
             <div class="col-md-6">
                 <img src="../<%= products.imageURL %>" class="img-fluid" alt="Product Image" style="height: 450px; width: auto;">
@@ -49,9 +49,13 @@
                     <input type="number" id="quantity" name="quantity" value="1" min="1" max="100">
                     <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button><br><br>
                 </div>
-                <a href="/cart" class="btn btn-primary cart-button" style="height: auto; width: 300px;">Add to Cart</a>
+                <a onclick="addToCart()" class="btn btn-primary cart-button" style="height: auto; width: 300px;">Add to Cart</a>
                 
             </div>
+            <script>
+                var productInfoJS = '<%- JSON.stringify(products) %>';
+                const loginJS = '<%- JSON.stringify(loginFlag) %>';
+            </script>
 
             <div class="col-md-12"></br></div>
 

@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <img src="<%= product.imageURL %>" alt="<%= product.pName %>" class="product-image" style="width:100%">
-                    <h5 class="title"><%= product.pName %></h5>
+                    <h5 class="pname" id="n<%= index + 1 %>"><%= product.pName %></h5>
                     <p class="price" id="p<%= index + 1 %>">$<%= product.price.toFixed(2) %></p>
                     <div class="number-input">
                         <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
@@ -67,7 +67,7 @@
             </div>
             <div style="color: black; align-self: center;" id="pc"> &emsp;1 Product Selected </div>
         </div>
-        <div><button class="toolbar-btn" onclick="selectDel()"><img src="../image/delete.png" style="height: 30px;" alt="delete"></button></div>
+        <div><button class="toolbar-btn" onclick="selectDel()" ><img src="../image/delete.png" style="height: 30px;" alt="delete"></button></div>
         <div class="row" style="border: 1px black solid;">
             <div style="font-size: large; font-family: Georgia, 'Times New Roman', Times, serif; align-self: center;" id="total">Total Price: $0.0 &emsp;</div>
             <a href="/payment">

@@ -125,13 +125,13 @@ h5.text-center {
     flex-direction: column;
     flex-grow: 1;
 }
-.title {
+.pname {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.title:focus, .title:hover {
+.pname:focus, .pname:hover {
     overflow: visible;
     white-space: normal;
 }
