@@ -6,6 +6,11 @@ const path = require('path');
 const parser = require('body-parser');
 const pool = require('./dbPool.js');
 const { getProductById } = require('./poolQuery.js');
+const multer = require('multer');
+
+
+
+
 //const homePage = require("./Frontend/index.html");
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
@@ -59,6 +64,9 @@ app.use(express.static(__dirname+'/../style'));
 app.use(express.json());
 
 app.set('view engine', 'ejs');
+
+
+
 app.get('/', function(req, res){
     let sql = 'SELECT * FROM product ORDER BY rating DESC LIMIT 12'; // Query to get top 12 highest-rated products
     connection.query(sql, (err, result) => {
@@ -260,8 +268,40 @@ app.get('/rmuser', function(req, res){
     res.render('rmuser')
 });
 
-app.get('/signup', function(req, res){
-    res.render('signup')
+app.get('/signup',(req, res)=>{
+    res.render('signup');
+    app.post('/reg', (req, res)=>{
+        var username = req.body.username;
+        var password = req.body.password;
+        var password1 = req.body.password1;
+        var balance = req.body.balance;
+        var imagePath = req.body.profilepic;
+        if (imagePath!= null){
+            imagePath = '/'+imagePath
+        }
+        //check if user already exists
+        check = 'select * from users where username = "' + username + '";';
+        connection.query(check, function(err, result){
+            if (err) throw err;
+            if (result.length > 0){
+                req.flash('error', 'Username already exists, please try again');
+                res.redirect('/signup');
+            } else {
+                if (password == password1){
+                    query = 'insert into users (username, password, balance, propicURL) values ("' + username + '", "' + password + '", ' + balance + ', "./image' + imagePath + '");';
+                    console.log("query = ", query);
+                    connection.query(query, function(err, result){
+                        if (err) throw err;
+                        req.flash('success', 'Account created successfully');
+                        res.redirect('/login');
+                    });
+                } else {
+                    req.flash('error', 'Passwords do not match, please try again');
+                    res.redirect('/signup');
+                }
+            }
+        })
+    })
 });
 
 app.get('/storemanage', function(req, res){
