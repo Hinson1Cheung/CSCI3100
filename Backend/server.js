@@ -84,11 +84,51 @@ app.get('/addproduct', function(req, res){
 });
 
 app.get('/adduser', function(req, res){
-    res.render('adduser')
+    res.render('adduser');
+    app.post('/au', (req, res)=>{
+        var username = req.body.username;
+        var password = req.body.password;
+        var password1 = req.body.password1;
+        var balance = req.body.balance;
+        var imgsrc = req.files.profilepic;
+        var filePath = req.files.profilepic.name;
+       
+        if (filePath!= null){
+            filePath = '/'+ filePath
+        }
+        //check if user already exists
+        check = 'select * from users where username = "' + username + '";';
+        connection.query(check, function(err, result){
+            if (err) throw err;
+            if (result.length > 0){
+                req.flash('error', 'Username already exists, please try again');
+                res.redirect('/adduser');
+            }
+            else{
+                let sql = 'insert into users (username, password, balance, propicURL) values ("' + username + '", "' + password + '", ' + balance + ', "./image/' + filePath + '");';
+                connection.query(sql, function(err, result){
+                if (err) throw err;
+                imgsrc.mv('../style/image/'+filePath, function(err){
+                    if (err) throw err;
+                });
+                req.flash('success', 'User added successfully');
+                res.redirect('/adminhome');
+        });
+            }
+        });
+        
+    });
+
 });
 
 app.get('/adminhome', function(req, res){
-    res.render('adminhome')
+    if (req.session.adminLogin){
+        res.render('adminhome')
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
     
 });
 
@@ -103,6 +143,7 @@ app.get('/adminlogin', function(req, res){
             if (err) throw err;
             if (result.length > 0){
                 if(adminkey =='adminkey'){
+                    req.session.adminLogin = true;
                     res.redirect('/adminhome');
                 }
                 else{
@@ -462,8 +503,7 @@ app.get('/signup',(req, res)=>{
         var balance = req.body.balance;
         var imgsrc = req.files.profilepic;
         var filePath = req.files.profilepic.name;
-        console.log("imgsrc = ", imgsrc);
-        console.log("filePath = ", filePath);
+       
         if (filePath!= null){
             filePath = '/'+ filePath
         }
