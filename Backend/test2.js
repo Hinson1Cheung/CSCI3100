@@ -457,11 +457,20 @@ app.get('/usermenu', function(req, res){
 });
 
 app.get('/viewuser', function(req, res){
-    res.render('viewuser')
+    let sql = 'SELECT * FROM product';
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+      res.render('viewuser', { products: result });
+    });
 });
 
 app.get('/userprofile', function(req, res){
-    res.render('userprofile')
+    let sql = 'SELECT * FROM product';
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+      res.render('userprofile', { products: result });
+    });
+
 })
 
 app.get('/api/products', async (req, res) => {
