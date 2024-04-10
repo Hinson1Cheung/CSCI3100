@@ -8,6 +8,7 @@ const pool = require('./dbPool.js');
 const uploader = require('express-fileupload');
 const { getProductById } = require('./poolQuery.js');
 const multer = require('multer');
+const async = require('async');
 
 app.use(uploader());
 
@@ -178,32 +179,42 @@ app.post('/del', (req, res)=>{
 });
 
 app.post('/checkout', (req, res)=>{
-    const productID = req.body.productID;
-    for (let i = 0; i < productID.length; i++){
-        let sql = 'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ';';
-        connection.query(sql, function(err, result){
-            if (err) throw err;
-        });
+    if (req.session.loggedin) {
+        const userID = req.session.uid;
+        const productID = req.body.productID;
+        for (let i = 0; i < productID.length; i++){
+            let sql = 'update SHOPCART set checkedProd = 0 where UID=' + String(userID) +';'+
+                    'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ' and UID=' + String(userID) +';';
+            connection.query(sql, function(err, result){
+                if (err) throw err;
+            });
+        }
+        res.json({success: true});
+    }else {
+        console.log("Please login first");
+        res.redirect('/login');
     }
-    res.json({success: true});
-    // if (res.json.success){
-    //     res.redirect('/cart');
-    // }
 });
 
-app.post('/backCart', (req, res)=>{
-    const productID = req.body.productID;
-    for (let i = 0; i < productID.length; i++){
-        let sql = 'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ';';
-        connection.query(sql, function(err, result){
-            if (err) throw err;
-        });
-    }
-    res.json({success: true});
-    // if (res.json.success){
-    //     res.redirect('/cart');
-    // }
-});
+// app.post('/backCart', (req, res)=>{
+//     if (req.session.loggedin) {
+//         const userID = req.session.uid;
+//         const productID = req.body.productID;
+//         for (let i = 0; i < productID.length; i++){
+//             let sql = 'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ' and UID=' + String(userID) +';';
+//             connection.query(sql, function(err, result){
+//                 if (err) throw err;
+//             });
+//         }
+//         res.json({success: true});
+//     }else {
+//         console.log("Please login first");
+//         res.redirect('/login');
+//     }
+//     // if (res.json.success){
+//     //     res.redirect('/cart');
+//     // }
+// });
 
 app.post('/add', (req, res)=>{
     if (req.session.loggedin) {
@@ -213,39 +224,56 @@ app.post('/add', (req, res)=>{
         // console.log("userID: ", userID);
         // console.log("productID: ", productID);
         // console.log("productNum: ", productNum);
+
+        // initialize sql queries(sql1, sql2, sql3, sql4)
         let sql1 = "select MAX(cartID) as max_id from SHOPCART;";
         let max_id = 0;
-        setTimeout(function() {
-            connection.query(sql1, function(err, result){
-                if (err) throw err;
-                max_id = result[0]['max_id'];
-                if (max_id == null)
-                    max_id = 1;
-                else max_id += 1;
-                // console.log("max_id: ", max_id);
-            });
-        }, 2000);
-       
         let sql2 = 'select * from SHOPCART where UID=' + String(userID) +  ' and productID='+ String(productID) + ';';
-        // console.log(sql2);
-        let cartID = 0;
-        let sql3 = '';
-        setTimeout(function() {
-            connection.query(sql2, function(err, result){
-                if (err) throw err;
-                cartID = result;
-                // console.log("cartID: ", result.length == 0);
-                if (result.length == 0) {
-                    sql3 = 'insert into SHOPCART(cartID, count, UID, productID) values(' + max_id + ',' + productNum + ',' + userID + ',' + productID + ');';
-                    // console.log("sql3: " ,sql3);
-                }
-                else {
-                    sql3 = 'update SHOPCART set count = count + ' + productNum + ' where UID=' + userID + ' and productID=' + productID + ';';
-                    // console.log("sql3: " ,sql3);
-                }
-            });
-        }, 2000);
+        let sql3 = ''; //dependent on sql2
+        let sql4 = 'update PRODUCT set quantity = quantity - ' + productNum + ' where productID=' + productID + ';';
+        
+        // async parallel to run sql1, sql2, and sql4 in parallel since they are independent
+        async.parallel({
+            res1: function(callback){
+                // console.time("res1");
+                connection.query(sql1, function(err, res1){
+                    if (err) { callback(err)}
+                    max_id = res1[0]['max_id'];
+                    if (max_id == null)
+                        max_id = 1;
+                    else max_id += 1;
+                    // console.log("max_id: ", max_id);
+                    // console.log("res1 done ");
+                    // console.timeEnd("res1");
+                })
+            },
+            res2: function(callback){
+                connection.query(sql2, function(err, res2){
+                    // console.time("res2");
+                    if (err) { callback(err)}
+                    if (res2.length == 0) {
+                        sql3 = 'insert into SHOPCART(cartID, count, UID, productID) values(' + max_id + ',' + productNum + ',' + userID + ',' + productID + ');';
+                        // console.log("sql3: " ,sql3);
+                    }
+                    else {
+                        sql3 = 'update SHOPCART set count = count + ' + productNum + ' where UID=' + userID + ' and productID=' + productID + ';';
+                        // console.log("sql3: " ,sql3);
+                    }
+                    // console.log("res2 done ");
+                    // console.timeEnd("res2");
+                })
+            },
+            res4: function(callback){
+                connection.query(sql4, function(err, res4){
+                    // console.time("res4");
+                    if (err) { callback(err)}
+                    // console.log("res4 done ");
+                    // console.timeEnd("res4");
+                });
+            }
+        });
 
+        // dependent sql query need to be delayed for 10ms
         setTimeout(function() {
             // console.log("sql3: " ,sql3);
             connection.query(sql3, function(err, result){
@@ -256,14 +284,8 @@ app.post('/add', (req, res)=>{
                 console.log("Product added to cart successfully");
                 res.redirect('/cart');
             }
-        }, 3000);
+        }, 10);
 
-        sql4 = 'update PRODUCT set quantity = quantity - ' + productNum + ' where productID=' + productID + ';';
-        setTimeout(function() {
-            connection.query(sql4, function(err, result){
-                if (err) throw err;
-            });
-        }, 2000);
     }
     else {
         console.log("Please login first");
@@ -328,6 +350,7 @@ app.get('/homepage', function(req, res){
 
 app.get('/login', function(req, res){
     res.render('login');
+    var historyLink = req.header('Referer') || '/';
     app.post('/log', (req, res)=>{
         var username = req.body.username;
         var password = req.body.password;
@@ -337,7 +360,8 @@ app.get('/login', function(req, res){
             if (result.length > 0){
                 req.session.loggedin = true;
                 req.session.uid = result[0].UID;
-                res.redirect('/');
+                console.log("history link = ", historyLink);
+                res.redirect(historyLink);
             } else {
                 req.flash('error', 'Invalid credentials, please try again');
                 res.redirect('/login');
@@ -350,12 +374,15 @@ app.get('/login', function(req, res){
 app.get('/payment', function(req, res){
     if (req.session.loggedin){
         const userID = req.session.uid;
-        let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL, checkedProd from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART where checkedProd=1 group by UID) as a where SHOPCART.UID=' + String(userID) + ' and checkedProd=1 order by productID ASC;';
+        let sql = 'select pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND UID = ' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID=' + userID + ';';
         connection.query(sql, function(err, results){
             if (err) throw err;
             res.render('payment', {action: 'list', checkedProdData: results});
         })
-    }else {
+        
+
+    }
+    else {
         console.log("No payment session yet. Please login.");
         res.redirect('/login');
     }
@@ -368,7 +395,7 @@ app.get('/product/:id', async (req, res) => {
         login = true;
     }
     // console.log(login);
-    res.render('product', { products: product, loginFlag: login});
+    res.render('product', { products: product, loggedin: login});
 });
 
 app.get('/rmuser', function(req, res){

@@ -24,9 +24,15 @@
                 <a href="/cart">
                     <button class="btn btn-primary my-button">Cart</button>
                 </a>
-                <a href="/login">
-                    <button class="btn btn-primary my-button">Login</button>
-                </a>
+                <% if (loggedin) { %>
+                    <a href="/userprofile">
+                        <button class="btn btn-primary my-button">Profile</button>
+                    </a> <!-- If logged in, show profile button -->
+                <% } else { %>
+                    <a href="/login">
+                        <button class="btn btn-primary my-button">Login</button>
+                    </a> <!-- If not logged in, show login button -->
+                <% } %>
             </div>
             <!-- Add a link to the cart page and other url -->
         </div>
@@ -54,7 +60,7 @@
             </div>
             <script>
                 var productInfoJS = '<%- JSON.stringify(products) %>';
-                const loginJS = '<%- JSON.stringify(loginFlag) %>';
+                const loginJS = '<%- JSON.stringify(loggedin) %>';
             </script>
 
             <div class="col-md-12"></br></div>
