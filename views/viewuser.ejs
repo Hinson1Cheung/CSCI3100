@@ -1,6 +1,3 @@
-<!-- NEW SPECIFICATION: view user now does view all user, pass SQL:
-SELECT * FROM user;-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,13 +5,13 @@ SELECT * FROM user;-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart | ShopVista</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/view.css">
+    <link rel="stylesheet" href="/css/StoreManagement.css">
 </head>
 <body>
     <div class="header bg-white p-3"> <!-- Header -->
         <div class="header-container">
             <a href="/homepage">
-                <img src="/image/logo.png" alt="Logo" class="logo">
+                <img src="../image/logo.png" alt="Logo" class="logo">
             </a>
             <div class="action-container"> <!-- Add a container for the search bar and the login button -->
                 <div class="search-container">
@@ -36,112 +33,20 @@ SELECT * FROM user;-->
     </div>
     <div class="container mt-5">
         <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
-        <h1 class="text-center">View user information</h1>
-       
+        <h1 class="text-center">Store Management</h1>
         <div class="row" style="display: flex; justify-content: center;">
             <!-- add form here -->
             <!-- sample display -->
-            
-
-            <div class="card" style="padding-bottom: 10px;">
-                <img src="/image/user_profile.jpg" alt="Sample" class="product-image" style="width:100%">
-                <h5>User Profile</h5>
-                <p class="quantity">User Name: Yuan</p>
-                <p class="quantity">User ID: 117728</p>
-
-            </div>
-        </div>
-    </div>   
-    <div class="container mt-5">
-        <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
-        <h1 class="text-center_">Recent purchases</h1>
-        
-        <div class="row" style="display: flex; justify-content: center;">
-            <!-- add form here -->
-            <!-- sample display -->
-            <div class="container mt-5">
-                <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;" title="Previous Page">Go back</a>
-                <h1 class="text-center">Products</h1>
-                <div class="row">
-                    <% products.forEach(function(product) { %>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                            <div class="product-item" style="margin-top: 10px; margin-bottom: 10px;">
-                                <img src="<%= product.imageURL %>" class="product-image" alt="<%= product.name %>" style="width: auto; height: 250px;">
-                                <div>
-                                    <h5 class="mt-0 mb-1 text-center"><%= product.pName %></h5>
-                                    <h6 class="text-center">Price: $<%= product.price.toFixed(2) %></h6>
-                                    <a href="/product/<%= product.productID %>" class="btn btn-primary product-button my-button">Go to Product</a>
-                                    <br>
-                                </div>
-                            </div>
-                        </div>
-                    <% }); %>
+            <% products.forEach(function(product) { %>
+                <div class="card" style="padding-bottom: 10px;">
+                    <img src="<%= product.propicURL %>" alt="Sample" class="product-image" style="width:100%">
+                    <h5 class="mt-0 mb-1 text-center"><%= product.username %></h5>
+                    <h6 class="text-center">balance: $<%= product.balance %></h6>
+                
                 </div>
-            </div>            
-
-            <div class="card" style="padding-bottom: 10px;">
-                <img src="/image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="quantity">Quantity: 10</p>
-                <p class="quantity">Purchased Date: 29/3/2024</p>
-                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
-                
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <img src="../../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="quantity">Quantity: 10</p>
-                <p class="quantity">Purchased Date: 29/3/2024</p>
-                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
-                
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <img src="../../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="quantity">Quantity: 10</p>
-                <p class="quantity">Purchased Date: 29/3/2024</p>
-                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
-                
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <img src="../../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="quantity">Quantity: 10</p>
-                <p class="quantity">Purchased Date: 29/3/2024</p>
-                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
-                
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <img src="../../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="quantity">Quantity: 10</p>
-                <p class="quantity">Purchased Date: 29/3/2024</p>
-                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
-                
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <img src="../../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="quantity">Quantity: 10</p>
-                <p class="quantity">Purchased Date: 29/3/2024</p>
-                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
-                
-            </div>
-            <div class="card" style="padding-bottom: 10px;">
-                <img src="../../image/sample.png" alt="Sample" class="product-image" style="width:100%">
-                <h5>Sample Product</h5>
-                <p class="quantity">Quantity: 10</p>
-                <p class="quantity">Purchased Date: 29/3/2024</p>
-                <p class="price" contenteditable="true" oninput="validateInput(event)" onfocus="clearContent(event)" onkeydown="handleKeyDown(event)" onblur="handleBlur(event)">$19.99</p>
-                
-            </div>
-
+            <% }); %>
         </div>
-        <div class="text-center mt-4">
-            <a href="/rmuser" class="btn btn-primary my-button">Delete user information</a>
-            <a href="/edituser" class="btn btn-primary my-button">Change user information</a>
 
-        </div>
     </div>
     
     <br>
@@ -149,12 +54,12 @@ SELECT * FROM user;-->
         <div><a href="#" class="scroll-to-top" title="Scroll to top" style="color: white;">Back to top</a></div>
         <div>
             <a href="/storemanage" style="color: white; margin-right: 10px;">Store Management</a>
-            <a href="/usermanage" style="color: white; margin-right: 10px;">User Management</a>
-
+            <a href="/usermenu" style="color: white; margin-right: 10px;">User Management</a>
+           
         </div>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="/js/view.js"></script>
+    <script src="/js/viewuser.js"></script>
     <script src="/js/search.js"></script>
 </body>
 </html>
