@@ -230,7 +230,7 @@ app.post('/add', (req, res)=>{
         let max_id = 0;
         let sql2 = 'select * from SHOPCART where UID=' + String(userID) +  ' and productID='+ String(productID) + ';';
         let sql3 = ''; //dependent on sql2
-        let sql4 = 'update PRODUCT set quantity = quantity - ' + productNum + ' where productID=' + productID + ';';
+        //let sql4 = 'update PRODUCT set quantity = quantity - ' + productNum + ' where productID=' + productID + ';';
         
         // async parallel to run sql1, sql2, and sql4 in parallel since they are independent
         async.parallel({
@@ -263,14 +263,14 @@ app.post('/add', (req, res)=>{
                     // console.timeEnd("res2");
                 })
             },
-            res4: function(callback){
-                connection.query(sql4, function(err, res4){
+            //res4: function(callback){
+                //connection.query(sql4, function(err, res4){
                     // console.time("res4");
-                    if (err) { callback(err)}
+                    //if (err) { callback(err)}
                     // console.log("res4 done ");
                     // console.timeEnd("res4");
-                });
-            }
+                //});
+            //}
         });
 
         // dependent sql query need to be delayed for 10ms
@@ -384,13 +384,44 @@ app.get('/payment', async function(req, res){
             });
         });
         
-        req.session.totalcost = totalcost;
+        //check and deduct balance from user
+        app.post('/pay' ,(req, res)=>{
+            const userID = req.session.uid;
+            let checkBalance = 'select balance from users where UID = ' + userID + ';';
+            connection.query(checkBalance, function(err, result){
+                if (err) throw err;
+                if (result[0].balance >= totalcost){
+                    let updateBalance = 'update users set balance = balance - ' + totalcost + ' where UID = ' + userID + ';';
+                    connection.query(updateBalance, function(err, result){
+                        if (err) throw err;
+                        returnnewbalance = 'select balance from users where UID = ' + userID + ';';
+                        connection.query(returnnewbalance, function(err, result){
+                            if (err) throw err;
+                            req.flash("success", "Payment successful!, new balance: " + result[0].balance);
+                            let updateProductQuantity = 'update product, shopcart set product.quantity = product.quantity - shopcart.count where product.productID = shopcart.productID and shopcart.UID = ' + userID + ';';
+                            connection.query(updateProductQuantity, function(err, result){
+                                if (err) throw err;
+                                let deleteCart = 'delete from shopcart where UID = ' + userID + ';';
+                                connection.query(deleteCart, function(err, result){
+                                    if (err) throw err;
+                                    res.redirect('/cart');
+                                });
+                            });
+                        });
+                    });
+                } else {
+                    req.flash("error", "Insufficient balance");
+                    res.redirect('/payment');
+                }
+            });
+        });
     }
     else {
         console.log("No payment session yet. Please login.");
         res.redirect('/login');
     }
 });
+
 
 
 app.get('/product/:id', async (req, res) => {
