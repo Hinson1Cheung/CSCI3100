@@ -127,7 +127,7 @@ app.get('/cart', function(req, res){
         const userID = req.session.uid;
         // let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART group by UID) as a where SHOPCART.UID=' + String(userID) + ' order by productID ASC;';
         let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID) left join (select UID, COUNT(*) as total from SHOPCART group by UID) as a on SHOPCART.UID=a.UID where SHOPCART.UID=' + String(userID) + ' order by productID ASC;';
-        console.log("sql_cart: ", sql);
+        // console.log("sql_cart: ", sql);
         connection.query(sql, function(err, results){
         if (err) throw err;
         res.render('cart', {action: 'list', cartData: results});
@@ -150,7 +150,7 @@ app.post('/del', (req, res)=>{
         // console.log("productNum: ", productNum);
         for (let i = 0; i < productID.length; i++){
             let sql1 = 'delete from SHOPCART where productID=' + productID[i] + ' and UID=' + String(userID) + ';';
-            console.log("sql_delete: ", sql1);
+            // console.log("sql_delete: ", sql1);
             connection.query(sql1, function(err, result){
                 if (err) throw err;
                 // console.log("sql1:  ", result);
