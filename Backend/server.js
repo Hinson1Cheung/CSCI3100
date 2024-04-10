@@ -573,6 +573,7 @@ app.get('/viewuser', function(req, res){
 
         connection.query(sql_2, [userID], function (err, results_product) {
             if (err) throw err;
+            console.log("query2.");
             res.render('products',results_product);
         });        
         
@@ -584,9 +585,28 @@ app.get('/viewuser', function(req, res){
 }
 );
 
+
+
 app.get('/userprofile', function(req, res){
-    res.render('userprofile')
-})
+
+    if (req.session.loggedin){
+        //const userID = req.session.uid;
+        const userID = req.session.uid;
+
+        let sql = 'SELECT username, propicURL FROM users WHERE UID = '+userID+';';
+        
+        connection.query(sql, function(err, results){
+            if (err) throw err;
+            res.render('userprofile', {name: results[0].username,picpath : results[0].propicURL ,userid: userID});
+        })
+
+    }
+    else {
+        console.log("No login session yet. Please login.");
+        res.redirect('/login');
+    }
+}
+);
 
 app.get('/api/products', async (req, res) => {
     const [products] = await pool.query('SELECT * FROM product');
