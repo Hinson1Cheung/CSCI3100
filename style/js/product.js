@@ -39,6 +39,10 @@ async function addToCart(){
         alert("The quantity you entered exceed the product stock.\nPlease try again.");
         return;
     }
+    if (count < 1) {
+        alert("Invalid quantity.\nQuantity is non-zero.");
+        return;
+    }
     if (loginFlag) {
         await fetch('/add', {
             method: 'POST',
