@@ -88,10 +88,33 @@ app.get('/adduser', function(req, res){
 
 app.get('/adminhome', function(req, res){
     res.render('adminhome')
+    
 });
 
 app.get('/adminlogin', function(req, res){
     res.render('adminlogin')
+    app.post('/adm', (req, res)=>{
+        var username = req.body.username;
+        var password = req.body.password;
+        var adminkey = req.body.key;
+        query = 'select * from admins where adminname = "' + username + '" and password = "' + password + '";';
+        connection.query(query, function(err, result){
+            if (err) throw err;
+            if (result.length > 0){
+                if(adminkey =='adminkey'){
+                    res.redirect('/adminhome');
+                }
+                else{
+                    req.flash('error', 'Invalid credentials, please try again');
+                    res.redirect('/login');
+                }
+
+            } else {
+                req.flash('error', 'Invalid credentials, please try again');
+                res.redirect('/login');
+            }
+        })
+    })
 });
 
 app.get('/blacklist', function(req, res){
@@ -107,7 +130,9 @@ app.get('/cart', function(req, res){
             if (err) throw err;
             console.log("sql1:  ", result);
         });
-        let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART group by UID) as a where SHOPCART.UID=' + String(userID) + ' order by productID ASC;';
+        // let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID), (select SHOPCART.UID, COUNT(*) as total from SHOPCART group by UID) as a where SHOPCART.UID=' + String(userID) + ' order by productID ASC;';
+        let sql = 'select productID, count, a.total, SHOPCART.UID, pName, price, imageURL from SHOPCART inner join PRODUCT using(productID) left join (select UID, COUNT(*) as total from SHOPCART group by UID) as a on SHOPCART.UID=a.UID where SHOPCART.UID=' + String(userID) + ' order by productID ASC;';
+        // console.log("sql_cart: ", sql);
         connection.query(sql, function(err, results){
         if (err) throw err;
         res.render('cart', {action: 'list', cartData: results});
@@ -122,25 +147,33 @@ app.get('/cart', function(req, res){
 });
 
 app.post('/del', (req, res)=>{
-    const productID = req.body.productID;
-    const productNum = req.body.quantity;
-    // console.log("productID: ", productID);
-    // console.log("productNum: ", productNum);
-    for (let i = 0; i < productID.length; i++){
-        let sql1 = 'delete from SHOPCART where UID=' + String(userID) +  ' and productID=' + productID[i] + ';';
-        connection.query(sql1, function(err, result){
-            if (err) throw err;
-            // console.log("sql1:  ", result);
-        });
-        let sql2 = 'update PRODUCT set quantity = quantity + ' + productNum[i] + ' where UID=' + String(userID) +  ' and productID=' + productID[i] + ';';
-        connection.query(sql2, function(err, result){
-            if (err) throw err;
-            // console.log("sql2:  ", result);
-        }); 
+    if (req.session.loggedin) {
+        const productID = req.body.productID;
+        const productNum = req.body.quantity;
+        const userID = req.session.uid;
+        // console.log("productID: ", productID);
+        // console.log("productNum: ", productNum);
+        for (let i = 0; i < productID.length; i++){
+            let sql1 = 'delete from SHOPCART where productID=' + productID[i] + ' and UID=' + String(userID) + ';';
+            // console.log("sql_delete: ", sql1);
+            connection.query(sql1, function(err, result){
+                if (err) throw err;
+                // console.log("sql1:  ", result);
+            });
+            let sql2 = 'update PRODUCT set quantity = quantity + ' + productNum[i] + ' where productID=' + productID[i] + ';';
+            connection.query(sql2, function(err, result){
+                if (err) throw err;
+                // console.log("sql2:  ", result);
+            }); 
+        }
+        res.json({success: true});
+        if (res.json.success){
+            res.redirect('/cart');
+        }
     }
-    res.json({success: true});
-    if (res.json.success){
-        res.redirect('/cart');
+    else {
+        console.log("Please login first");
+        res.redirect('/login');
     }
 });
 
@@ -385,7 +418,11 @@ app.get('/signup',(req, res)=>{
 });
 
 app.get('/storemanage', function(req, res){
-    res.render('storemanage')
+    let sql = 'SELECT * FROM product';
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+      res.render('storemanage', { products: result });
+    });
 });
 
 app.get('/usermenu', function(req, res){

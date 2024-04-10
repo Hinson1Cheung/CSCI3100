@@ -88,10 +88,51 @@ app.get('/adduser', function(req, res){
 
 app.get('/adminhome', function(req, res){
     res.render('adminhome')
+    app.get('/adminlogin', function(req, res){
+        res.render('adminlogin')
+        app.post('/adm', (req, res)=>{
+            var username = req.body.username;
+            var password = req.body.password;
+            var adminkey = req.body.key;
+            query = 'select * from admins where adminname = "' + username + '" and password = "' + password + '";';
+            connection.query(query, function(err, result){
+                if (err) throw err;
+                if (result.length > 0){
+                    if(adminkey =='adminkey'){
+                        res.redirect('/adminhome');
+                    }
+                    else{
+                        req.flash('error', 'Invalid credentials, please try again');
+                        res.redirect('/login');
+                    }
+    
+                } else {
+                    req.flash('error', 'Invalid credentials, please try again');
+                    res.redirect('/login');
+                }
+            })
+        })
+    });
 });
 
 app.get('/adminlogin', function(req, res){
     res.render('adminlogin')
+    app.post('/adlog', (req, res)=>{
+        var username = req.body.username;
+        var password = req.body.password;
+        query = 'select * from users where username = "' + username + '" and password = "' + password + '";';
+        connection.query(query, function(err, result){
+            if (err) throw err;
+            if (result.length > 0){
+                req.session.loggedin = true;
+                req.session.uid = result[0].UID;
+                res.redirect('/');
+            } else {
+                req.flash('error', 'Invalid credentials, please try again');
+                res.redirect('/login');
+            }
+        })
+    })
 });
 
 app.get('/blacklist', function(req, res){
@@ -144,7 +185,7 @@ app.post('/add', (req, res)=>{
         const productID = req.body.productID;
         const productNum = req.body.addCount;
         const userID = req.session.uid;
-        // console.log("userID: ", userID);
+        console.log("userID: ", userID);
         // console.log("productID: ", productID);
         // console.log("productNum: ", productNum);
         let sql1 = "select MAX(cartID) as max_id from SHOPCART;";
@@ -249,11 +290,24 @@ app.get('/login', function(req, res){
             }
         })
     })
+    
 });
 
 
-app.get('/payment', function(req, res){
+
+
+app.get('/payment', function(req, res, next){
     res.render('payment')
+    //payment system
+    let fetchSQL = 'select * from ShopCart where UID = ' + req.session.uid + ';';
+    connection.query(fetchSQL, function(err, result){
+        req.session.count[i]  = result[i];
+        console.log(req.session.cart);
+    });
+    if (req.session.uid){
+
+    }
+    
 });
 
 app.get('/product/:id', async (req, res) => {
