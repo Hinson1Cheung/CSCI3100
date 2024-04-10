@@ -37,6 +37,14 @@ create table if not exists ShopCart(
     checkedProd int not null default 0
 );
 
+create table if not exists review(
+    commentID int primary key auto_increment,
+    rating int not null,
+    UID int not null references user(UID),
+    productID int not null references product(productID),
+    date text,
+    content text
+);
 
 
 create table if not exists transaction (
