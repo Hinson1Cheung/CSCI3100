@@ -182,6 +182,7 @@ app.post('/checkout', (req, res)=>{
     if (req.session.loggedin) {
         const userID = req.session.uid;
         const productID = req.body.productID;
+        
         for (let i = 0; i < productID.length; i++){
             let sql = 'update SHOPCART set checkedProd = 0 where UID=' + String(userID) +';'+
                     'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ' and UID=' + String(userID) +';';
@@ -189,6 +190,11 @@ app.post('/checkout', (req, res)=>{
                 if (err) throw err;
             });
         }
+        //delete all records where checkedProd = 0
+        let remove = 'delete from SHOPCART where checkedProd = 0 and UID=' + String(userID) + ';';
+        connection.query(remove, function(err, result){
+            if (err) throw err;
+        });
         res.json({success: true});
     }else {
         console.log("Please login first");
@@ -375,7 +381,7 @@ app.get('/payment', async function(req, res){
     if (req.session.loggedin){
         const userID = req.session.uid;
        
-        let sql = 'select pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND UID = ' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID=' + userID + ';';
+        let sql = 'select shopcart.productID, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND UID = ' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID=' + userID + ';';
         const totalcost = await new Promise(function (resolve, reject){
             connection.query(sql, function(err, results){
                 if (err) throw err;
@@ -414,7 +420,9 @@ app.get('/payment', async function(req, res){
                     res.redirect('/payment');
                 }
             });
+            
         });
+        
     }
     else {
         console.log("No payment session yet. Please login.");
