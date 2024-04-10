@@ -29,16 +29,31 @@ window.onload = function() {
 // Parse the String data into JSON
 var jsonData = JSON.parse(productInfoJS);
 const loginFlag = JSON.parse(loginJS);
+const pCount = JSON.parse(productCountJS);
 console.log(loginFlag);
 async function addToCart(){
     const productID = jsonData.productID;
     const quantity = jsonData.quantity;
     const pName = jsonData.pName;
     var count = document.getElementById("quantity").value;
-    if (count > quantity) {
-        alert("The quantity you entered exceed the product stock.\nPlease try again.");
-        return;
+    if (pCount.length != 0) {
+        // console.log(Object.values(pCount)[0].count);
+        // check if the quantity in cart exceed the stock if user already have the product in cart
+        let inCart = Object.values(pCount)[0].count;
+        const total = Number(count) + Number(inCart);
+        if (total > quantity) {
+            alert("The quantity you entered exceed the product stock.\nPlease try again.");
+            // console.log("if: " ,total);
+            return;
+        }
     }
+    else {
+        if (count > quantity) {
+            alert("The quantity you entered exceed the product stock.\nPlease try again.");
+            return;
+        }
+    }
+    
     if (count < 1) {
         alert("Invalid quantity.\nQuantity is non-zero.");
         return;

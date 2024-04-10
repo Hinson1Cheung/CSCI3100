@@ -444,9 +444,18 @@ app.get('/product/:id', async (req, res) => {
     let login = false;
     if (req.session.loggedin == true) {
         login = true;
+        let sql = 'select count from SHOPCART where productID = ' + req.params.id + ' and UID = ' + req.session.uid + ';';
+        connection.query(sql, function(err, result){
+            if (err) throw err;
+            console.log(product);
+            console.log(result);
+            res.render('product', { products: product, loggedin: login, check: result});
+        });
     }
-    // console.log(login);
-    res.render('product', { products: product, loggedin: login});
+    else {
+        console.log(product);
+        res.render('product', { products: product, loggedin: login, check: false});
+    }
 });
 
 app.get('/rmuser', function(req, res){
