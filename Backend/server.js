@@ -184,14 +184,21 @@ app.post('/checkout', (req, res)=>{
         const productID = req.body.productID;
         
         for (let i = 0; i < productID.length; i++){
-            let sql = 'update SHOPCART set checkedProd = 0 where UID=' + String(userID) +';'+
-                    'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ' and UID=' + String(userID) +';';
+            let sql = 'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ' and UID=' + String(userID) +';';
             connection.query(sql, function(err, result){
                 if (err) throw err;
             });
         }
+        let debug = 'select * from shopcart where UID=' + userID + ';';
+        connection.query(debug, function(err, result){
+            if (err) throw err;
+            console.log("debug: ", result);
+        });
         //delete all records where checkedProd = 0
-        let remove = 'delete from SHOPCART where checkedProd = 0 and UID=' + String(userID) + ';';
+        let rm = 'delete from shopcart where checkedProd = 0 and UID=' + userID + ';';
+        connection.query(rm, function(err, result){
+            if (err) throw err;
+        });
         connection.query(remove, function(err, result){
             if (err) throw err;
         });
