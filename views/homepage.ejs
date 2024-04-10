@@ -78,5 +78,10 @@
     <script src="/js/homepage.js"></script>
     <script src="/js/search.js"></script>
     <script>console.log("test")</script>
+    <% if (messages.error) { %>
+        <script>
+            alert('<%= messages.error %>');
+        </script>
+    <% } %>
 </body>
 </html>

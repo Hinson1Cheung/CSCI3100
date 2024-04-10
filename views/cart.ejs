@@ -85,10 +85,16 @@
            
             <a href="/adminlogin" style="color: white;">Admin Login</a>
         </div>
+        <% if (messages.success) { %>
+            <script>
+                alert('<%= messages.success %>');
+            </script>
+        <% } %>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/js/cart.js"></script>
     <script src="/js/search.js"></script>
+    
 </body>
 </html>
 

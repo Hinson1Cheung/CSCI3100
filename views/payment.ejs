@@ -37,7 +37,7 @@
             <!-- add form here, hello -->
             <div class = "col-md-6"> <!-- Left column -->
                 <div class = "container">
-                    <form action = " "> <!-- payment form-->
+                    <form action = "/pay", method="post"> <!-- payment form-->
                         <div class = "row">
                             <div class = "column">
                                 <h3>Shipping information</h3>
@@ -96,5 +96,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/js/payment.js"></script>
     <script src="/js/search.js"></script>
+
+    <% if (messages.error) { %>
+        <script>
+            alert('<%= messages.error %>');
+        </script>
+    <% } %>
+            
+    </script>
 </body>
 </html>

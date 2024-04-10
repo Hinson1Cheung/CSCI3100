@@ -62,5 +62,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/js/adminHome.js"></script>
     <script src="/js/search.js"></script>
+    <% if (messages.success) { %>
+        <script>
+            alert('<%= messages.success %>');
+        </script>
+    <% } %>
 </body>
 </html>

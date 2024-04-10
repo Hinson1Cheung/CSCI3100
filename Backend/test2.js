@@ -187,6 +187,7 @@ app.post('/checkout', (req, res)=>{
                     'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ' and UID=' + String(userID) +';';
             connection.query(sql, function(err, result){
                 if (err) throw err;
+                console.log(result);
             });
         }
         res.json({success: true});
