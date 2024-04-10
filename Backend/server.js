@@ -338,6 +338,7 @@ app.get('/homepage', function(req, res){
 
 app.get('/login', function(req, res){
     res.render('login');
+    var historyLink = req.header('Referer') || '/';
     app.post('/log', (req, res)=>{
         var username = req.body.username;
         var password = req.body.password;
@@ -347,7 +348,8 @@ app.get('/login', function(req, res){
             if (result.length > 0){
                 req.session.loggedin = true;
                 req.session.uid = result[0].UID;
-                res.redirect('/');
+                console.log("history link = ", historyLink);
+                res.redirect(historyLink);
             } else {
                 req.flash('error', 'Invalid credentials, please try again');
                 res.redirect('/login');
@@ -364,6 +366,7 @@ app.get('/payment', function(req, res){
         connection.query(sql, function(err, results){
             if (err) throw err;
             res.render('payment', {action: 'list', checkedProdData: results});
+            console.log("all results: ",results);
         })
     }else {
         console.log("No payment session yet. Please login.");
@@ -378,7 +381,7 @@ app.get('/product/:id', async (req, res) => {
         login = true;
     }
     // console.log(login);
-    res.render('product', { products: product, loginFlag: login});
+    res.render('product', { products: product, loggedin: login});
 });
 
 app.get('/rmuser', function(req, res){
