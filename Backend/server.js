@@ -161,11 +161,11 @@ app.post('/del', (req, res)=>{
                 if (err) throw err;
                 // console.log("sql1:  ", result);
             });
-            let sql2 = 'update PRODUCT set quantity = quantity + ' + productNum[i] + ' where productID=' + productID[i] + ';';
-            connection.query(sql2, function(err, result){
-                if (err) throw err;
-                // console.log("sql2:  ", result);
-            }); 
+            // let sql2 = 'update PRODUCT set quantity = quantity + ' + productNum[i] + ' where productID=' + productID[i] + ';';
+            // connection.query(sql2, function(err, result){
+            //     if (err) throw err;
+            //     // console.log("sql2:  ", result);
+            // }); 
         }
         res.json({success: true});
         if (res.json.success){
