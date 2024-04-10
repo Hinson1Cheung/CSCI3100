@@ -42,11 +42,14 @@
                     <img src="<%= product.imageURL %>" alt="<%= product.pName %>" class="product-image" style="width:100%">
                     <h5 class="pname" id="n<%= index + 1 %>"><%= product.pName %></h5>
                     <p class="price" id="p<%= index + 1 %>">$<%= product.price.toFixed(2) %></p>
-                    <div class="number-input">
+                    <label for="quantity" style="font-size: 15px;">Quantity</label>
+                    <p for="quantity" class="quantity" id="q<%= index + 1 %>" value="<%= product.count %>">x<%= product.count %></p>
+                    
+                    <!-- <div class="number-input">
                         <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
                         <input type="number" class="quantity" id="q<%= index + 1 %>" value="<%= product.count %>" min="1" max="100">
                         <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                    </div>
+                    </div> -->
                 </div>
             <% }); %>
         </div>
