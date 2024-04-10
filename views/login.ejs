@@ -26,7 +26,7 @@
                     placeholder = "Enter your password" required>
             
             <div class = "warp"> <!--Submit button-->
-                    <button type = "submit">Submit</button>
+                    <button type = "submit", onclick="warn()">Submit</button>
             </div>
         </form>
         <p>
@@ -42,5 +42,10 @@
             </div>
         <% } %> <!-- Error message if the user enters the wrong username or password-->
     </div>
+    <% if (messages.success) { %>
+        <script>
+            alert('<%= messages.success %>');
+        </script>
+    <% } %>
 </body>
 </html>
