@@ -366,7 +366,6 @@ app.get('/payment', function(req, res){
         connection.query(sql, function(err, results){
             if (err) throw err;
             res.render('payment', {action: 'list', checkedProdData: results});
-            console.log("all results: ",results);
         })
     }else {
         console.log("No payment session yet. Please login.");
