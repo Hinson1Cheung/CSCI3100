@@ -237,14 +237,14 @@ app.post('/checkout', (req, res)=>{
             console.log("debug: ", result);
         });
         //delete all records where checkedProd = 0
-        let rm = 'delete from shopcart where checkedProd = 0 and UID=' + userID + ';';
-        connection.query(rm, function(err, result){
-            if (err) throw err;
-        });
-        connection.query(remove, function(err, result){
-            if (err) throw err;
-        });
-        res.json({success: true});
+        // let rm = 'delete from shopcart where checkedProd = 0 and UID=' + userID + ';';
+        // connection.query(rm, function(err, result){
+        //     if (err) throw err;
+        // });
+        // connection.query(remove, function(err, result){
+        //     if (err) throw err;
+        // });
+        // res.json({success: true});
     }else {
         console.log("Please login first");
         res.redirect('/login');
@@ -430,7 +430,8 @@ app.get('/payment', async function(req, res){
     if (req.session.loggedin){
         const userID = req.session.uid;
        
-        let sql = 'select shopcart.productID, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND UID = ' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID=' + userID + ';';
+        // let sql = 'select shopcart.productID, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND UID = ' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID=' + userID + ';';
+        let sql = 'select * from (select shopcart.productID, checkedProd, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID='+ userID +') as a where checkedProd=1;';
         const totalcost = await new Promise(function (resolve, reject){
             connection.query(sql, function(err, results){
                 if (err) throw err;
@@ -453,10 +454,10 @@ app.get('/payment', async function(req, res){
                         connection.query(returnnewbalance, function(err, result){
                             if (err) throw err;
                             req.flash("success", "Payment successful!, new balance: " + result[0].balance);
-                            let updateProductQuantity = 'update product, shopcart set product.quantity = product.quantity - shopcart.count where product.productID = shopcart.productID and shopcart.UID = ' + userID + ';';
+                            let updateProductQuantity = 'update product, shopcart set product.quantity = product.quantity - shopcart.count where product.productID = shopcart.productID and checkedProd=1 and shopcart.UID = ' + userID + ';';
                             connection.query(updateProductQuantity, function(err, result){
                                 if (err) throw err;
-                                let deleteCart = 'delete from shopcart where UID = ' + userID + ';';
+                                let deleteCart = 'delete from shopcart where checkedProd=1 and UID = ' + userID + ';';
                                 connection.query(deleteCart, function(err, result){
                                     if (err) throw err;
                                     res.redirect('/cart');

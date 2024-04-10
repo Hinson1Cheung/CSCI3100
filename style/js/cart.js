@@ -190,7 +190,7 @@ async function testCheck(){ //delete the selected items
             //checkedProd.push(checkedProd[i]);
         }
     }
-    alert(productID);
+    // alert(productID);
     await fetch('/checkout', {
         method: 'POST',
         headers: {
