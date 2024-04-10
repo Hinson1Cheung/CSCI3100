@@ -494,6 +494,7 @@ app.get('/product/:id', async (req, res) => {
             console.log(result);
             res.render('product', { products: product, loggedin: login, check: result});
         });
+        
     }
     else {
         console.log(product);
