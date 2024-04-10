@@ -118,6 +118,10 @@ app.get('/edituser', function(req, res){
     res.render('edituser')
 });
 
+app.get('/search', function(req, res){
+    res.render('search')
+});
+
 app.get('/homepage', function(req, res){
     let sql = 'SELECT * FROM product ORDER BY rating DESC LIMIT 12'; // Query to get top 12 highest-rated products
     connection.query(sql, (err, result) => {
