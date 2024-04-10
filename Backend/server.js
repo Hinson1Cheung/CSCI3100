@@ -8,6 +8,7 @@ const pool = require('./dbPool.js');
 const uploader = require('express-fileupload');
 const { getProductById } = require('./poolQuery.js');
 const multer = require('multer');
+const async = require('async');
 
 app.use(uploader());
 
