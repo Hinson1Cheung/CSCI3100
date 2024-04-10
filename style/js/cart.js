@@ -27,13 +27,13 @@ if (jsonData .length != 0) {
 }
 // Initialize all useful html arrays and variables
 var checkBox = document.getElementsByClassName('chk'); //record the checkboxes
-var numberBox = document.getElementsByClassName("number-input");
+// var numberBox = document.getElementsByClassName("quantity");
 var selecButton = document.getElementById("select")
 selecButton.addEventListener("click", addUpTotal);
 for (let i=0; i < TEMPTOTALPRODUCTS; i++){
     checkBox[i].addEventListener("input", toolBar);
     checkBox[i].addEventListener("input", addUpTotal);
-    numberBox[i].addEventListener("click", addUpTotal);
+    // numberBox[i].addEventListener("click", addUpTotal);
     // console.log("now the " + i + " th one: "+checkBox[i]); //debug 
 }
 // console.log(TEMPTOTALPRODUCTS); 
@@ -122,9 +122,9 @@ function addUpTotal(){
         if(checkBox[i].checked){
             var qid = "q" + String(checkBox[i].id);
             var pid = "p" + String(checkBox[i].id);
-            var num = document.getElementById(String(qid)).value;
+            var num = String(document.getElementById(String(qid)).innerHTML);
             var price = parseFloat(String(document.getElementById(String(pid)).innerHTML).substring(1));
-            total = total + price * num
+            total = total + price * Number(num.substring(1));
         }
     }
     //update html with total price
