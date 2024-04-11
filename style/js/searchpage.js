@@ -1,6 +1,7 @@
 const searchBar = document.getElementById('search-bar');
 const minPrice = document.getElementById('min');
 const maxPrice = document.getElementById('max');
+const category = document.getElementById('category');
 
 let products = [];
 
@@ -13,10 +14,12 @@ window.onload = async () => {
     const searchTerm = decodeURIComponent(urlParams.get('query'));
     const min = decodeURIComponent(urlParams.get('min'));
     const max = decodeURIComponent(urlParams.get('max'));
+    const cat = decodeURIComponent(urlParams.get('category'));
 
     searchBar.value = searchTerm;
     minPrice.value = min;
     maxPrice.value = max;
+    category.value = cat;
 
     // Trigger the 'input' event to filter the products
     searchBar.dispatchEvent(new Event('input'));
@@ -59,13 +62,14 @@ searchBar.addEventListener('keydown', (event) => {
         const searchTerm = searchBar.value.toLowerCase();
         const minprice = document.getElementById('min').value;
         const maxprice = document.getElementById('max').value;
+        const cat = category.value.toLowerCase();
 
         const matchingProduct = products.find(product => product.pName.toLowerCase() === searchTerm);
 
         if (matchingProduct) {
             window.location.href = `/product/${matchingProduct.productID}`;
         } else {
-            window.location.href = `/search?query=${encodeURIComponent(searchTerm)}&min=${minprice}&max=${maxprice}`;
+            window.location.href = `/search?query=${encodeURIComponent(searchTerm)}&min=${minprice}&max=${maxprice}&category=${cat}`;
         }
     }
 });
@@ -77,13 +81,14 @@ minPrice.addEventListener('keydown', (event) => {
         const searchTerm = searchBar.value.toLowerCase();
         const minprice = document.getElementById('min').value;
         const maxprice = document.getElementById('max').value;
+        const cat = category.value.toLowerCase();
 
         const matchingProduct = products.find(product => product.pName.toLowerCase() === searchTerm);
 
         if (matchingProduct) {
             window.location.href = `/product/${matchingProduct.productID}`;
         } else {
-            window.location.href = `/search?query=${encodeURIComponent(searchTerm)}&min=${minprice}&max=${maxprice}`;
+            window.location.href = `/search?query=${encodeURIComponent(searchTerm)}&min=${minprice}&max=${maxprice}&category=${cat}`;
         }
     }
 });
@@ -95,13 +100,33 @@ maxPrice.addEventListener('keydown', (event) => {
         const searchTerm = searchBar.value.toLowerCase();
         const minprice = document.getElementById('min').value;
         const maxprice = document.getElementById('max').value;
+        const cat = category.value.toLowerCase();
 
         const matchingProduct = products.find(product => product.pName.toLowerCase() === searchTerm);
 
         if (matchingProduct) {
             window.location.href = `/product/${matchingProduct.productID}`;
         } else {
-            window.location.href = `/search?query=${encodeURIComponent(searchTerm)}&min=${minprice}&max=${maxprice}`;
+            window.location.href = `/search?query=${encodeURIComponent(searchTerm)}&min=${minprice}&max=${maxprice}&category=${cat}`;
+        }
+    }
+});
+
+category.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+
+        const searchTerm = searchBar.value.toLowerCase();
+        const minprice = document.getElementById('min').value;
+        const maxprice = document.getElementById('max').value;
+        const cat = category.value.toLowerCase();
+
+        const matchingProduct = products.find(product => product.pName.toLowerCase() === searchTerm);
+
+        if (matchingProduct) {
+            window.location.href = `/product/${matchingProduct.productID}`;
+        } else {
+            window.location.href = `/search?query=${encodeURIComponent(searchTerm)}&min=${minprice}&max=${maxprice}&category=${cat}`;
         }
     }
 });

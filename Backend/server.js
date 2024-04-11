@@ -486,30 +486,31 @@ app.get('/search', async (req, res) => {
     const searchTerm = decodeURIComponent(req.query.query);
     const min = req.query.min;
     const max = req.query.max;
+    const cat = decodeURIComponent(req.query.category);
     let products;
-    if (min == undefined) {
-        if (max == undefined) {
+    if (min == '') {
+        if (max == '') {
             [products] = await pool.query(
-                'SELECT * FROM product WHERE pName LIKE ? OR productID = ?',
-                [`%${searchTerm}%`, searchTerm]
+                'SELECT * FROM product NATURAL JOIN category WHERE (pName LIKE ? OR productID = ?) AND catName LIKE ?',
+                [`%${searchTerm}%`, searchTerm, `%${cat}%`]
             );
         } else {
             [products] = await pool.query(
-                'SELECT * FROM product WHERE (pName LIKE ? OR productID = ?) AND price <= ?',
-                [`%${searchTerm}%`, searchTerm, max]
+                'SELECT * FROM product NATURAL JOIN category WHERE (pName LIKE ? OR productID = ?) AND catName LIKE ? AND price <= ?',
+                [`%${searchTerm}%`, searchTerm, `%${cat}%`, max]
             );
         }
     } else {
-        if (max == undefined) {
+        if (max == '') {
             [products] = await pool.query(
-                'SELECT * FROM product WHERE (pName LIKE ? OR productID = ?) AND price >= ?',
-                [`%${searchTerm}%`, searchTerm, min]
+                'SELECT * FROM product NATURAL JOIN category WHERE (pName LIKE ? OR productID = ?) AND catName LIKE ? AND price >= ?',
+                [`%${searchTerm}%`, searchTerm, `%${cat}%`, min]
             );
         }
         else {
             [products] = await pool.query(
-                'SELECT * FROM product WHERE (pName LIKE ? OR productID = ?) AND price >= ? AND price <= ?',
-                [`%${searchTerm}%`, searchTerm, min, max]
+                'SELECT * FROM product NATURAL JOIN category WHERE (pName LIKE ? OR productID = ?) AND catName LIKE ? AND price >= ? AND price <= ?',
+                [`%${searchTerm}%`, searchTerm, `%${cat}%`, min, max]
             );
         }
     }
@@ -577,6 +578,8 @@ app.get('/payment', async function(req, res){
             
             let sql = 'select * from (select shopcart.productID, checkedProd, pName, price, count, UID, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID='+ userID +') as a where checkedProd=1;';
             let results = await queryAsync(sql);
+            console.log("payment: ", results);
+            console.log("userID: ", userID);
             let totalcost = results[0].total;
             let productIDs = results.map(a => a.productID);
             let count = results.map(a => a.count);
