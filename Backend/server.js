@@ -685,11 +685,11 @@ app.get('/product/:id', async (req, res) => {
         }, function(err, result){
             if (err) throw err;
             let ratingCount = [];
-            ratingCount.push(result.res1);
-            ratingCount.push(result.res2);
-            ratingCount.push(result.res3);
-            ratingCount.push(result.res4);
             ratingCount.push(result.res5);
+            ratingCount.push(result.res4);
+            ratingCount.push(result.res3);
+            ratingCount.push(result.res2);
+            ratingCount.push(result.res1);
             console.log(ratingCount);
             let totalReview = 0;
             let totalStars = 0;
