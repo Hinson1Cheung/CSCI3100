@@ -94,7 +94,7 @@
                         </div>
                         <div class="middle">
                             <div class="bar-container">
-                                <div class="bar-<%= 5 - index %>" style="width: <%= rating*5 %>"></div>
+                                <div class="bar-<%= 5 - index %>" style="width: <%= rating*5 %>%"></div>
                             </div>
                         </div>
                         <div class="side right">
@@ -109,7 +109,7 @@
             <div class="col-md-12">
                 <div class="heading" style="display: flex; align-items: center;">  
                     <span>Consumer Comments</span>
-                    <span> &emsp;<%=totalReview%>&emsp; </span>
+                    <span> &emsp;2&emsp; </span>
                     <span>
                         <!-- <div class="dropdown">
                             <button id="dropbtn"><img src="../image/sort-arrows-couple-pointing-up-and-down.png" style="height: 20px;"/>Order</button>
@@ -156,7 +156,7 @@
                     <div calss="Comments">
                         <div class="row">
                             <div class="userinfo" style="float: left; width: 20%;display:flex; flex-direction: column;align-items: center">
-                                <img src=".<%= comment.propicURL %>" style="height: 100px; width:100px; object-fit:cover; border-radius: 50%;"/>
+                                <img src=".<%= comment.propicURL %>" style="height: 75px;border-radius: 50%;"/>
                                 <p class="username" style="align-self: center;"> <%= comment.username %></p>
                             </div>
                             <div class="col-md-9" style="float: left; width: 80%;">

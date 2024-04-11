@@ -695,7 +695,7 @@ app.get('/product/:id', async (req, res) => {
             let totalStars = 0;
             ratingCount.forEach((rating, index) => {
                 totalReview += rating;
-                totalStars += rating * (index + 1);
+                totalStars += rating * (5-index);
             });
             let averageRating = 0;
             if (totalReview != 0)
