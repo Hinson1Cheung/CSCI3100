@@ -12,4 +12,5 @@ ignore 1 lines
 
 insert into users(username, password, balance, propicURL) values('user1', 'pw', 20000, './image/DannyRic.jpg');
 insert into users(username, password, balance, propicURL) values('user2', 'pw', 20000, './image/boccher.png');
+insert into users(username, password, balance, propicURL) values('user3', 'pw', 20000, './image/test.gif');
 insert into admins(adminname, password) values('admin1', 'pw');
