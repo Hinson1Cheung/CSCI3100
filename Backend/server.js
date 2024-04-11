@@ -704,7 +704,13 @@ app.get('/product/:id', async (req, res) => {
             });
             let averageRating = 0;
             if (totalReview != 0)
-                averageRating = totalStars / totalReview;
+            averageRating = totalStars / totalReview;
+            let sql3 = 'update product set rating = ' + averageRating + ' where productID = ' + req.params.id + ';';
+            connection.query(sql3, function(err, res6){
+                if (err) throw err;
+                // console.log(product);
+                console.log(res6);
+            });
             res.render('product', { products: product, loggedin: login, check: check[0], review: result2, ratingList: ratingCount, ratingAvg: averageRating, totalReview: totalReview});
         });
         // res.render('product', { products: product, loggedin: login, check: check[0], review: result2, ratingList: ratingCount});
