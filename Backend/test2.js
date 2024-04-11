@@ -869,11 +869,12 @@ app.get('/viewuser', function(req, res){
     let sql = 'SELECT * FROM users;';
     connection.query(sql, (err, result) => {
       if (err) throw err;
-      res.render('viewuser', { products: result });
+      res.render('viewuser', { users: result });
     });
 
 }
 );
+
 
 
 app.get('/userprofile', function(req, res){
