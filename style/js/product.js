@@ -120,7 +120,22 @@ function switchType(){
     console.log(typeBtn.innerHTML);
     if(typeBtn.innerHTML == "By Time"){
         typeBtn.innerHTML = "By Rating";
+
     }else{
         typeBtn.innerHTML = "By Time";
     }
+}
+
+const stars = document.getElementsByClassName("star");
+function fillstar(id){
+    console.log("filled");
+    for (let i=0; i < id; i++){
+        stars[i].checked = true;
+    }
+    for (let i=id; id < 5; i++){
+        stars[i].checked = false;
+    }
+    // stars[0].id = "star-1:checked::before";
+    // stars[0].idList.remove("star-1");
+    // stars[0].idList.add("star-1:checked");
 }

@@ -49,7 +49,7 @@
             </div>
             <div class="col-md-6">
                 <h2><%= products.pName %></h2>
-                <p>Product ID: <%= products.productID %></p>
+                <p>Product ID: <%= products.productID %> | Category ID: <%= products.catID %></p>
                 <h4>$<%= products.price %></h4>
                 <p><%= products.description %></p>
                 <label for="quantity" style="font-size: 15px;">Quantity: <%= products.quantity %></label><br>
@@ -142,11 +142,11 @@
                         <div class = "col-md-9" > <!--Submit button-->
                             <input type="text" class="form-control comment-input" name="review" id="comment-box" placeholder="Leave Your Comment..." required>
                             <button class="btn btn-primary my-button" style="margin: 20px; right:0" type = "submit" onclick="warn()">Submit</button>
-                            <input class="star" type="checkbox" name="star" value="1" id="star-1" />
-                            <input class="star" type="checkbox" name="star" value="2" id="star-2" />
-                            <input class="star" type="checkbox" name="star" value="3" id="star-3" />
-                            <input class="star" type="checkbox" name="star" value="4" id="star-4" />
-                            <input class="star" type="checkbox" name="star" value="5" id="star-5" />
+                            <input class="star" type="checkbox" name="star" value="1" id="star-1" onclick="fillstar(1)" checked />
+                            <input class="star" type="checkbox" name="star" value="2" id="star-2" onclick="fillstar(2)" />
+                            <input class="star" type="checkbox" name="star" value="3" id="star-3" onclick="fillstar(3)"/>
+                            <input class="star" type="checkbox" name="star" value="4" id="star-4" onclick="fillstar(4)"/>
+                            <input class="star" type="checkbox" name="star" value="5" id="star-5" onclick="fillstar(5)"/>
                             
                         </div>    
                     </form>
