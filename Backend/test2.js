@@ -560,7 +560,7 @@ app.get('/login', function(req, res){
 app.get('/payment', async function(req, res){
     if (req.session.loggedin){
         const userID = req.session.uid;
-    
+        console.log(userID);
         // Wrap the query in a function that returns a Promise
         function queryAsync(query) {
             return new Promise((resolve, reject) => {
@@ -575,8 +575,11 @@ app.get('/payment', async function(req, res){
         async function handleQueries() {
             //let totalcost = await queryAsync('SELECT SUM(price * count) AS total FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID);
             
-            let sql = 'select * from (select shopcart.productID, checkedProd, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID='+ userID +') as a where checkedProd=1;';
+            let sql = 'select * from (select shopcart.productID, checkedProd, pName, UID, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID='+ userID +') as a where checkedProd=1;';
             let results = await queryAsync(sql);
+            for (let j = 0; j <results.length; j++){
+                console.log("result" + j +" = " ,results[j]);
+            }
             let totalcost = results[0].total;
             let productIDs = results.map(a => a.productID);
             let count = results.map(a => a.count);
@@ -625,7 +628,7 @@ app.get('/payment', async function(req, res){
 app.get('/product/:id', async (req, res) => {
     const product = await getProductById(req.params.id);
     let login = false;
-    let check = [];
+    let check = ['false'];
     if (req.session.loggedin == true) {
         login = true;
         let sql = 'select count from SHOPCART where productID = ' + req.params.id + ' and UID = ' + req.session.uid + ';';
@@ -633,7 +636,7 @@ app.get('/product/:id', async (req, res) => {
             if (err) throw err;
             // console.log(product);
             // console.log(result);
-            check.push(result);
+            check[0] = result;
         });
     }
     // else {
@@ -685,17 +688,17 @@ app.get('/product/:id', async (req, res) => {
         }, function(err, result){
             if (err) throw err;
             let ratingCount = [];
-            ratingCount.push(result.res1);
-            ratingCount.push(result.res2);
-            ratingCount.push(result.res3);
-            ratingCount.push(result.res4);
             ratingCount.push(result.res5);
+            ratingCount.push(result.res4);
+            ratingCount.push(result.res3);
+            ratingCount.push(result.res2);
+            ratingCount.push(result.res1);
             console.log(ratingCount);
             let totalReview = 0;
             let totalStars = 0;
             ratingCount.forEach((rating, index) => {
                 totalReview += rating;
-                totalStars += rating * (index + 1);
+                totalStars += rating * (5-index);
             });
             let averageRating = 0;
             if (totalReview != 0)
@@ -746,6 +749,13 @@ app.post('/comment', function(req, res){
         res.redirect('/login');
     }
     
+});
+
+app.get('/logout', function(req, res){
+    req.session.destroy(err=>{
+        if (err) throw err;
+    })
+        res.redirect('/');
 });
 
 app.get('/rmuser', function(req, res){
@@ -866,7 +876,6 @@ app.get('/viewuser', function(req, res){
 );
 
 
-
 app.get('/userprofile', function(req, res){
 
     if (req.session.loggedin){
@@ -894,6 +903,7 @@ app.get('/userprofile', function(req, res){
 
 }
 );
+
 
 app.get('/api/products', async (req, res) => {
     const [products] = await pool.query('SELECT * FROM product');
