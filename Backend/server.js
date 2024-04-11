@@ -486,30 +486,31 @@ app.get('/search', async (req, res) => {
     const searchTerm = decodeURIComponent(req.query.query);
     const min = req.query.min;
     const max = req.query.max;
+    const cat = decodeURIComponent(req.query.category);
     let products;
-    if (min == undefined) {
-        if (max == undefined) {
+    if (min == '') {
+        if (max == '') {
             [products] = await pool.query(
-                'SELECT * FROM product WHERE pName LIKE ? OR productID = ?',
-                [`%${searchTerm}%`, searchTerm]
+                'SELECT * FROM product NATURAL JOIN category WHERE (pName LIKE ? OR productID = ?) AND catName LIKE ?',
+                [`%${searchTerm}%`, searchTerm, `%${cat}%`]
             );
         } else {
             [products] = await pool.query(
-                'SELECT * FROM product WHERE (pName LIKE ? OR productID = ?) AND price <= ?',
-                [`%${searchTerm}%`, searchTerm, max]
+                'SELECT * FROM product NATURAL JOIN category WHERE (pName LIKE ? OR productID = ?) AND catName LIKE ? AND price <= ?',
+                [`%${searchTerm}%`, searchTerm, `%${cat}%`, max]
             );
         }
     } else {
-        if (max == undefined) {
+        if (max == '') {
             [products] = await pool.query(
-                'SELECT * FROM product WHERE (pName LIKE ? OR productID = ?) AND price >= ?',
-                [`%${searchTerm}%`, searchTerm, min]
+                'SELECT * FROM product NATURAL JOIN category WHERE (pName LIKE ? OR productID = ?) AND catName LIKE ? AND price >= ?',
+                [`%${searchTerm}%`, searchTerm, `%${cat}%`, min]
             );
         }
         else {
             [products] = await pool.query(
-                'SELECT * FROM product WHERE (pName LIKE ? OR productID = ?) AND price >= ? AND price <= ?',
-                [`%${searchTerm}%`, searchTerm, min, max]
+                'SELECT * FROM product NATURAL JOIN category WHERE (pName LIKE ? OR productID = ?) AND catName LIKE ? AND price >= ? AND price <= ?',
+                [`%${searchTerm}%`, searchTerm, `%${cat}%`, min, max]
             );
         }
     }

@@ -68,7 +68,7 @@ searchBar.addEventListener('keydown', (event) => {
         if (matchingProduct) {
             window.location.href = `/product/${matchingProduct.productID}`;
         } else {
-            window.location.href = `/search?query=${encodeURIComponent(searchTerm)}`;
+            window.location.href = `/search?query=${encodeURIComponent(searchTerm)}&min=&max=&category=`;
         }
     }
 });
