@@ -572,21 +572,23 @@ app.get('/payment', async function(req, res){
         }
     
         // Use an async function to handle the queries
-        async function handleQueries() {
+        async function handleQueries(userID) {
             //let totalcost = await queryAsync('SELECT SUM(price * count) AS total FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID);
             
-            let sql = 'select * from (select shopcart.productID, checkedProd, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID='+ userID +') as a where checkedProd=1;';
+            let sql = 'select * from (select shopcart.productID, checkedProd, pName, price, count, UID, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID='+ userID +') as a where checkedProd=1;';
             let results = await queryAsync(sql);
             let totalcost = results[0].total;
             let productIDs = results.map(a => a.productID);
             let count = results.map(a => a.count);
             let prodsum = results.map(a => a.ssum);
-            return { totalcost, productIDs, count, prodsum, results };
+            let newUID = results[0].UID
+            return { totalcost, productIDs, count, prodsum, results, newUID };
         }
         let { results } = await handleQueries(req.session.uid);
+        console.log("result = ", results);
         res.render('payment', {action: 'list', checkedProdData: results});
             app.post('/pay', async (req, res)=>{
-                let { totalcost, productIDs, count, prodsum, results } = await handleQueries(req.session.uid);
+                let { totalcost, productIDs, count, prodsum, results, newUID} = await handleQueries(req.session.uid);
                 let checkBalance = 'select balance from users where UID=' + userID + ';';
                 let balance = await queryAsync(checkBalance);
                 if(balance[0].balance < totalcost){
@@ -595,19 +597,19 @@ app.get('/payment', async function(req, res){
                     res.redirect('/cart');
                 }
                 else{
-                    let updateBalance = 'UPDATE users SET balance = balance - ' + totalcost + ' WHERE UID=' + userID;
+                    let updateBalance = 'UPDATE users SET balance = balance - ' + totalcost + ' WHERE UID=' + newUID;
                     await queryAsync(updateBalance);
                     for (let i = 0; i < productIDs.length; i++) {
                         let updateStock = 'UPDATE product SET quantity = quantity - ' + count[i] + ' WHERE productID=' + productIDs[i];
                         await queryAsync(updateStock);
             
-                        let insert = 'INSERT INTO transaction (UID, productID, sum, count) VALUES (' + userID + ',' + productIDs[i] + ',' + prodsum[i] + ', '+count[i]+')';
+                        let insert = 'INSERT INTO transaction (UID, productID, sum, count) VALUES (' + newUID + ',' + productIDs[i] + ',' + prodsum[i] + ', '+count[i]+')';
                         await queryAsync(insert);
                     }
-                    let deleteCart = 'DELETE FROM shopcart WHERE checkedProd=1 AND UID = ' + userID;
+                    let deleteCart = 'DELETE FROM shopcart WHERE checkedProd=1 AND UID = ' + newUID;
                     await queryAsync(deleteCart);
             
-                    let result = await queryAsync('SELECT balance FROM users WHERE UID=' + userID);
+                    let result = await queryAsync('SELECT balance FROM users WHERE UID=' + newUID);
                     req.flash('success', 'Payment successful, new balance = ' + result[0].balance);
                     res.redirect('/cart');
                 }
@@ -747,6 +749,17 @@ app.post('/comment', function(req, res){
     }
     
 });
+
+app.get('/logout', function(req, res){
+    req.session.destroy(function(err) {
+        if(err) {
+            console.log(err);
+        } else {
+            res.redirect('/login');
+        }
+    });
+});
+
 
 app.get('/rmuser', function(req, res){
     loginKey = req.session.adminLogin;

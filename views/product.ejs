@@ -72,7 +72,7 @@
             <div class="col-md-12"></br></div>
 
             <div class="col-md-9"> <!-- 75% of row-->
-                <span class="heading">Consumer Rating</span>
+                <span class="heading">Customer Reviews</span>
                 <% for(let i = 0; i < 5; i++) { %>
                     <% if(i < ratingAvg) { %>
                         <span class="fa fa-star checked"></span>
@@ -94,7 +94,7 @@
                         </div>
                         <div class="middle">
                             <div class="bar-container">
-                                <div class="bar-<%= 5 - index %>" style="width: <%= rating*5 %>%"></div>
+                                <div class="bar-<%= 5 - index %>" style="width: <%= rating*5 %>"></div>
                             </div>
                         </div>
                         <div class="side right">
@@ -108,7 +108,7 @@
 
             <div class="col-md-12">
                 <div class="heading" style="display: flex; align-items: center;">  
-                    <span>Consumer Comments</span>
+                    <span>Customer Comments</span>
                     <span> &emsp;2&emsp; </span>
                     <span>
                         <!-- <div class="dropdown">
