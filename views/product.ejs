@@ -46,9 +46,10 @@
             </div>
             <div class="col-md-6">
                 <h2><%= products.pName %></h2>
+                <p>Product ID: <%= products.productID %></p>
                 <h4>$<%= products.price %></h4>
                 <p><%= products.description %></p>
-                <label for="quantity" style="font-size: 15px;">Quantity</label><br>
+                <label for="quantity" style="font-size: 15px;">Quantity: <%= products.quantity %></label><br>
                 <!-- <input type="number" id="quantity" name="quantity" min="1" max="100" value="1" style="width: 60px; height: 30px; border: 1px solid #ccc; border-radius: 4px;"><br><br> -->
                 <div class="number-input">
                     <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>

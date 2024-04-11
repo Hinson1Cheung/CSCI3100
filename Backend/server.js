@@ -533,9 +533,10 @@ app.get('/login', function(req, res){
         query = 'select * from users where username = "' + username + '" and password = "' + password + '";';
         connection.query(query, function(err, result){
             if (err) throw err;
-            let blklistFlag = result[0].blacklistFlag;
-            console.log(blklistFlag);
+            
             if (result.length > 0){
+                let blklistFlag = result[0].blacklistFlag;
+                console.log(blklistFlag);
                 if(blklistFlag == 1) {
                     req.flash('error', 'You were blacklisted from the store');
                     res.redirect('/login');
@@ -559,70 +560,61 @@ app.get('/login', function(req, res){
 app.get('/payment', async function(req, res){
     if (req.session.loggedin){
         const userID = req.session.uid;
-       
-        // let sql = 'select shopcart.productID, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND UID = ' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID=' + userID + ';';
-        let sql = 'select * from (select shopcart.productID, checkedProd, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID='+ userID +') as a where checkedProd=1;';
-        const {totalcost, productIDs, price, count, productname, prodsum, length} = await new Promise(function (resolve, reject){
-            connection.query(sql, function(err, results){
-                if (err) throw err;
-                res.render('payment', {action: 'list', checkedProdData: results});
-                let productIDs = results.map(a => a.productID);
-                let price = results.map(a => a.price);
-                let count = results.map(a => a.count);
-                let productname = results.map(a => a.pName);
-                let prodsum = results.map(a => a.ssum);
-                resolve({totalcost: results[0].total, length: results.length, productIDs, price, count, productname, prodsum});
-            });
-            
-        });
-       //begin payment procedure
-        app.use('/pay', (req, res)=>{
-              //first level check: check if balance is enough
-              let sql = 'select balance from users where UID=' + userID + ';';
-              connection.query(sql, function(err, result){
-                    if (err) throw err;
-                    if (result[0].balance < totalcost){
-                        req.flash('error', 'Insufficient balance, please top up in user profile');
-                        res.redirect('/userprofile');
-                    }
-                    else{
-                        //check complete, proceed to payment
-                        //update balance
-                        let updateBalance = 'update users set balance = balance - ' + totalcost + ' where UID=' + userID + ';';
-                        connection.query(updateBalance, function(err, result){
-                            if (err) throw err;
-                        });
-                        //update product stocks 
-                        for (let i = 0; i < length; i++){
-                            let updateStock = 'update product set quantity = quantity - ' + count[i] + ' where productID=' + productIDs[i] + ';';
-                            connection.query(updateStock, function(err, result){
-                                if (err) throw err;
-                                //insert into transaction records
-                                
-                                let insert = 'insert into transaction (UID, productID, sum, count) values (' + userID + ',' + productIDs[i] + ',' + prodsum[i] + ', '+count[i]+');';
-                                connection.query(insert, function(err, result){
-                                    if (err) throw err;
-                                    
-                                });
-                            });
-                        }
-                        let deleteCart = 'delete from shopcart where checkedProd=1 and UID = ' + userID + ';';
-                        connection.query(deleteCart, function(err, result){
-                                    if (err) throw err;
-                        });
-                        let returnnewbalance = 'select balance from users where UID=' + userID + ';';
-                            connection.query(returnnewbalance, function(err, result){
-                            if (err) throw err;
-                            req.flash('success', 'Payment successful, new balance = ' + result[0].balance);
-                            res.redirect('/cart');
-                        });
-                        
-                    }
-
+    
+        // Wrap the query in a function that returns a Promise
+        function queryAsync(query) {
+            return new Promise((resolve, reject) => {
+                connection.query(query, (err, result) => {
+                    if (err) reject(err);
+                    else resolve(result);
                 });
             });
         }
-    else {
+    
+        // Use an async function to handle the queries
+        async function handleQueries() {
+            //let totalcost = await queryAsync('SELECT SUM(price * count) AS total FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID);
+            
+            let sql = 'select * from (select shopcart.productID, checkedProd, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID='+ userID +') as a where checkedProd=1;';
+            let results = await queryAsync(sql);
+            let totalcost = results[0].total;
+            let productIDs = results.map(a => a.productID);
+            let count = results.map(a => a.count);
+            let prodsum = results.map(a => a.ssum);
+            return { totalcost, productIDs, count, prodsum, results };
+        }
+        let { results } = await handleQueries(req.session.uid);
+        res.render('payment', {action: 'list', checkedProdData: results});
+            app.post('/pay', async (req, res)=>{
+                let { totalcost, productIDs, count, prodsum, results } = await handleQueries(req.session.uid);
+                let checkBalance = 'select balance from users where UID=' + userID + ';';
+                let balance = await queryAsync(checkBalance);
+                if(balance[0].balance < totalcost){
+                    req.flash('error', 'Insufficient balance, please top up or remove some items from cart.');
+                    req.flash('error', 'redirecting to cart...')
+                    res.redirect('/cart');
+                }
+                else{
+                    let updateBalance = 'UPDATE users SET balance = balance - ' + totalcost + ' WHERE UID=' + userID;
+                    await queryAsync(updateBalance);
+                    for (let i = 0; i < productIDs.length; i++) {
+                        let updateStock = 'UPDATE product SET quantity = quantity - ' + count[i] + ' WHERE productID=' + productIDs[i];
+                        await queryAsync(updateStock);
+            
+                        let insert = 'INSERT INTO transaction (UID, productID, sum, count) VALUES (' + userID + ',' + productIDs[i] + ',' + prodsum[i] + ', '+count[i]+')';
+                        await queryAsync(insert);
+                    }
+                    let deleteCart = 'DELETE FROM shopcart WHERE checkedProd=1 AND UID = ' + userID;
+                    await queryAsync(deleteCart);
+            
+                    let result = await queryAsync('SELECT balance FROM users WHERE UID=' + userID);
+                    req.flash('success', 'Payment successful, new balance = ' + result[0].balance);
+                    res.redirect('/cart');
+                }
+            });
+        handleQueries().catch(err => console.error(err));
+    }
+    else{
         console.log("No payment session yet. Please login.");
         res.redirect('/login');
     }

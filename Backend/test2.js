@@ -81,49 +81,72 @@ app.get('/', function(req, res){
 
 //button redirect code
 app.get('/addproduct', function(req, res){
-    res.render('addproduct')
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        res.render('addproduct')
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
 });
 
 app.get('/adduser', function(req, res){
-    res.render('adduser');
-    app.post('/au', (req, res)=>{
-        var username = req.body.username;
-        var password = req.body.password;
-        var password1 = req.body.password1;
-        var balance = req.body.balance;
-        var imgsrc = req.files.profilepic;
-        var filePath = req.files.profilepic.name;
-       
-        if (filePath!= null){
-            filePath = '/'+ filePath
-        }
-        //check if user already exists
-        check = 'select * from users where username = "' + username + '";';
-        connection.query(check, function(err, result){
-            if (err) throw err;
-            if (result.length > 0){
-                req.flash('error', 'Username already exists, please try again');
-                res.redirect('/adduser');
-            }
-            else{
-                let sql = 'insert into users (username, password, balance, propicURL) values ("' + username + '", "' + password + '", ' + balance + ', "./image/' + filePath + '");';
-                connection.query(sql, function(err, result){
-                if (err) throw err;
-                imgsrc.mv('../style/image/'+filePath, function(err){
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        res.render('adduser');
+        app.post('/au', (req, res)=>{
+                var username = req.body.username;
+                var password = req.body.password;
+                var balance = req.body.balance;
+                var imgsrc = req.files.profilepic;
+                var filePath = req.files.profilepic.name;
+            
+                if (filePath!= null){
+                    filePath = '/'+ filePath
+                }
+                //check if user already exists
+                check = 'select * from users where username = "' + username + '";';
+                connection.query(check, function(err, result){
                     if (err) throw err;
+                    if (result.length > 0){
+                        req.flash('error', 'Username already exists, please try again');
+                        res.redirect('/adduser');
+                    }
+                    else{
+                        let sql = 'insert into users (username, password, balance, propicURL) values ("' + username + '", "' + password + '", ' + balance + ', "./image/' + filePath + '");';
+                        connection.query(sql, function(err, result){
+                        if (err) throw err;
+                        imgsrc.mv('../style/image/'+filePath, function(err){
+                            if (err) throw err;
+                        });
+                        req.flash('success', 'User added successfully');
+                        res.redirect('/usermenu');
                 });
-                req.flash('success', 'User added successfully');
-                res.redirect('/adminhome');
-        });
             }
         });
         
     });
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
 
 });
 
 app.get('/adminhome', function(req, res){
-    if (req.session.adminLogin){
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
         res.render('adminhome')
     }
     else{
@@ -143,25 +166,50 @@ app.get('/adminlogin', function(req, res){
         connection.query(query, function(err, result){
             if (err) throw err;
             if (result.length > 0){
-                if(adminkey =='adminkey'){
+                if (adminkey == 'adminkey'){
                     req.session.adminLogin = true;
                     res.redirect('/adminhome');
                 }
-                else{
-                    req.flash('error', 'Invalid credentials, please try again');
-                    res.redirect('/login');
-                }
-
             } else {
                 req.flash('error', 'Invalid credentials, please try again');
-                res.redirect('/login');
+                res.redirect('/adminlogin');
             }
         })
     })
 });
 
 app.get('/blacklist', function(req, res){
-    res.render('blacklist')
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        res.render('blacklist');
+        app.post('/blklist', (req, res)=>{
+            var username = req.body.username;
+            const checker = 'select * from users where username = "' + username + '";';
+            connection.query(checker, function(err, result){
+                if (err) throw err;
+                if (result.length > 0){
+                    let sql = 'update users set blacklistFlag = 1 where username = "' + username + '";';
+                    connection.query(sql, function(err, result){
+                        if (err) throw err;
+                        req.flash('success', 'User has been blacklisted');
+                        res.redirect('/usermenu');
+                    });
+                }
+                else{
+                    req.flash('error', 'User does not exist');
+                    res.redirect('/blacklist');
+                }
+
+            });
+        });
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
 });
 
 app.get('/cart', function(req, res){
@@ -215,8 +263,26 @@ app.post('/del', (req, res)=>{
         }
     }
     else {
-        console.log("Please login first");
+        req.flash('error', "Please login first");
         res.redirect('/login');
+    }
+});
+
+app.post('/delproduct', (req, res)=>{
+    const productID = req.body.productID;
+    // console.log("productID: ", productID);
+    // console.log("productNum: ", productNum);
+    for (let i = 0; i < productID.length; i++){
+        let sql1 = 'delete from product where productID=' + productID[i] + ';';
+        // console.log("sql_delete: ", sql1);
+        connection.query(sql1, function(err, result){
+            if (err) throw err;
+            // console.log("sql1:  ", result);
+        });
+    }
+    res.json({success: true});
+    if (res.json.success){
+        res.redirect('/storemanage');
     }
 });
 
@@ -246,7 +312,7 @@ app.post('/checkout', (req, res)=>{
         // });
         // res.json({success: true});
     }else {
-        console.log("Please login first");
+        req.flash('error', "Please login first");
         res.redirect('/login');
     }
 });
@@ -343,7 +409,7 @@ app.post('/add', (req, res)=>{
 
     }
     else {
-        console.log("Please login first");
+        // req.flash('error', "Please login first");
         res.redirect('/login');
     }
     
@@ -358,9 +424,64 @@ app.get('/catalogue', function(req, res){
 });
 
 app.get('/edituser', function(req, res){
-    res.render('edituser')
-});
+  
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        res.render('edituser');
+        app.post('/edit', (req, res)=>{
+                var username = req.body.username;
+                var password = req.body.password;
+                var balance = req.body.balance;
+                var Tusername = req.body.Tusername;
+                var imgsrc = req.files.profilepic;
+                var filePath = req.files.profilepic.name;
+            
+                if (filePath!= null){
+                    filePath = '/'+ filePath
+                }
+                //check if user exists
+                check = 'select * from users where username = "' + Tusername + '";';
+                connection.query(check, function(err, result){
+                    if (err) throw err;
+                    if (result.length == 0){
+                        req.flash('error', 'Username does not exist, please try again');
+                        res.redirect('/edituser');
+                    }
+                    else{
+                        let check = 'select username from users where username = "' + username + '";';
+                        connection.query(check, function(err, result){
+                            if (err) throw err;
+                            if (result.length > 0){
+                                req.flash('error', 'Username already exists, please try again');
+                                res.redirect('/edituser');
+                            }
+                            else{
+                                let sql = 'update users set username = "'+username+'", password = "'+password+'", balance = '+balance+', propicURL = "./image/'+filePath+'" where username = "' + Tusername + '";';
+                                connection.query(sql, function(err, result){
+                                    if (err) throw err;
+                                    imgsrc.mv('../style/image/'+filePath, function(err){
+                                        if (err) throw err;
+                                    });
+                                    req.flash('success', 'User updated successfully');
+                                    res.redirect('/usermenu');
+                                });
+                            }
+                        });
+                    }
+            });
 
+        });
+    
+
+    
+    }else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
+});
 app.get('/search', async (req, res) => {
     const searchTerm = decodeURIComponent(req.query.query);
     const min = req.query.min;
@@ -412,12 +533,22 @@ app.get('/login', function(req, res){
         query = 'select * from users where username = "' + username + '" and password = "' + password + '";';
         connection.query(query, function(err, result){
             if (err) throw err;
+            
             if (result.length > 0){
-                req.session.loggedin = true;
-                req.session.uid = result[0].UID;
-                console.log("history link = ", historyLink);
-                res.redirect(historyLink);
-            } else {
+                let blklistFlag = result[0].blacklistFlag;
+                console.log(blklistFlag);
+                if(blklistFlag == 1) {
+                    req.flash('error', 'You were blacklisted from the store');
+                    res.redirect('/login');
+                }
+                else{
+                    req.session.loggedin = true;
+                    req.session.uid = result[0].UID;
+                    console.log("history link = ", historyLink);
+                    res.redirect(historyLink);
+                }
+            } 
+            else {
                 req.flash('error', 'Invalid credentials, please try again');
                 res.redirect('/login');
             }
@@ -429,70 +560,61 @@ app.get('/login', function(req, res){
 app.get('/payment', async function(req, res){
     if (req.session.loggedin){
         const userID = req.session.uid;
-       
-        // let sql = 'select shopcart.productID, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND UID = ' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID=' + userID + ';';
-        let sql = 'select * from (select shopcart.productID, checkedProd, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID='+ userID +') as a where checkedProd=1;';
-        const {totalcost, productIDs, price, count, productname, prodsum, length} = await new Promise(function (resolve, reject){
-            connection.query(sql, function(err, results){
-                if (err) throw err;
-                res.render('payment', {action: 'list', checkedProdData: results});
-                let productIDs = results.map(a => a.productID);
-                let price = results.map(a => a.price);
-                let count = results.map(a => a.count);
-                let productname = results.map(a => a.pName);
-                let prodsum = results.map(a => a.ssum);
-                resolve({totalcost: results[0].total, length: results.length, productIDs, price, count, productname, prodsum});
-            });
-            
-        });
-       //begin payment procedure
-        app.use('/pay', (req, res)=>{
-              //first level check: check if balance is enough
-              let sql = 'select balance from users where UID=' + userID + ';';
-              connection.query(sql, function(err, result){
-                    if (err) throw err;
-                    if (result[0].balance < totalcost){
-                        req.flash('error', 'Insufficient balance, please top up in user profile');
-                        res.redirect('/userprofile');
-                    }
-                    else{
-                        //check complete, proceed to payment
-                        //update balance
-                        let updateBalance = 'update users set balance = balance - ' + totalcost + ' where UID=' + userID + ';';
-                        connection.query(updateBalance, function(err, result){
-                            if (err) throw err;
-                        });
-                        //update product stocks 
-                        for (let i = 0; i < length; i++){
-                            let updateStock = 'update product set quantity = quantity - ' + count[i] + ' where productID=' + productIDs[i] + ';';
-                            connection.query(updateStock, function(err, result){
-                                if (err) throw err;
-                                //insert into transaction records
-                                
-                                let insert = 'insert into transaction (UID, productID, sum, count) values (' + userID + ',' + productIDs[i] + ',' + prodsum[i] + ', '+count[i]+');';
-                                connection.query(insert, function(err, result){
-                                    if (err) throw err;
-                                    
-                                });
-                            });
-                        }
-                        let deleteCart = 'delete from shopcart where checkedProd=1 and UID = ' + userID + ';';
-                        connection.query(deleteCart, function(err, result){
-                                    if (err) throw err;
-                        });
-                        let returnnewbalance = 'select balance from users where UID=' + userID + ';';
-                            connection.query(returnnewbalance, function(err, result){
-                            if (err) throw err;
-                            req.flash('success', 'Payment successful, new balance = ' + result[0].balance);
-                            res.redirect('/cart');
-                        });
-                        
-                    }
-
+    
+        // Wrap the query in a function that returns a Promise
+        function queryAsync(query) {
+            return new Promise((resolve, reject) => {
+                connection.query(query, (err, result) => {
+                    if (err) reject(err);
+                    else resolve(result);
                 });
             });
         }
-    else {
+    
+        // Use an async function to handle the queries
+        async function handleQueries() {
+            //let totalcost = await queryAsync('SELECT SUM(price * count) AS total FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID);
+            
+            let sql = 'select * from (select shopcart.productID, checkedProd, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID='+ userID +') as a where checkedProd=1;';
+            let results = await queryAsync(sql);
+            let totalcost = results[0].total;
+            let productIDs = results.map(a => a.productID);
+            let count = results.map(a => a.count);
+            let prodsum = results.map(a => a.ssum);
+            return { totalcost, productIDs, count, prodsum, results };
+        }
+        let { results } = await handleQueries(req.session.uid);
+        res.render('payment', {action: 'list', checkedProdData: results});
+            app.post('/pay', async (req, res)=>{
+                let { totalcost, productIDs, count, prodsum, results } = await handleQueries(req.session.uid);
+                let checkBalance = 'select balance from users where UID=' + userID + ';';
+                let balance = await queryAsync(checkBalance);
+                if(balance[0].balance < totalcost){
+                    req.flash('error', 'Insufficient balance, please top up or remove some items from cart.');
+                    req.flash('error', 'redirecting to cart...')
+                    res.redirect('/cart');
+                }
+                else{
+                    let updateBalance = 'UPDATE users SET balance = balance - ' + totalcost + ' WHERE UID=' + userID;
+                    await queryAsync(updateBalance);
+                    for (let i = 0; i < productIDs.length; i++) {
+                        let updateStock = 'UPDATE product SET quantity = quantity - ' + count[i] + ' WHERE productID=' + productIDs[i];
+                        await queryAsync(updateStock);
+            
+                        let insert = 'INSERT INTO transaction (UID, productID, sum, count) VALUES (' + userID + ',' + productIDs[i] + ',' + prodsum[i] + ', '+count[i]+')';
+                        await queryAsync(insert);
+                    }
+                    let deleteCart = 'DELETE FROM shopcart WHERE checkedProd=1 AND UID = ' + userID;
+                    await queryAsync(deleteCart);
+            
+                    let result = await queryAsync('SELECT balance FROM users WHERE UID=' + userID);
+                    req.flash('success', 'Payment successful, new balance = ' + result[0].balance);
+                    res.redirect('/cart');
+                }
+            });
+        handleQueries().catch(err => console.error(err));
+    }
+    else{
         console.log("No payment session yet. Please login.");
         res.redirect('/login');
     }
@@ -503,24 +625,161 @@ app.get('/payment', async function(req, res){
 app.get('/product/:id', async (req, res) => {
     const product = await getProductById(req.params.id);
     let login = false;
+    let check = [];
     if (req.session.loggedin == true) {
         login = true;
         let sql = 'select count from SHOPCART where productID = ' + req.params.id + ' and UID = ' + req.session.uid + ';';
         connection.query(sql, function(err, result){
             if (err) throw err;
-            console.log(product);
-            console.log(result);
-            res.render('product', { products: product, loggedin: login, check: result});
+            // console.log(product);
+            // console.log(result);
+            check.push(result);
         });
     }
-    else {
-        console.log(product);
-        res.render('product', { products: product, loggedin: login, check: false});
+    // else {
+    //     console.log(product);
+    //     res.render('product', { products: product, loggedin: login, check: false});
+    // }
+    let sql2 = 'select commentID, rating, date, content, UID, username, propicURL from REVIEW inner join USERS using(UID) where productID=' + req.params.id+ ';';
+    connection.query(sql2, function(err, result2){  
+        if (err) throw err;
+        console.log(result2);
+        // res.render('product', { products: product, loggedin: login, check: check[0], review: result2});
+        let sqlr1 = 'select count(*) as count1 from REVIEW where productID = ' + req.params.id + ' and rating = 1;';
+        let sqlr2 = 'select count(*) as count2 from REVIEW where productID = ' + req.params.id + ' and rating = 2;';
+        let sqlr3 = 'select count(*) as count3 from REVIEW where productID = ' + req.params.id + ' and rating = 3;';
+        let sqlr4 = 'select count(*) as count4 from REVIEW where productID = ' + req.params.id + ' and rating = 4;';
+        let sqlr5 = 'select count(*) as count5 from REVIEW where productID = ' + req.params.id + ' and rating = 5;';
+        
+        async.parallel({
+            res1: function(callback){
+                connection.query(sqlr1, function(err, resr1){
+                    if (err) throw err;
+                    callback(null, resr1[0].count1);
+                });
+            },
+            res2: function(callback){
+                connection.query(sqlr2, function(err, resr2){
+                    if (err) throw err;
+                    callback(null, resr2[0].count2);
+                });
+            },
+            res3: function(callback){
+                connection.query(sqlr3, function(err, resr3){    
+                    if (err) throw err;
+                    callback(null, resr3[0].count3);
+                });
+            },
+            res4: function(callback){
+                connection.query(sqlr4, function(err, resr4){
+                    if (err) throw err;
+                    callback(null, resr4[0].count4);
+                });
+            },
+            res5: function(callback){
+                connection.query(sqlr5, function(err, resr5){    
+                    if (err) throw err;
+                    callback(null, resr5[0].count5);
+                });
+            }
+        }, function(err, result){
+            if (err) throw err;
+            let ratingCount = [];
+            ratingCount.push(result.res1);
+            ratingCount.push(result.res2);
+            ratingCount.push(result.res3);
+            ratingCount.push(result.res4);
+            ratingCount.push(result.res5);
+            console.log(ratingCount);
+            let totalReview = 0;
+            let totalStars = 0;
+            ratingCount.forEach((rating, index) => {
+                totalReview += rating;
+                totalStars += rating * (index + 1);
+            });
+            let averageRating = 0;
+            if (totalReview != 0)
+                averageRating = totalStars / totalReview;
+            res.render('product', { products: product, loggedin: login, check: check[0], review: result2, ratingList: ratingCount, ratingAvg: averageRating, totalReview: totalReview});
+        });
+        // res.render('product', { products: product, loggedin: login, check: check[0], review: result2, ratingList: ratingCount});
+    });
+        
+                
+});
+
+app.post('/comment', function(req, res){
+    if (req.session.loggedin){
+        const userID = req.session.uid;
+        const productID = req.body.productID;
+        let rating = 1;
+        const date = new Date().toLocaleDateString();
+        const content = req.body.review;
+        const stars = req.body.star;
+        if (stars) {
+            rating = stars.length;
+        }
+        // console.log("productID: ", productID);
+        // console.log("userID: ", userID);
+        // console.log("date: ", date);
+        // console.log("content: ", content);
+        // console.log("rating: ", rating);
+        let sql1 = 'select count(*) as count from TRANSACTION where UID=' + userID + ' and productID=' + productID + ';';
+        connection.query(sql1, function(err, result){
+            if (err) throw err;
+            console.log("result: ", result[0].count == 0);
+            if (result[0].count == 0){
+                req.flash('error', 'You have not purchased this product yet, please purchase before leaving a review');
+                res.redirect('/product/' + productID);
+            } else {
+                let sql2 = 'insert into REVIEW(rating, UID, productID, date, content) values(' + rating + ',' + userID + ',"' + productID + '","' + String(date) + '","' + String(content) + '");';
+                connection.query(sql2, function(err, result){
+                    if (err) throw err;
+                    console.log("review added");
+                });
+                res.redirect('/product/' + productID);
+            }
+        });
+        
+    } else {
+        req.flash('error', "Please login first");
+        res.redirect('/login');
     }
+    
 });
 
 app.get('/rmuser', function(req, res){
-    res.render('rmuser')
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        res.render('rmuser');
+        app.post('/rmv', (req, res)=>{
+            var username = req.body.username;
+            const checker = 'select * from users where username = "' + username + '";';
+            connection.query(checker, function(err, result){
+                if (err) throw err;
+                if (result.length > 0){
+                    let sql = 'delete from users where username = "' + username + '";';
+                    connection.query(sql, function(err, result){
+                        if (err) throw err;
+                        req.flash('success', 'User removed successfully');
+                        res.redirect('/usermenu');
+                    });
+                }
+                else{
+                    req.flash('error', 'User does not exist');
+                    res.redirect('/rmuser');
+                }
+
+            });
+        });
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
 });
 
 app.get('/signup',(req, res)=>{
@@ -565,15 +824,35 @@ app.get('/signup',(req, res)=>{
 });
 
 app.get('/storemanage', function(req, res){
-    let sql = 'SELECT * FROM product';
-    connection.query(sql, (err, result) => {
-      if (err) throw err;
-      res.render('storemanage', { products: result });
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        let sql = 'SELECT * FROM product;';
+        connection.query(sql, function(err, results){
+        if (err) throw err;
+        res.render('storemanage', {action: 'list', products: results});
     });
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
 });
 
 app.get('/usermenu', function(req, res){
-    res.render('usermenu')
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        res.render('usermenu')
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
 });
 
 app.get('/viewuser', function(req, res){

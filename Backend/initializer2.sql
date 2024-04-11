@@ -10,5 +10,5 @@ lines terminated by '\r\n'
 ignore 1 lines
 (catID,catName);
 
-insert into users(username, password, balance, propicURL) values('user1', 'pw', 500000, './image/DannyRic.jpg');
+insert into users(username, password, balance, propicURL) values('user1', 'pw', 20000, './image/DannyRic.jpg');
 insert into admins(adminname, password) values('admin1', 'pw');
