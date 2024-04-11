@@ -81,49 +81,72 @@ app.get('/', function(req, res){
 
 //button redirect code
 app.get('/addproduct', function(req, res){
-    res.render('addproduct')
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        res.render('addproduct')
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
 });
 
 app.get('/adduser', function(req, res){
-    res.render('adduser');
-    app.post('/au', (req, res)=>{
-        var username = req.body.username;
-        var password = req.body.password;
-        var password1 = req.body.password1;
-        var balance = req.body.balance;
-        var imgsrc = req.files.profilepic;
-        var filePath = req.files.profilepic.name;
-       
-        if (filePath!= null){
-            filePath = '/'+ filePath
-        }
-        //check if user already exists
-        check = 'select * from users where username = "' + username + '";';
-        connection.query(check, function(err, result){
-            if (err) throw err;
-            if (result.length > 0){
-                req.flash('error', 'Username already exists, please try again');
-                res.redirect('/adduser');
-            }
-            else{
-                let sql = 'insert into users (username, password, balance, propicURL) values ("' + username + '", "' + password + '", ' + balance + ', "./image/' + filePath + '");';
-                connection.query(sql, function(err, result){
-                if (err) throw err;
-                imgsrc.mv('../style/image/'+filePath, function(err){
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        res.render('adduser');
+        app.post('/au', (req, res)=>{
+                var username = req.body.username;
+                var password = req.body.password;
+                var balance = req.body.balance;
+                var imgsrc = req.files.profilepic;
+                var filePath = req.files.profilepic.name;
+            
+                if (filePath!= null){
+                    filePath = '/'+ filePath
+                }
+                //check if user already exists
+                check = 'select * from users where username = "' + username + '";';
+                connection.query(check, function(err, result){
                     if (err) throw err;
+                    if (result.length > 0){
+                        req.flash('error', 'Username already exists, please try again');
+                        res.redirect('/adduser');
+                    }
+                    else{
+                        let sql = 'insert into users (username, password, balance, propicURL) values ("' + username + '", "' + password + '", ' + balance + ', "./image/' + filePath + '");';
+                        connection.query(sql, function(err, result){
+                        if (err) throw err;
+                        imgsrc.mv('../style/image/'+filePath, function(err){
+                            if (err) throw err;
+                        });
+                        req.flash('success', 'User added successfully');
+                        res.redirect('/usermenu');
                 });
-                req.flash('success', 'User added successfully');
-                res.redirect('/adminhome');
-        });
             }
         });
         
     });
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
 
 });
 
 app.get('/adminhome', function(req, res){
-    if (req.session.adminLogin){
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
         res.render('adminhome')
     }
     else{
@@ -143,25 +166,50 @@ app.get('/adminlogin', function(req, res){
         connection.query(query, function(err, result){
             if (err) throw err;
             if (result.length > 0){
-                if(adminkey =='adminkey'){
+                if (adminkey == 'adminkey'){
                     req.session.adminLogin = true;
                     res.redirect('/adminhome');
                 }
-                else{
-                    req.flash('error', 'Invalid credentials, please try again');
-                    res.redirect('/login');
-                }
-
             } else {
                 req.flash('error', 'Invalid credentials, please try again');
-                res.redirect('/login');
+                res.redirect('/adminlogin');
             }
         })
     })
 });
 
 app.get('/blacklist', function(req, res){
-    res.render('blacklist')
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        res.render('blacklist');
+        app.post('/blklist', (req, res)=>{
+            var username = req.body.username;
+            const checker = 'select * from users where username = "' + username + '";';
+            connection.query(checker, function(err, result){
+                if (err) throw err;
+                if (result.length > 0){
+                    let sql = 'update users set blacklistFlag = 1 where username = "' + username + '";';
+                    connection.query(sql, function(err, result){
+                        if (err) throw err;
+                        req.flash('success', 'User has been blacklisted');
+                        res.redirect('/usermenu');
+                    });
+                }
+                else{
+                    req.flash('error', 'User does not exist');
+                    res.redirect('/blacklist');
+                }
+
+            });
+        });
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
 });
 
 app.get('/cart', function(req, res){
@@ -376,9 +424,64 @@ app.get('/catalogue', function(req, res){
 });
 
 app.get('/edituser', function(req, res){
-    res.render('edituser')
-});
+  
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        res.render('edituser');
+        app.post('/edit', (req, res)=>{
+                var username = req.body.username;
+                var password = req.body.password;
+                var balance = req.body.balance;
+                var Tusername = req.body.Tusername;
+                var imgsrc = req.files.profilepic;
+                var filePath = req.files.profilepic.name;
+            
+                if (filePath!= null){
+                    filePath = '/'+ filePath
+                }
+                //check if user exists
+                check = 'select * from users where username = "' + Tusername + '";';
+                connection.query(check, function(err, result){
+                    if (err) throw err;
+                    if (result.length == 0){
+                        req.flash('error', 'Username does not exist, please try again');
+                        res.redirect('/edituser');
+                    }
+                    else{
+                        let check = 'select username from users where username = "' + username + '";';
+                        connection.query(check, function(err, result){
+                            if (err) throw err;
+                            if (result.length > 0){
+                                req.flash('error', 'Username already exists, please try again');
+                                res.redirect('/edituser');
+                            }
+                            else{
+                                let sql = 'update users set username = "'+username+'", password = "'+password+'", balance = '+balance+', propicURL = "./image/'+filePath+'" where username = "' + Tusername + '";';
+                                connection.query(sql, function(err, result){
+                                    if (err) throw err;
+                                    imgsrc.mv('../style/image/'+filePath, function(err){
+                                        if (err) throw err;
+                                    });
+                                    req.flash('success', 'User updated successfully');
+                                    res.redirect('/usermenu');
+                                });
+                            }
+                        });
+                    }
+            });
 
+        });
+    
+
+    
+    }else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
+});
 app.get('/search', async (req, res) => {
     const searchTerm = decodeURIComponent(req.query.query);
     const min = req.query.min;
@@ -430,12 +533,21 @@ app.get('/login', function(req, res){
         query = 'select * from users where username = "' + username + '" and password = "' + password + '";';
         connection.query(query, function(err, result){
             if (err) throw err;
+            let blklistFlag = result[0].blacklistFlag;
+            console.log(blklistFlag);
             if (result.length > 0){
-                req.session.loggedin = true;
-                req.session.uid = result[0].UID;
-                console.log("history link = ", historyLink);
-                res.redirect(historyLink);
-            } else {
+                if(blklistFlag == 1) {
+                    req.flash('error', 'You were blacklisted from the store');
+                    res.redirect('/login');
+                }
+                else{
+                    req.session.loggedin = true;
+                    req.session.uid = result[0].UID;
+                    console.log("history link = ", historyLink);
+                    res.redirect(historyLink);
+                }
+            } 
+            else {
                 req.flash('error', 'Invalid credentials, please try again');
                 res.redirect('/login');
             }
@@ -539,7 +651,37 @@ app.get('/product/:id', async (req, res) => {
 });
 
 app.get('/rmuser', function(req, res){
-    res.render('rmuser')
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        res.render('rmuser');
+        app.post('/rmv', (req, res)=>{
+            var username = req.body.username;
+            const checker = 'select * from users where username = "' + username + '";';
+            connection.query(checker, function(err, result){
+                if (err) throw err;
+                if (result.length > 0){
+                    let sql = 'delete from users where username = "' + username + '";';
+                    connection.query(sql, function(err, result){
+                        if (err) throw err;
+                        req.flash('success', 'User removed successfully');
+                        res.redirect('/usermenu');
+                    });
+                }
+                else{
+                    req.flash('error', 'User does not exist');
+                    res.redirect('/rmuser');
+                }
+
+            });
+        });
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
 });
 
 app.get('/signup',(req, res)=>{
@@ -584,15 +726,35 @@ app.get('/signup',(req, res)=>{
 });
 
 app.get('/storemanage', function(req, res){
-    let sql = 'SELECT * FROM product;';
-    connection.query(sql, function(err, results){
-    if (err) throw err;
-    res.render('storemanage', {action: 'list', products: results});
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        let sql = 'SELECT * FROM product;';
+        connection.query(sql, function(err, results){
+        if (err) throw err;
+        res.render('storemanage', {action: 'list', products: results});
     });
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
 });
 
 app.get('/usermenu', function(req, res){
-    res.render('usermenu')
+    loginKey = req.session.adminLogin;
+    if (loginKey == null){
+        loginKey = false;
+    }
+    if (loginKey){
+        res.render('usermenu')
+    }
+    else{
+        req.flash("error", "Permission Denied");
+        res.redirect('/');
+    }
 });
 
 app.get('/viewuser', function(req, res){

@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html>  
 <head>
-    <title>New user information</title>
+    <title>Blacklist user from system</title>
     <link rel = "stylesheet"
           href="/css/Blacklist.css">
 </head>
 <body>
     <div class = "main">
         <h1>Blacklist user from system</h1>
-        <form action ="/adminhome"> <!-- creates the form-->
-            <label for ="first"> <!-- Username input-->
+        <p>
+            <a href ="/usermenu"
+                style = "text-decoration: navy; font-size: 13px;">
+                RETURN TO USER MANAGEMENT PAGE
+            </a>
+        </p>
+        <form action ="/blklist", method = "post"> <!-- creates the form-->
+            <label for ="username"> <!-- Username input-->
                 Username to be blacklisted:
              </label>
             <input type = "text"
-                    id = "first"
-                    name = "first"
+                    id = "username"
+                    name = "username"
                     placeholder="Enter username" required>
             
             
@@ -22,12 +28,7 @@
                     <button type = "submit">Submit</button>
             </div>
         </form>
-        <p>
-            <a href ="/adminhome"
-                style = "text-decoration: navy;">
-                Return to functions menu
-            </a>
-        </p>
+        
         
     </div>
 </body>

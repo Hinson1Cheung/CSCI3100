@@ -8,6 +8,12 @@
 <body>
     <div class = "main">
         <h1>Sign in</h1>
+        <p>
+            <a href ="/"
+                style = "text-decoration: navy; font-size: 13px;">
+                RETURN TO HOME PAGE
+            </a>
+        </p>
         <form action ="/log", method="post"> <!-- creates the form-->
             <label for ="first"> <!-- Username input-->
                 Username:
@@ -37,7 +43,7 @@
             </a>
         </p>
         <% if (messages.error) { %>
-            <div class="alert alert-danger", style = "color: red; font-weight: bold; font-size: 15px; ">
+            <div class="alert alert-danger", style = "color: red; font-weight: bold; font-size: 13px; ">
                 <%= messages.error %>
             </div>
         <% } %> <!-- Error message if the user enters the wrong username or password-->

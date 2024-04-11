@@ -9,13 +9,19 @@
     <div class = "main">
         <h1>Sign in as admin</h1>
         <form action ="/adm", method = "post"> <!-- creates the form-->
-            <label for ="first"> <!-- Username input-->
+            <p>
+                <a href ="/"
+                    style = "text-decoration: navy; font-size: 13px;">
+                    RETURN TO HOME PAGE
+                </a>
+            </p>
+            <label for =""> <!-- Username input-->
                 Username:
              </label>
             <input type = "text"
                     id = "username"
                     name = "username"
-                    placeholder="Enter you username" required>
+                    placeholder="Enter your username" required>
             
             <label for = "password"> <!-- Password input-->
                 Password:
@@ -37,6 +43,11 @@
                 Submit
                 </button>
             </div>
+            <% if (messages.error) { %>
+                <div class="alert alert-danger", style = "color: red; font-weight: bold; font-size: 13px; ">
+                    <%= messages.error %>
+                </div>
+            <% } %> <!-- Error message if the user enters the wrong username or password-->
         </form>
     </div>
 </body>

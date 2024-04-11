@@ -1,34 +1,45 @@
 <!DOCTYPE html>
 <html>  
 <head>
-    <title>New user information</title>
+    <title>Remove User</title>
     <link rel = "stylesheet"
           href="/css/RmUser.css">
 </head>
 <body>
     <div class = "main">
-        <h1>Remove user from system</h1>
-        <form action ="/usermenu"> <!-- creates the form-->
+        <h1>Remove user</h1>
+        <p>
+            <a href ="/usermenu"
+                style = "text-decoration: navy; font-size: 13px;">
+                RETURN TO USER MANAGEMENT PAGE
+            </a>
+        </p>
+        <form action ="/rmv", method="post"> <!-- creates the form-->
             <label for ="first"> <!-- Username input-->
-                Username to be removed:
+                Username:
              </label>
             <input type = "text"
-                    id = "first"
-                    name = "first"
-                    placeholder="Enter username" required>
+                    id = "username"
+                    name = "username"
+                    placeholder="Username to be removed" required>
+            
             
             
             <div class = "warp"> <!--Submit button-->
-                    <button type = "submit">Submit</button>
+                    <button type = "submit", onclick="warn()">Submit</button>
             </div>
         </form>
-        <p>
-            <a href ="/usermenu"
-                style = "text-decoration: navy;">
-                Return to functions menu
-            </a>
-        </p>
         
+        <% if (messages.error) { %>
+            <div class="alert alert-danger", style = "color: red; font-weight: bold; font-size: 13px; ">
+                <%= messages.error %>
+            </div>
+        <% } %> <!-- Error message if the user enters the wrong username or password-->
     </div>
+    <% if (messages.success) { %>
+        <script>
+            alert('<%= messages.success %>');
+        </script>
+    <% } %>
 </body>
 </html>
