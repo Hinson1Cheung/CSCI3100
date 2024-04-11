@@ -170,6 +170,10 @@ app.get('/adminlogin', function(req, res){
                     req.session.adminLogin = true;
                     res.redirect('/adminhome');
                 }
+                else{
+                    req.flash('error', 'Invalid credentials, please try again');
+                    res.redirect('/adminlogin');
+                }
             } else {
                 req.flash('error', 'Invalid credentials, please try again');
                 res.redirect('/adminlogin');
