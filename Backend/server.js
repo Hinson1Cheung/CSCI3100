@@ -215,7 +215,7 @@ app.post('/del', (req, res)=>{
         }
     }
     else {
-        console.log("Please login first");
+        req.flash('error', "Please login first");
         res.redirect('/login');
     }
 });
@@ -264,7 +264,7 @@ app.post('/checkout', (req, res)=>{
         // });
         // res.json({success: true});
     }else {
-        console.log("Please login first");
+        req.flash('error', "Please login first");
         res.redirect('/login');
     }
 });
@@ -361,7 +361,7 @@ app.post('/add', (req, res)=>{
 
     }
     else {
-        console.log("Please login first");
+        // req.flash('error', "Please login first");
         res.redirect('/login');
     }
     
@@ -546,7 +546,7 @@ app.get('/product/:id', async (req, res) => {
         let sqlr3 = 'select count(*) as count3 from REVIEW where productID = ' + req.params.id + ' and rating = 3;';
         let sqlr4 = 'select count(*) as count4 from REVIEW where productID = ' + req.params.id + ' and rating = 4;';
         let sqlr5 = 'select count(*) as count5 from REVIEW where productID = ' + req.params.id + ' and rating = 5;';
-        let ratingCount = [];
+        
         async.parallel({
             res1: function(callback){
                 connection.query(sqlr1, function(err, resr1){
@@ -580,18 +580,68 @@ app.get('/product/:id', async (req, res) => {
             }
         }, function(err, result){
             if (err) throw err;
+            let ratingCount = [];
             ratingCount.push(result.res1);
             ratingCount.push(result.res2);
             ratingCount.push(result.res3);
             ratingCount.push(result.res4);
             ratingCount.push(result.res5);
             console.log(ratingCount);
-            
+            let totalReview = 0;
+            let totalStars = 0;
+            ratingCount.forEach((rating, index) => {
+                totalReview += rating;
+                totalStars += rating * (index + 1);
+            });
+            let averageRating = 0;
+            if (totalReview != 0)
+                averageRating = totalStars / totalReview;
+            res.render('product', { products: product, loggedin: login, check: check[0], review: result2, ratingList: ratingCount, ratingAvg: averageRating, totalReview: totalReview});
         });
-        res.render('product', { products: product, loggedin: login, check: check[0], review: result2, ratingList: ratingCount});
+        // res.render('product', { products: product, loggedin: login, check: check[0], review: result2, ratingList: ratingCount});
     });
         
                 
+});
+
+app.post('/comment', function(req, res){
+    if (req.session.loggedin){
+        const userID = req.session.uid;
+        const productID = req.body.productID;
+        let rating = 1;
+        const date = new Date().toLocaleDateString();
+        const content = req.body.review;
+        const stars = req.body.star;
+        if (stars) {
+            rating = stars.length;
+        }
+        // console.log("productID: ", productID);
+        // console.log("userID: ", userID);
+        // console.log("date: ", date);
+        // console.log("content: ", content);
+        // console.log("rating: ", rating);
+        let sql1 = 'select count(*) as count from TRANSACTION where UID=' + userID + ' and productID=' + productID + ';';
+        connection.query(sql1, function(err, result){
+            if (err) throw err;
+            console.log("result: ", result[0].count == 0);
+            if (result[0].count == 0){
+                req.flash('error', 'You have not purchased this product yet, please purchase before leaving a review');
+                res.redirect('/product/' + productID);
+            } else {
+                let sql2 = 'insert into REVIEW(rating, UID, productID, date, content) values(' + rating + ',' + userID + ',"' + productID + '","' + String(date) + '","' + String(content) + '");';
+                connection.query(sql2, function(err, result){
+                    if (err) throw err;
+                    console.log("review added");
+                });
+                res.redirect('/product/' + productID);
+            }
+        });
+        
+    } else {
+        req.flash('error', "Please login first");
+        res.redirect('/login');
+    }
+    
 });
 
 app.get('/rmuser', function(req, res){
