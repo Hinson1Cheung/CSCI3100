@@ -866,20 +866,22 @@ app.get('/viewuser', function(req, res){
 );
 
 
+
 app.get('/userprofile', function(req, res){
 
     if (req.session.loggedin){
         //const userID = req.session.uid;
         const userID = req.session.uid;
 
-        let sql = 'SELECT username, propicURL FROM users WHERE UID = '+userID+';';
+        let sql = 'SELECT username, propicURL, balance FROM users WHERE UID = '+userID+';';
         
         connection.query(sql, function(err, results){
             if (err) throw err;
-            let sql_2 = 'SELECT  p.productID, p.imageURL, p.pName, p.price    FROM transaction t JOIN product p ON t.productID = p.productID WHERE t.UID = '+ userID+'';
+            let sql_2 = 'SELECT p.productID, p.imageURL,  p.pName,  p.price,SUM(t.count) AS totalCount  ,SUM(t.sum) AS totalSum  FROM transaction t INNER JOIN  product p ON t.productID = p.productID WHERE  t.UID = '+ userID+' GROUP BY t.productID;'
+            //let sql_2 = 'SELECT  p.productID, p.imageURL, p.pName, p.price,t    FROM transaction t JOIN product p ON t.productID = p.productID WHERE t.UID = '+ userID+'';
             connection.query(sql_2, function(err, result){
                 if (err) throw err;
-                res.render('userprofile', {name: results[0].username,picpath : results[0].propicURL ,userid: userID, products: result});
+                res.render('userprofile', {name: results[0].username,picpath : results[0].propicURL, balance : results[0].balance ,userid: userID, products: result});
             })
 
         })
@@ -892,7 +894,6 @@ app.get('/userprofile', function(req, res){
 
 }
 );
-
 
 app.get('/api/products', async (req, res) => {
     const [products] = await pool.query('SELECT * FROM product');
