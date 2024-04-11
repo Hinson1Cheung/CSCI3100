@@ -263,7 +263,7 @@ app.post('/del', (req, res)=>{
         }
     }
     else {
-        console.log("Please login first");
+        req.flash('error', "Please login first");
         res.redirect('/login');
     }
 });
@@ -312,7 +312,7 @@ app.post('/checkout', (req, res)=>{
         // });
         // res.json({success: true});
     }else {
-        console.log("Please login first");
+        req.flash('error', "Please login first");
         res.redirect('/login');
     }
 });
@@ -409,7 +409,7 @@ app.post('/add', (req, res)=>{
 
     }
     else {
-        console.log("Please login first");
+        // req.flash('error', "Please login first");
         res.redirect('/login');
     }
     
@@ -633,21 +633,127 @@ app.get('/payment', async function(req, res){
 app.get('/product/:id', async (req, res) => {
     const product = await getProductById(req.params.id);
     let login = false;
+    let check = [];
     if (req.session.loggedin == true) {
         login = true;
         let sql = 'select count from SHOPCART where productID = ' + req.params.id + ' and UID = ' + req.session.uid + ';';
         connection.query(sql, function(err, result){
             if (err) throw err;
-            console.log(product);
-            console.log(result);
-            res.render('product', { products: product, loggedin: login, check: result});
+            // console.log(product);
+            // console.log(result);
+            check.push(result);
+        });
+    }
+    // else {
+    //     console.log(product);
+    //     res.render('product', { products: product, loggedin: login, check: false});
+    // }
+    let sql2 = 'select commentID, rating, date, content, UID, username, propicURL from REVIEW inner join USERS using(UID) where productID=' + req.params.id+ ';';
+    connection.query(sql2, function(err, result2){  
+        if (err) throw err;
+        console.log(result2);
+        // res.render('product', { products: product, loggedin: login, check: check[0], review: result2});
+        let sqlr1 = 'select count(*) as count1 from REVIEW where productID = ' + req.params.id + ' and rating = 1;';
+        let sqlr2 = 'select count(*) as count2 from REVIEW where productID = ' + req.params.id + ' and rating = 2;';
+        let sqlr3 = 'select count(*) as count3 from REVIEW where productID = ' + req.params.id + ' and rating = 3;';
+        let sqlr4 = 'select count(*) as count4 from REVIEW where productID = ' + req.params.id + ' and rating = 4;';
+        let sqlr5 = 'select count(*) as count5 from REVIEW where productID = ' + req.params.id + ' and rating = 5;';
+        
+        async.parallel({
+            res1: function(callback){
+                connection.query(sqlr1, function(err, resr1){
+                    if (err) throw err;
+                    callback(null, resr1[0].count1);
+                });
+            },
+            res2: function(callback){
+                connection.query(sqlr2, function(err, resr2){
+                    if (err) throw err;
+                    callback(null, resr2[0].count2);
+                });
+            },
+            res3: function(callback){
+                connection.query(sqlr3, function(err, resr3){    
+                    if (err) throw err;
+                    callback(null, resr3[0].count3);
+                });
+            },
+            res4: function(callback){
+                connection.query(sqlr4, function(err, resr4){
+                    if (err) throw err;
+                    callback(null, resr4[0].count4);
+                });
+            },
+            res5: function(callback){
+                connection.query(sqlr5, function(err, resr5){    
+                    if (err) throw err;
+                    callback(null, resr5[0].count5);
+                });
+            }
+        }, function(err, result){
+            if (err) throw err;
+            let ratingCount = [];
+            ratingCount.push(result.res1);
+            ratingCount.push(result.res2);
+            ratingCount.push(result.res3);
+            ratingCount.push(result.res4);
+            ratingCount.push(result.res5);
+            console.log(ratingCount);
+            let totalReview = 0;
+            let totalStars = 0;
+            ratingCount.forEach((rating, index) => {
+                totalReview += rating;
+                totalStars += rating * (index + 1);
+            });
+            let averageRating = 0;
+            if (totalReview != 0)
+                averageRating = totalStars / totalReview;
+            res.render('product', { products: product, loggedin: login, check: check[0], review: result2, ratingList: ratingCount, ratingAvg: averageRating, totalReview: totalReview});
+        });
+        // res.render('product', { products: product, loggedin: login, check: check[0], review: result2, ratingList: ratingCount});
+    });
+        
+                
+});
+
+app.post('/comment', function(req, res){
+    if (req.session.loggedin){
+        const userID = req.session.uid;
+        const productID = req.body.productID;
+        let rating = 1;
+        const date = new Date().toLocaleDateString();
+        const content = req.body.review;
+        const stars = req.body.star;
+        if (stars) {
+            rating = stars.length;
+        }
+        // console.log("productID: ", productID);
+        // console.log("userID: ", userID);
+        // console.log("date: ", date);
+        // console.log("content: ", content);
+        // console.log("rating: ", rating);
+        let sql1 = 'select count(*) as count from TRANSACTION where UID=' + userID + ' and productID=' + productID + ';';
+        connection.query(sql1, function(err, result){
+            if (err) throw err;
+            console.log("result: ", result[0].count == 0);
+            if (result[0].count == 0){
+                req.flash('error', 'You have not purchased this product yet, please purchase before leaving a review');
+                res.redirect('/product/' + productID);
+            } else {
+                let sql2 = 'insert into REVIEW(rating, UID, productID, date, content) values(' + rating + ',' + userID + ',"' + productID + '","' + String(date) + '","' + String(content) + '");';
+                connection.query(sql2, function(err, result){
+                    if (err) throw err;
+                    console.log("review added");
+                });
+                res.redirect('/product/' + productID);
+            }
         });
         
+    } else {
+        req.flash('error', "Please login first");
+        res.redirect('/login');
     }
-    else {
-        console.log(product);
-        res.render('product', { products: product, loggedin: login, check: false});
-    }
+    
 });
 
 app.get('/rmuser', function(req, res){

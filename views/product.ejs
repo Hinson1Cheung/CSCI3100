@@ -63,81 +63,47 @@
                 const loginJS = '<%- JSON.stringify(loggedin) %>';
                 const productCountJS = '<%- JSON.stringify(check) %>';
             </script>
+            
 
             <div class="col-md-12"></br></div>
 
             <div class="col-md-9"> <!-- 75% of row-->
                 <span class="heading">Consumer Rating</span>
+                <% for(let i = 0; i < 5; i++) { %>
+                    <% if(i < ratingAvg) { %>
+                        <span class="fa fa-star checked"></span>
+                    <% } else { %>
+                        <span class="fa fa-star"></span>
+                    <% } %>
+                <% } %>
+                <!-- <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-                <p>4 average based on 5 reviews.</p> <!--  later retrive from backend -->
+                <span class="fa fa-star"></span> -->
+                <p><%= ratingAvg.toFixed(2) %> average based on <%= totalReview %> reviews.</p> <!--  later retrive from backend -->
                 <hr style="border:3px solid #f1f1f1">
                 <div class="raterow">
-                    <div class="side">
-                        <div>5</div>
-                    </div>
-                    <div class="middle">
-                        <div class="bar-container">
-                        <div class="bar-5"></div>
+                    <% ratingList.forEach((rating, index) => { %>
+                        <div class="side">
+                            <div><%= 5 - index %></div>
                         </div>
-                    </div>
-                    <div class="side right">
-                        <div>3</div>
-                    </div>
-                    <div class="side">
-                        <div>4</div>
-                    </div>
-                    <div class="middle">
-                        <div class="bar-container">
-                        <div class="bar-4"></div>
+                        <div class="middle">
+                            <div class="bar-container">
+                                <div class="bar-<%= 5 - index %>" style="width: <%= rating*5 %>%;"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="side right">
-                        <div>1</div>
-                    </div>
-                    <div class="side">
-                        <div>3</div>
-                    </div>
-                    <div class="middle">
-                        <div class="bar-container">
-                        <div class="bar-3"></div>
+                        <div class="side right">
+                            <div><%= rating %></div>
                         </div>
-                    </div>
-                    <div class="side right">
-                        <div>0</div>
-                    </div>
-                    <div class="side">
-                        <div>2</div>
-                    </div>
-                    <div class="middle">
-                        <div class="bar-container">
-                        <div class="bar-2"></div>
-                        </div>
-                    </div>
-                    <div class="side right">
-                        <div>0</div>
-                    </div>
-                    <div class="side">
-                        <div>1</div>
-                    </div>
-                    <div class="middle">
-                        <div class="bar-container">
-                        <div class="bar-1"></div>
-                        </div>
-                    </div>
-                    <div class="side right">
-                        <div>1</div>
-                    </div>
+                    <% }) %>
                 </div>
             </div>
 
             <div class="col-md-12"></br></div>
 
             <div class="col-md-12">
-                <div class="heading" style="display: flex; align-items: center;">
+                <div class="heading" style="display: flex; align-items: center;">  
                     <span>Consumer Comments</span>
                     <span> &emsp;2&emsp; </span>
                     <span>
@@ -159,15 +125,53 @@
                     </span>
                 </div>
                 <hr style="border:3px solid #f1f1f1">
+                <% if (messages.error) { %>
+                    <% messages.error.forEach(function(message) { %>
+                        <div class="alert alert-danger" ><%= message %></div>
+                    <% }) %>
+                <% } %>
                 <!-- to be implement later for getting new comment -->
                 <div class="search-container"> 
-                    <form class="input-group" id="comment-form"> 
-                        <input type="text" class="form-control comment-input" id="comment-box" placeholder="Leave Your Comment...">
+                    <form class="input-group" id="comment-form" action ="/comment", method="post"> 
+                        <input type="hidden" name="productID" value="<%= products.productID %>">
                         <div id="preview-container"></div>    
+                        <div class = "col-md-9" > <!--Submit button-->
+                            <input type="text" class="form-control comment-input" name="review" id="comment-box" placeholder="Leave Your Comment..." required>
+                            <button class="btn btn-primary my-button" style="margin: 20px; right:0" type = "submit" onclick="warn()">Submit</button>
+                            <input class="star" type="checkbox" name="star" value="1" id="star-1" />
+                            <input class="star" type="checkbox" name="star" value="2" id="star-2" />
+                            <input class="star" type="checkbox" name="star" value="3" id="star-3" />
+                            <input class="star" type="checkbox" name="star" value="4" id="star-4" />
+                            <input class="star" type="checkbox" name="star" value="5" id="star-5" />
+                            
+                        </div>    
                     </form>
                 </div>
-                <hr style="border:3px solid #f1f1f1">
-                <div calss="Comments">
+                <hr style="border:3px solid #f1f1f1">   
+                <% review.forEach((comment, index) => { %>
+                    <div calss="Comments">
+                        <div class="row">
+                            <div class="userinfo" style="float: left; width: 20%;display:flex; flex-direction: column;align-items: center">
+                                <img src=".<%= comment.propicURL %>" style="height: 75px;border-radius: 50%;"/>
+                                <p class="username" style="align-self: center;"> <%= comment.username %></p>
+                            </div>
+                            <div class="col-md-9" style="float: left; width: 80%;">
+                                <span>Rating: </span>
+                                <% for(let i = 0; i < 5; i++) { %>
+                                    <% if(i < comment.rating) { %>
+                                        <span class="fa fa-star checked"></span>
+                                    <% } else { %>
+                                        <span class="fa fa-star"></span>
+                                    <% } %>
+                                <% } %>
+                                <span class="comment-time"> <%= comment.date %></span>
+                                <div class="comment-content"> <%= comment.content %></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="border:3px solid #f1f1f1">
+                <% }); %> <!-- End of forEach loop -->
+                <!-- <div calss="Comments">
                     <div class="row">
                         <div class="userinfo" style="float: left; width: 20%;display:flex; flex-direction: column;align-items: center">
                             <img src="/image/sample.png" style="height: 75px;border-radius: 50%;"/>
@@ -184,26 +188,7 @@
                             <div class="comment-content">First comment.</div>
                         </div>
                     </div>
-                </div>
-                <hr style="border:3px solid #f1f1f1">
-                <div calss="Comments">
-                    <div class="row">
-                        <div class="userinfo" style="float: left; width: 20%;display:flex; flex-direction: column;align-items: center">
-                            <img src="/image/sample.png" style="height: 75px;border-radius: 50%;"/>
-                            <p class="username" style="align-self: center;">user1</p>
-                        </div>
-                        <div class="col-md-9" style="float: left; width: 80%;">
-                            <span>Rating: </span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="comment-time"> 2 weeks ago</span>
-                            <div class="comment-content">First comment.</div>
-                        </div>
-                    </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

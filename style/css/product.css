@@ -315,3 +315,50 @@ input[type=number]::-webkit-outer-spin-button {
     border-width: thin;
     border-color: white;    
 }
+
+.star {
+    visibility:hidden;
+    font-size:25px;
+    cursor:pointer;
+    margin: auto;
+    
+}
+.star:before {
+   content: "\2606";
+   /* position: absolute; */
+   visibility:visible;
+   
+}
+.star:checked:before {
+   content: "\2605";
+   /* position: absolute; */
+}
+
+#star-5 {
+    display: none;
+}
+#star-4 {
+    display: none;
+}
+#star-3 {
+    display: none;
+}
+#star-2 {
+    display: none;
+}
+
+#star-1 {
+    display:inline;
+}
+#star-1:checked ~ #star-2 {
+    display: inline;
+}
+#star-1:checked ~ #star-2:checked ~ #star-3 {
+    display: inline;
+}
+#star-1:checked ~ #star-2:checked ~ #star-3:checked ~ #star-4 {
+    display: inline;
+}
+#star-1:checked ~ #star-2:checked ~ #star-3:checked ~ #star-4:checked ~ #star-5 {
+    display: inline;
+}
