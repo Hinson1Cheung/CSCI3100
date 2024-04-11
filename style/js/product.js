@@ -30,7 +30,7 @@ window.onload = function() {
 var jsonData = JSON.parse(productInfoJS);
 const loginFlag = JSON.parse(loginJS);
 const pCount = JSON.parse(productCountJS);
-console.log(loginFlag);
+console.log("loginFlag: ", loginFlag);
 async function addToCart(){
     const productID = jsonData.productID;
     const quantity = jsonData.quantity;

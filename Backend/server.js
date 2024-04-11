@@ -625,7 +625,7 @@ app.get('/payment', async function(req, res){
 app.get('/product/:id', async (req, res) => {
     const product = await getProductById(req.params.id);
     let login = false;
-    let check = [];
+    let check = ['false'];
     if (req.session.loggedin == true) {
         login = true;
         let sql = 'select count from SHOPCART where productID = ' + req.params.id + ' and UID = ' + req.session.uid + ';';
@@ -633,7 +633,7 @@ app.get('/product/:id', async (req, res) => {
             if (err) throw err;
             // console.log(product);
             // console.log(result);
-            check.push(result);
+            check[0] = result;
         });
     }
     // else {
