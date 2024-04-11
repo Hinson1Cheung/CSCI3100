@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart | ShopVista</title>
+    <title>View User | ShopVista</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/StoreManagement.css">
 </head>
@@ -33,16 +33,23 @@
     </div>
     <div class="container mt-5">
         <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
-        <h1 class="text-center">Store Management</h1>
+        <h1 class="text-center">View Users</h1>
         <div class="row" style="display: flex; justify-content: center;">
             <!-- add form here -->
             <!-- sample display -->
-            <% products.forEach(function(product) { %>
+            <% users.forEach(function(user) { %>
                 <div class="card" style="padding-bottom: 10px;">
-                    <img src="<%= product.propicURL %>" alt="Sample" class="product-image" style="width:100%">
-                    <h5 class="mt-0 mb-1 text-center"><%= product.username %></h5>
-                    <h6 class="text-center">balance: $<%= product.balance %></h6>
-                
+                    <img src="<%= user.propicURL %>" alt="Sample" class="product-image" style="width:100%">
+                    <h5 class="mt-0 mb-1 text-center"><%= user.username %></h5>
+                    <h6 class="text-center">UserId: <%= user.UID %></h6>
+                    <h6 class="text-center">                    <% if (user.blacklistFlag == 0) { %>
+                        Not Blacklisted
+                      <% } else { %>
+                        Blacklisted
+                      <% } %></h6>
+
+                    <h6 class="text-center">balance: $<%= user.balance %></h6>
+                    
                 </div>
             <% }); %>
         </div>

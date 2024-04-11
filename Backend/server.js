@@ -170,6 +170,10 @@ app.get('/adminlogin', function(req, res){
                     req.session.adminLogin = true;
                     res.redirect('/adminhome');
                 }
+                else{
+                    req.flash('error', 'Invalid credentials, please try again');
+                    res.redirect('/adminlogin');
+                }
             } else {
                 req.flash('error', 'Invalid credentials, please try again');
                 res.redirect('/adminlogin');
@@ -877,11 +881,13 @@ app.get('/usermenu', function(req, res){
     }
 });
 
+
+
 app.get('/viewuser', function(req, res){
     let sql = 'SELECT * FROM users;';
     connection.query(sql, (err, result) => {
       if (err) throw err;
-      res.render('viewuser', { products: result });
+      res.render('viewuser', { users: result });
     });
 
 }
