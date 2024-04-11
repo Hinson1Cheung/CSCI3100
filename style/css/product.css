@@ -335,21 +335,22 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 #star-5 {
-    display: none;
+    display: inline;
 }
 #star-4 {
-    display: none;
+    display: inline;
 }
 #star-3 {
-    display: none;
+    display: inline;
 }
 #star-2 {
-    display: none;
+    display: inline;
 }
 
 #star-1 {
     display:inline;
 }
+/*
 #star-1:checked ~ #star-2 {
     display: inline;
 }
@@ -361,4 +362,4 @@ input[type=number]::-webkit-outer-spin-button {
 }
 #star-1:checked ~ #star-2:checked ~ #star-3:checked ~ #star-4:checked ~ #star-5 {
     display: inline;
-}
+} */
