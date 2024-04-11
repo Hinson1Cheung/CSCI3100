@@ -625,7 +625,7 @@ app.get('/payment', async function(req, res){
 app.get('/product/:id', async (req, res) => {
     const product = await getProductById(req.params.id);
     let login = false;
-    let check = [];
+    let check = ['false'];
     if (req.session.loggedin == true) {
         login = true;
         let sql = 'select count from SHOPCART where productID = ' + req.params.id + ' and UID = ' + req.session.uid + ';';
@@ -633,7 +633,7 @@ app.get('/product/:id', async (req, res) => {
             if (err) throw err;
             // console.log(product);
             // console.log(result);
-            check.push(result);
+            check[0] = result;
         });
     }
     // else {
@@ -685,11 +685,11 @@ app.get('/product/:id', async (req, res) => {
         }, function(err, result){
             if (err) throw err;
             let ratingCount = [];
-            ratingCount.push(result.res1);
-            ratingCount.push(result.res2);
-            ratingCount.push(result.res3);
-            ratingCount.push(result.res4);
             ratingCount.push(result.res5);
+            ratingCount.push(result.res4);
+            ratingCount.push(result.res3);
+            ratingCount.push(result.res2);
+            ratingCount.push(result.res1);
             console.log(ratingCount);
             let totalReview = 0;
             let totalStars = 0;
