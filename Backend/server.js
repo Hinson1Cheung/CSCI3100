@@ -576,7 +576,10 @@ app.get('/payment', async function(req, res){
             //let totalcost = await queryAsync('SELECT SUM(price * count) AS total FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID);
             
             let sql = 'select * from (select shopcart.productID, checkedProd, pName, price, count, (price*count) as ssum, (SELECT SUM(price * count) FROM shopcart, product WHERE shopcart.productID = product.productID AND checkedProd=1 AND UID =' + userID + ') AS total from shopcart, product where shopcart.productID = product.productID and UID='+ userID +') as a where checkedProd=1;';
+            
             let results = await queryAsync(sql);
+            console.log("payment: ", results);
+            console.log("userID: ", userID);
             let totalcost = results[0].total;
             let productIDs = results.map(a => a.productID);
             let count = results.map(a => a.count);
