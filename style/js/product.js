@@ -36,6 +36,7 @@ async function addToCart(){
     const quantity = jsonData.quantity;
     const pName = jsonData.pName;
     var count = document.getElementById("quantity").value;
+    var diff = count - Math.floor(count);
     if (pCount.length != 0) {
         // console.log(Object.values(pCount)[0].count);
         // check if the quantity in cart exceed the stock if user already have the product in cart
@@ -48,12 +49,18 @@ async function addToCart(){
         }
     }
     else {
+        // check if the quantity in cart exceed the stock
         if (count > quantity) {
             alert("The quantity you entered exceed the product stock.\nPlease try again.");
             return;
         }
     }
-    
+    // check if the quantity input is decimal number
+    if (diff != 0) {
+        alert("Invalid quantity.\nQuantity must be an integer.");
+        return;
+    }
+    // check if the quantity input is positive
     if (count < 1) {
         alert("Invalid quantity.\nQuantity is non-zero.");
         return;
