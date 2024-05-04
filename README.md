@@ -73,6 +73,7 @@ initSQL2 STAEMENT HAS JUST RUN
 ```
 
 Type the URL: http://localhost:5500/ 
+
 And the application should run as normal
 
 
