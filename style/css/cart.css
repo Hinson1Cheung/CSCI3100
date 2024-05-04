@@ -70,6 +70,8 @@ h5.text-center {
 
 }
 
+/*<!-- checkbox based on: https://getcssscan.com/css-checkboxes-examples-->
+*/
 .checkbox-wrapper-18 .round {
     position: relative;
 }
@@ -112,7 +114,8 @@ h5.text-center {
 .checkbox-wrapper-18 .round input[type="checkbox"]:checked + label:after {
     opacity: 1;
 }
-
+/*<!-- card based on: https://www.w3schools.com/howto/howto_css_product_card.asp-->
+*/
 .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 200px;

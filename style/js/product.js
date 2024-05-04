@@ -31,6 +31,8 @@ var jsonData = JSON.parse(productInfoJS);
 const loginFlag = JSON.parse(loginJS);
 const pCount = JSON.parse(productCountJS);
 console.log("loginFlag: ", loginFlag);
+
+// Debugged with the help from GitHub Copilot
 async function addToCart(){
     const productID = jsonData.productID;
     const quantity = jsonData.quantity;
