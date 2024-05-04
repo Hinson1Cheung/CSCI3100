@@ -73,6 +73,7 @@
 
             <div class="col-md-9"> <!-- 75% of row-->
                 <span class="heading">Customer Reviews</span>
+                <!-- Debugged with the help from Github Copilot -->
                 <% for(let i = 0; i < 5; i++) { %>
                     <% if(i < ratingAvg) { %>
                         <span class="fa fa-star checked"></span>
@@ -129,6 +130,7 @@
                     </span>
                 </div>
                 <hr style="border:3px solid #f1f1f1">
+                
                 <% if (messages.error) { %>
                     <% messages.error.forEach(function(message) { %>
                         <div class="alert alert-danger" ><%= message %></div>
@@ -152,6 +154,7 @@
                     </form>
                 </div>
                 <hr style="border:3px solid #f1f1f1">   
+                <!-- Debugged with the help from Github Copilot -->
                 <% review.forEach((comment, index) => { %>
                     <div calss="Comments">
                         <div class="row">

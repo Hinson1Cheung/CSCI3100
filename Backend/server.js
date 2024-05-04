@@ -217,6 +217,7 @@ app.get('/blacklist', function(req, res){
     }
 });
 
+// Debugged with the help from GitHub Copilot
 app.get('/cart', function(req, res){
     // res.render('cart');
     if (req.session.loggedin){
@@ -242,6 +243,7 @@ app.get('/cart', function(req, res){
     }
 });
 
+// Debugged with the help from GitHub Copilot
 app.post('/del', (req, res)=>{
     if (req.session.loggedin) {
         const productID = req.body.productID;
@@ -342,6 +344,7 @@ app.post('/checkout', (req, res)=>{
 //     // }
 // });
 
+// Debugged with the help from GitHub Copilot
 app.post('/add', (req, res)=>{
     if (req.session.loggedin) {
         const productID = req.body.productID;
@@ -632,7 +635,7 @@ app.get('/payment', async function(req, res){
 });
 
 
-
+// Debugged with the help from GitHub Copilot
 app.get('/product/:id', async (req, res) => {
     const product = await getProductById(req.params.id);
     let login = false;
@@ -725,6 +728,7 @@ app.get('/product/:id', async (req, res) => {
                 
 });
 
+// Debugged with the help from GitHub Copilot
 app.post('/comment', function(req, res){
     if (req.session.loggedin){
         const userID = req.session.uid;
