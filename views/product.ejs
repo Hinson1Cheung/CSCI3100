@@ -71,6 +71,7 @@
             <div class="col-md-12"></br></div>
 
             <div class="col-md-9"> <!-- 75% of row-->
+                <!-- Summary of reviews-->
                 <span class="heading">Customer Reviews</span>
                 <!-- Debugged with the help from Github Copilot -->
                 <% for(let i = 0; i < 5; i++) { %>
@@ -80,13 +81,9 @@
                         <span class="fa fa-star"></span>
                     <% } %>
                 <% } %>
-                <!-- <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span> -->
-                <p><%= ratingAvg.toFixed(2) %> average based on <%= totalReview %> reviews.</p> <!--  later retrive from backend -->
+                <p><%= ratingAvg.toFixed(1) %> average based on <%= totalReview %> reviews.</p> <!--  later retrive from backend -->
                 <hr style="border:3px solid #f1f1f1">
+                <!-- Rate ratio bars-->
                 <div class="raterow">
                     <% ratingList.forEach((rating, index) => { %>
                         <div class="side">
@@ -111,17 +108,6 @@
                     <span>Consumer Comments</span>
                     <span> &emsp;<span><%= totalReview %></span>&emsp; </span>
                     <span>
-                        <!-- <div class="dropdown">
-                            <button id="dropbtn"><img src="../image/sort-arrows-couple-pointing-up-and-down.png" style="height: 20px;"/>Order</button>
-                            <div class="dropdown-content">
-                                <button class="dropdown-block">
-                                    Sort by Time
-                                </button>
-                                <button class="dropdown-block">
-                                    Sort by Rating
-                                </button>
-                            </div>
-                        </div> -->
                         <span id="comment-switcher" style="display: flex; align-items: center;">
                             <button type="button" class="comment-switcher-btn" id="comment-orderbtn" onclick="switchOrder()"><img src="../image/down.png" style="height: 20px;"></button>
                             <button type="button" class="comment-switcher-btn" id="comment-typebtn" onclick="switchType()">By Time</button>
@@ -135,7 +121,7 @@
                         <div class="alert alert-danger" ><%= message %></div>
                     <% }) %>
                 <% } %>
-                <!-- to be implement later for getting new comment -->
+                <!-- Getting new comment -->
                 <div class="search-container"> 
                     <form class="input-group" id="comment-form" action ="/comment", method="post"> 
                         <input type="hidden" name="productID" value="<%= products.productID %>">
@@ -153,6 +139,7 @@
                     </form>
                 </div>
                 <hr style="border:3px solid #f1f1f1">   
+                <!-- Displaying comments -->
                 <!-- Debugged with the help from Github Copilot -->
                 <% review.forEach((comment, index) => { %>
                     <div calss="Comments">

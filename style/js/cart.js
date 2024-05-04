@@ -73,7 +73,7 @@ function selection(){ //decide need select or unselect all
     }
 }
 
-function selectAll(){
+function selectAll(){//called when select all products is clicked
     var arr=document.getElementsByClassName('chk');
     for(var i=0;i<arr.length;i++){
         if(arr[i].type=='checkbox')
@@ -82,7 +82,7 @@ function selectAll(){
     toolBar(); //update bar
 }
 
-function unSelectAll(){
+function unSelectAll(){//called when unselect all products is clicked
     var arr=document.getElementsByClassName('chk');
     for(var i=0;i<arr.length;i++){
         if(arr[i].type=='checkbox')

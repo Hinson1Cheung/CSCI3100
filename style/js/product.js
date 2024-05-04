@@ -120,7 +120,7 @@ var typeBtn = document.getElementById("comment-typebtn");
 console.log(typeBtn);
 // orderBtn.addEventListener("change",switchOrder);
 // typeBtn.addEventListener("change",switchType);
-function switchOrder(){
+function switchOrder(){ //show comments in ascending or descending order
     console.log(orderBtn.innerHTML);
     if(orderBtn.innerHTML == "<img src=\"../image/down.png\" style=\"height: 20px;\">"){
         orderBtn.innerHTML = "<img src=\"../image/up.png\" style=\"height: 20px;\">";
@@ -128,7 +128,7 @@ function switchOrder(){
         orderBtn.innerHTML = "<img src=\"../image/down.png\" style=\"height: 20px;\">";
     }
 }
-function switchType(){
+function switchType(){ //show comments by time or rating
     console.log(typeBtn.innerHTML);
     if(typeBtn.innerHTML == "By Time"){
         typeBtn.innerHTML = "By Rating";
@@ -139,7 +139,7 @@ function switchType(){
 }
 
 const stars = document.getElementsByClassName("star");
-function fillstar(id){
+function fillstar(id){ //fill the stars according to the input rating
     console.log("filled");
     for (let i=0; i < id; i++){
         stars[i].checked = true;
@@ -147,7 +147,4 @@ function fillstar(id){
     for (let i=id; id < 5; i++){
         stars[i].checked = false;
     }
-    // stars[0].id = "star-1:checked::before";
-    // stars[0].idList.remove("star-1");
-    // stars[0].idList.add("star-1:checked");
 }
