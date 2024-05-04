@@ -12,6 +12,7 @@ window.onload = function() {
         return false;
     }
 }
+//back to top button
 $(document).ready(function(){
     $('.scroll-to-top').click(function(event){
         event.preventDefault();

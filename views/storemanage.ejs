@@ -22,7 +22,6 @@
                     </form>
                 </div>
             </div>
-            <!-- Add a link to the cart page and other url -->
         </div>
     </div>
     </div>
@@ -30,8 +29,6 @@
         <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
         <h1 class="text-center">StoreManagement</h1>
         <div class="row" id="cardcontainer" style="display: flex; justify-content: center; align-items: stretch;">
-            <!-- add form here -->
-            <!-- sample display -->
             <% products.forEach((product, index) => { %>
                 <div class="card" style="padding-bottom: 10px;">
                     <div class="checkbox-wrapper-18">
@@ -43,11 +40,6 @@
                     <img src="<%= product.imageURL %>" alt="<%= product.pName %>" class="product-image" style="width:100%">
                     <h5 class="pname" id="n<%= index + 1 %>"><%= product.pName %></h5>
                     <p class="price" id="p<%= index + 1 %>">$<%= product.price.toFixed(2) %></p>
-                    <!-- <div class="number-input">
-                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                        <input type="number" class="quantity" id="q<%= index + 1 %>" value="<%= product.count %>" min="1" max="100">
-                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
-                    </div> -->
                 </div>
             <% }); %>
         </div>

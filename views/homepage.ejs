@@ -26,9 +26,6 @@
                 <a href="/catalogue">
                     <button class="btn btn-primary my-button">Catalogue</button>
                 </a>
-                <!--<a href="/login">
-                    <button class="btn btn-primary my-button">Login</button>
-                </a>>-->
                 <% if (loggedin) { %>
                     <a href="/userprofile">
                         <button class="btn btn-primary my-button">Profile</button>
@@ -40,13 +37,12 @@
                 <% } %>
 
             </div>
-            <!-- Add a link to the cart page and other url -->
         </div>
     </div>
     </div>
     <div class="container mt-3">
         <img src="./image/homepage.jpeg" alt="Front page image" class="front-page-image">
-        <h1 class="text-center">TOP12 Products</h1>
+        <h1 class="text-center">TOP12 Products</h1><!-- Show top12 product -->
         <div class="row">
             <% products.forEach(function(product) { %>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
@@ -69,7 +65,6 @@
             </a>
         </div>
         <br>    
-        <!-- Repeat for other products -->
     </div>
     <footer style="display: flex; justify-content: space-between; align-items: center; width: 100%; background-color: #333; color: white; padding: 10px;">
         <div><a>Group G3</a></div>
