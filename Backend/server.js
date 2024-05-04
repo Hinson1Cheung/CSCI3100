@@ -14,6 +14,7 @@ app.use(uploader());
 
 
 //const homePage = require("./Frontend/index.html");
+//session info:https://expressjs.com/en/resources/middleware/session.html
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
 
