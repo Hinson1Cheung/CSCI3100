@@ -1,10 +1,10 @@
 ## ShopVista - CSCI3100 Project - GroupG3
 Authors:
-Cheung Siu Hin
-Lei Shing Hon
-Li Zerong
-Ma Yuan
-Ng Kit Yiu
+* Cheung Siu Hin
+* Lei Shing Hon
+* Li Zerong
+* Ma Yuan
+* Ng Kit Yiu
 
 ## About the project
 This project implements ShopVista, an mini online shopping mall system. Where users could perform the following operations
@@ -42,7 +42,7 @@ Before running this application, users should perform the following commands:
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
    nvm install node
    ```
-4. For command line, install the following packages:
+3. For command line, install the following packages:
    ```sh
    npm install express
    npm install express-session
@@ -53,5 +53,28 @@ Before running this application, users should perform the following commands:
    npm install multer
    npm install async
    ```
+## Running instructions
+To run the application, clone the repository to your designated directory:
+```sh
+git clone https://github.com/Hinson1Cheung/CSCI3100.git
+```
+
+After cloning to the repository, cd to the directory where the application is located at, and execute the following:
+```sh
+cd backend
+node server.js
+```
+
+Once you see the following messages on the console: 
+```sh
+Server is running on port 5500
+initSQL1 STAEMENT HAS JUST RUN
+initSQL2 STAEMENT HAS JUST RUN
+```
+
+Type the URL: http://localhost:5500/ 
+
+And the application should run as normal
+
 
 
