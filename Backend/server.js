@@ -563,6 +563,7 @@ app.get('/login', function(req, res){
 
 
 app.get('/payment', async function(req, res){
+    //This part had major assistance from GitHub Copilot in debugging and the use of async function
     if (req.session.loggedin){
         const userID = req.session.uid;
     
