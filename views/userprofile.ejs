@@ -7,7 +7,7 @@ SELECT * FROM user;-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User profile</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"> <!-- Bootstrap CSS --> <!-- web page styling assist by Github copilot -->
     <link rel="stylesheet" href="/css/view.css">
 </head>
 <body>
@@ -16,9 +16,9 @@ SELECT * FROM user;-->
             <a href="/homepage">
                 <img src="/image/logo.png" alt="Logo" class="logo">
             </a>
-            <div class="action-container"> <!-- Add a container for the search bar and the login button -->
+            <div class="action-container"> <!-- container for the search bar and the login button -->
                 <div class="search-container">
-                    <form class="input-group" id="search-form"> <!-- Add a search form --> <!-- ID is for JS-->
+                    <form class="input-group" id="search-form"> <!-- search form --> <!-- ID is for JS-->
                         <input type="text" class="form-control search-input" id="search-bar" placeholder="Search">
                         <div id="preview-container"></div>
                     </form>
@@ -28,7 +28,6 @@ SELECT * FROM user;-->
                 </a>
                 
             </div>
-            <!-- Add a link to the cart page and other url -->
         </div>
     </div>
     </div>
@@ -36,22 +35,15 @@ SELECT * FROM user;-->
         <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
         <h1 class="text-center">View user information</h1>
         <div class="row" style="display: flex; justify-content: center;">
-            <!-- add form here -->
-            <!-- sample display -->
-            
-
             <div class="card" style="padding-bottom: 10px;">
                 <img src= "<%= picpath %>"  alt="Sample" class="product-image" style="width:100%">
                 <h5>User Profile</h5>
                 <p class="quantity">User Name: <%= name %> </p>
                 <p class="quantity">User ID: <%= userid %> </p>
                 <p class="quantity">User Balance: $<%= balance %> </p>
-
             </div>
         </div>       
         <div class="row" style="display: flex; justify-content: center;">
-            <!-- add form here -->
-            <!-- sample display -->
             </div>
             <div class="container mt-5">
                 <h1 class="text-center">Recent purchases</h1>
@@ -80,12 +72,6 @@ SELECT * FROM user;-->
         <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;"></a>
         
         <div class="row" style="display: flex; justify-content: center;">
-            <!-- add form here -->
-            <!-- sample display -->
-            
-
-            
-
         </div>
         <div class="text-center mt-4">
             <a href="/logout" class="btn btn-primary my-button">Logout</a>
@@ -99,9 +85,6 @@ SELECT * FROM user;-->
         <div>
             <a href="/storemanage" style="color: white; margin-right: 10px;">Store Management</a>
             <a href="/usermanage" style="color: white; margin-right: 10px;">User Management</a>
-            
-            
-
         </div>
     </footer>
     <% if (messages.error) { %>

@@ -1,3 +1,4 @@
+//logic of previous page button
 window.onload = function() {
     var referrer = "Previous Page";
     var link = document.getElementById('historyLink');
@@ -11,6 +12,7 @@ window.onload = function() {
         return false;
     }
 }
+//back to top button
 $(document).ready(function(){
     $('.scroll-to-top').click(function(event){
         event.preventDefault();

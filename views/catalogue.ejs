@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | ShopVisa</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"> <!-- Bootstrap CSS --> <!-- web page styling assist by Github copilot -->
     <link rel="stylesheet" href="/css/catalogue.css">
 </head>
 <body>
@@ -13,27 +13,26 @@
             <a href="/homepage">
                 <img src="../image/logo.png" alt="Logo" class="logo">
             </a>
-            <div class="action-container"> <!-- Add a container for the search bar and the login button -->
+            <div class="action-container"> <!-- Container for the search bar and the login button -->
                 <div class="search-container">
-                    <form class="input-group" id="search-form"> <!-- Add a search form --> <!-- ID is for JS-->
+                    <form class="input-group" id="search-form"> <!-- Search form --> <!-- ID is for JS-->
                         <input type="text" class="form-control search-input" id="search-bar" placeholder="Search">
                         <div id="preview-container"></div>
                     </form>
                 </div>
                 <a href="/cart">
-                    <button class="btn btn-primary my-button">Cart</button>
+                    <button class="btn btn-primary my-button">Cart</button> <!-- Cart button -->
                 </a>
                 <a href="/login">
-                    <button class="btn btn-primary my-button">Login</button>
+                    <button class="btn btn-primary my-button">Login</button> <!-- Login button -->
                 </a>
             </div>
-            <!-- Add a link to the cart page and other url -->
         </div>
     </div>
     </div>
     <div class="container mt-5">
         <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;" title="Previous Page">Go back</a>
-        <h1 class="text-center">Products</h1>
+        <h1 class="text-center">Products</h1> <!-- Show all product -->
         <div class="row">
             <% products.forEach(function(product) { %>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
@@ -51,11 +50,10 @@
         </div>
     </div>
     <br>
-    <footer style="display: flex; justify-content: space-between; align-items: center; width: 100%; background-color: #333; color: white; padding: 10px;">
-        <div><a href="#" class="scroll-to-top" title="Scroll to top" style="color: white;">Back to top</a></div>
+    <footer style="display: flex; justify-content: space-between; align-items: center; width: 100%; background-color: #333; color: white; padding: 10px;"> <!-- Footer -->
+        <div><a href="#" class="scroll-to-top" title="Scroll to top" style="color: white;">Back to top</a></div> <!-- Back to top button -->
         <div>
-            
-            <a href="/adminlogin" style="color: white;">Admin Login</a>
+            <a href="/adminlogin" style="color: white;">Admin Login</a> <!-- Admin login button -->
         </div>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

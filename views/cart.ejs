@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart | ShopVista</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"> <!-- Bootstrap CSS --> <!-- web page styling assist by Github copilot -->
     <link rel="stylesheet" href="/css/cart.css">
 </head>
 <!-- Code below had minor assitance from GitHub Copilot-->
@@ -14,18 +14,18 @@
             <a href="/homepage">
                 <img src="../image/logo.png" alt="Logo" class="logo">
             </a>
-            <div class="action-container"> <!-- Add a container for the search bar and the login button -->
+            <div class="action-container"> <!-- Container for the search bar and the login button -->
                 <div class="search-container">
-                    <form class="input-group" id="search-form"> <!-- Add a search form --> <!-- ID is for JS-->
+                    <form class="input-group" id="search-form"> <!-- Search form --> <!-- ID is for JS-->
                         <input type="text" class="form-control search-input" id="search-bar" placeholder="Search">
                         <div id="preview-container"></div>
                     </form>
                 </div>
             </div>
-            <!-- Add a link to the cart page and other url -->
         </div>
     </div>
     </div>
+    <!-- Debugged with the help from Github Copilot -->
     <% if (messages.error) { %>
         <% messages.error.forEach(function(message) { %>
             <div class="alert alert-danger"><%= message %></div>

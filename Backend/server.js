@@ -237,6 +237,7 @@ app.get('/blacklist', function(req, res){
     }
 });
 
+// Debugged with the help from GitHub Copilot
 //shopping cart page
 app.get('/cart', function(req, res){
    
@@ -262,7 +263,7 @@ app.get('/cart', function(req, res){
     }
 });
 
-//delete items from the shopping cart
+// Debugged with the help from GitHub Copilot
 app.post('/del', (req, res)=>{
     if (req.session.loggedin) {
         const productID = req.body.productID;
@@ -332,8 +333,27 @@ app.post('/checkout', (req, res)=>{
     }
 });
 
+// app.post('/backCart', (req, res)=>{
+//     if (req.session.loggedin) {
+//         const userID = req.session.uid;
+//         const productID = req.body.productID;
+//         for (let i = 0; i < productID.length; i++){
+//             let sql = 'update SHOPCART set checkedProd = 1 where productID=' + productID[i] + ' and UID=' + String(userID) +';';
+//             connection.query(sql, function(err, result){
+//                 if (err) throw err;
+//             });
+//         }
+//         res.json({success: true});
+//     }else {
+//         console.log("Please login first");
+//         res.redirect('/login');
+//     }
+//     // if (res.json.success){
+//     //     res.redirect('/cart');
+//     // }
+// });
 
-//add items to the shopping cart
+// Debugged with the help from GitHub Copilot
 app.post('/add', (req, res)=>{
     if (req.session.loggedin) {
         const productID = req.body.productID;
@@ -625,7 +645,7 @@ app.get('/payment', async function(req, res){
 });
 
 
-//loads each product by ID to its respective page
+// Debugged with the help from GitHub Copilot
 app.get('/product/:id', async (req, res) => {
     const product = await getProductById(req.params.id);
     let login = false;
@@ -715,7 +735,8 @@ app.get('/product/:id', async (req, res) => {
         
                 
 });
-// retrieve comments from the review table
+
+// Debugged with the help from GitHub Copilot
 app.post('/comment', function(req, res){
     if (req.session.loggedin){
         const userID = req.session.uid;

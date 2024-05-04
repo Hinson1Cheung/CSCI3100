@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | ShopVisa</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"> <!-- Bootstrap CSS --> <!-- web page styling assist by Github copilot -->
     <link rel="stylesheet" href="/css/product.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -14,22 +14,22 @@
             <a href="/">
                 <img src="../image/logo.png" alt="Logo" class="logo">
             </a>
-            <div class="action-container"> <!-- Add a container for the search bar and the login button -->
+            <div class="action-container"> <!-- Container for the search bar and the login button -->
                 <div class="search-container">
-                    <form class="input-group" id="search-form"> <!-- Add a search form --> <!-- ID is for JS-->
+                    <form class="input-group" id="search-form"> <!-- Search form --> <!-- ID is for JS-->
                         <input type="text" class="form-control search-input" id="search-bar" placeholder="Search">
                         <div id="preview-container"></div>
                     </form>
                 </div>
                 <a href="/cart">
-                    <button class="btn btn-primary my-button">Cart</button>
+                    <button class="btn btn-primary my-button">Cart</button> <!-- Cart button -->
                 </a>
                 <a href="/catalogue">
-                    <button class="btn btn-primary my-button">Catalogue</button>
+                    <button class="btn btn-primary my-button">Catalogue</button> <!-- Catalogue button -->
                 </a>
                 <% if (loggedin) { %>
                     <a href="/userprofile">
-                        <button class="btn btn-primary my-button">Profile</button>
+                        <button class="btn btn-primary my-button">Profile</button> 
                     </a> <!-- If logged in, show profile button -->
                 <% } else { %>
                     <a href="/login">
@@ -37,7 +37,6 @@
                     </a> <!-- If not logged in, show login button -->
                 <% } %>
             </div>
-            <!-- Add a link to the cart page and other url -->
         </div>
     </div>
     </div>
@@ -45,13 +44,13 @@
         <a id="historyLink" href="javascript:history.back()" style="color: rgb(0, 0, 0); font-size: small;">Go Back</a>
         <div class="row">
             <div class="col-md-6">
-                <img src="../<%= products.imageURL %>" class="img-fluid" alt="Product Image" style="height: 450px; width: auto;">
+                <img src="../<%= products.imageURL %>" class="img-fluid" alt="Product Image" style="height: 450px; width: auto;"> <!-- Product image -->
             </div>
             <div class="col-md-6">
-                <h2><%= products.pName %></h2>
-                <p>Product ID: <%= products.productID %> | Category ID: <%= products.catID %></p>
-                <h4>$<%= products.price %></h4>
-                <p><%= products.description %></p>
+                <h2><%= products.pName %></h2> <!-- Product name -->
+                <p>Product ID: <%= products.productID %> | Category ID: <%= products.catID %></p> <!-- Product ID and Category ID -->
+                <h4>$<%= products.price %></h4> <!-- Product price -->
+                <p><%= products.description %></p> <!-- Product description -->
                 <label for="quantity" style="font-size: 15px;">Quantity: <%= products.quantity %></label><br>
                 <!-- <input type="number" id="quantity" name="quantity" min="1" max="100" value="1" style="width: 60px; height: 30px; border: 1px solid #ccc; border-radius: 4px;"><br><br> -->
                 <div class="number-input">
@@ -73,6 +72,7 @@
 
             <div class="col-md-9"> <!-- 75% of row-->
                 <span class="heading">Customer Reviews</span>
+                <!-- Debugged with the help from Github Copilot -->
                 <% for(let i = 0; i < 5; i++) { %>
                     <% if(i < ratingAvg) { %>
                         <span class="fa fa-star checked"></span>
@@ -129,6 +129,7 @@
                     </span>
                 </div>
                 <hr style="border:3px solid #f1f1f1">
+                
                 <% if (messages.error) { %>
                     <% messages.error.forEach(function(message) { %>
                         <div class="alert alert-danger" ><%= message %></div>
@@ -152,6 +153,7 @@
                     </form>
                 </div>
                 <hr style="border:3px solid #f1f1f1">   
+                <!-- Debugged with the help from Github Copilot -->
                 <% review.forEach((comment, index) => { %>
                     <div calss="Comments">
                         <div class="row">
