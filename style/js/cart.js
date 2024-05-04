@@ -1,3 +1,4 @@
+//logic of previous page button
 window.onload = function() {
     var referrer = "Previous Page";
     var link = document.getElementById('historyLink');

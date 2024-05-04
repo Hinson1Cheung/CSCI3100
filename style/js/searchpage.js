@@ -1,3 +1,4 @@
+////main logic for the search bar in search page (assist by Github copilot)
 const searchBar = document.getElementById('search-bar');
 const minPrice = document.getElementById('min');
 const maxPrice = document.getElementById('max');

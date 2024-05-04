@@ -5,6 +5,7 @@ $(document).ready(function() {
         $(this).find('.product-button').css({'visibility': 'hidden', 'opacity': 0});
     });
 });
+//logic of previous page button
 window.onload = function() {
     var referrer = "Previous Page";
     var link = document.getElementById('historyLink');

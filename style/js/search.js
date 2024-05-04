@@ -1,3 +1,4 @@
+//main logic for the mini-search bar (assist by Github copilot)
 const searchBar = document.getElementById('search-bar');
 const previewContainer = document.getElementById('preview-container');
 
