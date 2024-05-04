@@ -36,12 +36,13 @@ Before running this application, users should perform the following commands:
 1. Install MySQL Server: https://dev.mysql.com/downloads/installer/
 2. Install Node JS (Command may depend on Operating System)
    For windows, follow the instructions of this website: https://phoenixnap.com/kb/install-node-js-npm-on-windows
+   <br>
    For MAC terminal or ubuntu, input the following commands:
    ```sh
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
    nvm install node
    ```
-3. For command line, install the following packages:
+4. For command line, install the following packages:
    ```sh
    npm install express
    npm install express-session
