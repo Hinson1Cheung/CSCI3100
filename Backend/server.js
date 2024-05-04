@@ -22,7 +22,7 @@ app.use(session({
     secret: 'your_secret_key',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60000 }
+    cookie: { maxAge: 6000000 }
 }));
 
 app.use(flash());
